@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdu.laborder.mapper.OrderLabMapper">
+
+    <insert id="userOrderLab">
+        insert into `lab_orders_detail`
+        (`lo_id`,`user_id`,`order_time`,`start_time`)
+        values
+        (#{loId},#{userId},now(),#{startTime})
+    </insert>
+    <delete id="deleteOrderByUser">
+        delete  from `lab_orders_detail` where lo_id = #{id}
+    </delete>
+    <select id="getLoIdListByUserId" resultType="java.lang.String">
+        select `lo_id` from `lab_orders_detail` where user_id = #{id} order by order_time desc
+    </select>
+    <select id="getAwaitLoIdListByUser" resultType="java.lang.Integer">
+        select `lo_id` from `lab_orders_detail` where user_id = #{id} and start_time > now() order by order_time desc
+    </select>
+</mapper>

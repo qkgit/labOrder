@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdu.laborder.mapper.MessageMapper">
+    <insert id="addMessage">
+        insert into `message`
+        (`user_id`,`user_name`,`content`,`time`)
+        values
+        (#{userId},#{userName},#{content},now())
+    </insert>
+
+    <update id="deleteMessage">
+         update `message` set `is_delete`="1" where `msg_id`=#{id}
+    </update>
+
+    <select id="getMessageList" resultType="com.bdu.laborder.entity.Message">
+        select * from message where is_delete = "0" order by time desc
+    </select>
+</mapper>

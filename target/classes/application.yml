@@ -1,0 +1,88 @@
+server:
+  port: 5555
+spring:
+  # 数据源基本配置
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://127.0.0.1:3306/lab-order?serverTimezone=GMT%2B8
+    # 8.x版本驱动包，要使用以下类作为驱动类
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 指定 Druid 数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+  ## MULTIPART (MultipartProperties)
+  servlet:
+    multipart:
+      #  启用分段上传 Enable multipart uploads
+      enabled: true
+      # Threshold after which files are written to disk.
+      file-size-threshold: 2KB
+      # Max file size.
+      max-file-size: 200MB
+      # Max Request Size
+      max-request-size: 215MB
+  #Redis服务
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    #Redis服务器连接密码（默认为空）
+    password:
+    pool:
+      #连接池最大连接数（使用负值表示没有限制）
+      max-active: 8
+      #连接池最大阻塞等待时间（使用负值表示没有限制）
+      max-wait: -1
+      #连接池中的最大空闲连接
+      max-idle: 8
+      #连接池中的最小空闲连接
+      min-idle: 0
+    #连接超时时间（毫秒）
+    timeout: 30000
+    database: 6
+  # 前端传来的日期为string类型，下面的设置可以自动将其转换为date类型，不需要手动转换
+#  mvc:
+#    format:
+#      date: yyyy-mm-dd hh:mm:ss
+  #springboot启动加载图形
+  banner:
+    location: config/banner.txt
+
+  #控制台色彩打印
+  output:
+    ansi:
+      enabled: always
+
+
+
+
+
+## File Storage Properties
+file:
+  # 上传的所有文件都将存储在此目录中
+  upload-dir: 'e:/labOrderFile/0'
+
+
+#MyBatis相关配置
+mybatis:
+  #核心配置文件路径
+  config-location: classpath:mybatis/mybatis-config.xml
+  #映射配置文件路径
+  mapper-locations: classpath:mybatis/mapper/*.xml
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+jwt:
+  config:
+    key: userlogin
+    # failureTime 单位毫秒
+    failureTime: 3600000
+
+
+logging:
+  level:
+    # 打印 SQL 语句
+    com.bdu.laborder.mapper: debug

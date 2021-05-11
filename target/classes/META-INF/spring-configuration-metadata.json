@@ -1,0 +1,32 @@
+{
+  "groups": [
+    {
+      "name": "file",
+      "type": "com.bdu.laborder.config.FileStorageProperties",
+      "sourceType": "com.bdu.laborder.config.FileStorageProperties"
+    },
+    {
+      "name": "jwt.config",
+      "type": "com.bdu.laborder.utils.JwtUtils",
+      "sourceType": "com.bdu.laborder.utils.JwtUtils"
+    }
+  ],
+  "properties": [
+    {
+      "name": "file.upload-dir",
+      "type": "java.lang.String",
+      "sourceType": "com.bdu.laborder.config.FileStorageProperties"
+    },
+    {
+      "name": "jwt.config.failure-time",
+      "type": "java.lang.Long",
+      "sourceType": "com.bdu.laborder.utils.JwtUtils"
+    },
+    {
+      "name": "jwt.config.key",
+      "type": "java.lang.String",
+      "sourceType": "com.bdu.laborder.utils.JwtUtils"
+    }
+  ],
+  "hints": []
+}
