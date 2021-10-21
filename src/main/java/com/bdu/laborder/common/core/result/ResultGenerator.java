@@ -1,6 +1,8 @@
-package com.bdu.laborder.common;
+package com.bdu.laborder.common.core.result;
 
 
+import com.bdu.laborder.common.constant.BussinessCode;
+import com.bdu.laborder.common.core.result.Result;
 import com.bdu.laborder.exception.BaseErrorInfoInterface;
 import com.alibaba.fastjson.JSONObject;
 
@@ -30,6 +32,14 @@ public class ResultGenerator {
         result.setMessage(bussinessCode.getMsg());
         result.setData(data);
         return result;
+    }
+
+    /**
+     *  返回成功消息
+     * @return
+     */
+    public static Result success() {
+        return returnCodeMessage(BussinessCode.RESULT_GLOBAL_SUCCESS);
     }
     /**
      *  失败

@@ -1,4 +1,4 @@
-package com.bdu.laborder.common;
+package com.bdu.laborder.common.constant;
 
 import com.bdu.laborder.exception.BaseErrorInfoInterface;
 
@@ -51,9 +51,9 @@ public enum BussinessCode implements BaseErrorInfoInterface {
 
     ;
 
-    /* 返回代码 */
+    /** 返回代码 */
     private String code;
-    /* 返回信息 */
+    /** 返回信息 */
     private String msg;
 
     BussinessCode(String code, String msg) {

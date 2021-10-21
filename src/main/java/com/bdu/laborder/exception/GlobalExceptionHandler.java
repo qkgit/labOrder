@@ -1,9 +1,9 @@
 package com.bdu.laborder.exception;
 
 
-import com.bdu.laborder.common.BussinessCode;
-import com.bdu.laborder.common.Result;
-import com.bdu.laborder.common.ResultGenerator;
+import com.bdu.laborder.common.constant.BussinessCode;
+import com.bdu.laborder.common.core.result.Result;
+import com.bdu.laborder.common.core.result.ResultGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;

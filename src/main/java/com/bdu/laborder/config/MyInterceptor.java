@@ -1,6 +1,6 @@
 package com.bdu.laborder.config;
 
-import com.bdu.laborder.common.BussinessCode;
+import com.bdu.laborder.common.constant.BussinessCode;
 import com.bdu.laborder.exception.LabOrderException;
 import com.bdu.laborder.utils.JwtUtils;
 import com.bdu.laborder.utils.RedisUtil;

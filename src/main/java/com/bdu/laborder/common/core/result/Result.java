@@ -1,4 +1,4 @@
-package com.bdu.laborder.common;
+package com.bdu.laborder.common.core.result;
 
 
 import java.io.Serializable;
