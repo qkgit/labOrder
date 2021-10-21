@@ -1,7 +1,6 @@
 package com.bdu.laborder.service.impl;
 
-import com.bdu.laborder.common.Constant;
-import com.bdu.laborder.entity.LabRequest;
+import com.bdu.laborder.common.constant.Constant;
 import com.bdu.laborder.entity.News;
 import com.bdu.laborder.entity.NewsRequest;
 import com.bdu.laborder.mapper.NewsMapper;

@@ -1,6 +1,6 @@
 package com.bdu.laborder.service.impl;
 
-import com.bdu.laborder.common.BussinessCode;
+import com.bdu.laborder.common.constant.BussinessCode;
 import com.bdu.laborder.entity.ExpRequest;
 import com.bdu.laborder.entity.Experiment;
 import com.bdu.laborder.exception.LabOrderException;

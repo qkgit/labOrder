@@ -78,8 +78,8 @@ pagehelper:
 jwt:
   config:
     key: userlogin
-    # failureTime 单位毫秒
-    failureTime: 3600000
+    # failureTime 单位毫秒 10小时
+    failureTime: 36000000
 
 
 logging:

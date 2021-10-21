@@ -1,7 +1,7 @@
 package com.bdu.laborder.service.impl;
 
-import com.bdu.laborder.common.BussinessCode;
-import com.bdu.laborder.common.Constant;
+import com.bdu.laborder.common.constant.BussinessCode;
+import com.bdu.laborder.common.constant.Constant;
 import com.bdu.laborder.entity.LabOrder;
 import com.bdu.laborder.entity.LabOrderDetil;
 import com.bdu.laborder.exception.LabOrderException;

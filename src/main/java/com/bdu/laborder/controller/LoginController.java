@@ -1,9 +1,9 @@
 package com.bdu.laborder.controller;
 
-import com.bdu.laborder.common.BussinessCode;
-import com.bdu.laborder.common.Constant;
-import com.bdu.laborder.common.Result;
-import com.bdu.laborder.common.ResultGenerator;
+import com.bdu.laborder.common.constant.BussinessCode;
+import com.bdu.laborder.common.constant.Constant;
+import com.bdu.laborder.common.core.result.Result;
+import com.bdu.laborder.common.core.result.ResultGenerator;
 import com.bdu.laborder.entity.User;
 import com.bdu.laborder.service.LoginService;
 import com.bdu.laborder.utils.JwtUtils;
@@ -59,7 +59,7 @@ public class LoginController {
 //            dataMap.put("avatar", loginUser.getAvatar());
                 //生成token并存入数据返回
                 token = jwtUtils.createJwt(Integer.toString(loginUser.getUserId()), loginUser.getLoginName(), dataMap);
-                redisUtil.set("token :"+loginUser.getUserId(),token,3600);
+                redisUtil.set("token :"+loginUser.getUserId(),token,36000);
 
             }
 

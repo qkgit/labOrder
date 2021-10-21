@@ -1,8 +1,8 @@
 package com.bdu.laborder.controller;
 
-import com.bdu.laborder.common.BussinessCode;
-import com.bdu.laborder.common.Result;
-import com.bdu.laborder.common.ResultGenerator;
+import com.bdu.laborder.common.constant.BussinessCode;
+import com.bdu.laborder.common.core.result.Result;
+import com.bdu.laborder.common.core.result.ResultGenerator;
 import com.bdu.laborder.entity.Message;
 import com.bdu.laborder.service.MessageService;
 import com.github.pagehelper.PageInfo;
