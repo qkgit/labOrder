@@ -1,6 +1,7 @@
 package com.bdu.laborder.controller;
 
 import com.bdu.laborder.common.constant.BussinessCode;
+import com.bdu.laborder.common.core.domain.controller.BaseController;
 import com.bdu.laborder.common.core.result.Result;
 import com.bdu.laborder.common.core.result.ResultGenerator;
 import com.bdu.laborder.entity.SDict;
@@ -18,7 +19,7 @@ import java.util.UUID;
  */
 @RestController
 @RequestMapping("/dict")
-public class SDictController extends BaseController{
+public class SDictController extends BaseController {
 
     @Autowired
     SDictService sDictService;

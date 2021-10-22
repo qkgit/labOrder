@@ -1,4 +1,4 @@
-package com.bdu.laborder.controller;
+package com.bdu.laborder.common.core.domain.controller;
 
 import com.bdu.laborder.common.constant.BussinessCode;
 import com.bdu.laborder.common.core.result.Result;
