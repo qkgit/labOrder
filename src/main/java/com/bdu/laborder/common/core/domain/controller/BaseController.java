@@ -31,27 +31,10 @@ public class BaseController {
    @Autowired
    UserService userService;
 
-   protected void startPage(PageQuery pageQuery){
-      PageInfo page = pageQuery.getPage();
-      int pageNum = page.getPageNum();
-      int pageSize = page.getPageSize();
-       if (StringUtils.isNotNull(pageNum)&&StringUtils.isNotNull(pageSize)) {
-          PageHelper.startPage(pageNum,pageSize);
-       }
+   /** 处理返回信息 */
+   public Result success(){
+      return ResultGenerator.error(BussinessCode.RESULT_GLOBAL_SUCCESS);
    }
-
-   protected Result getPageInfo(List<?> list) {
-      Result result = ResultGenerator.success();
-      result.setData(new PageInfo(list));
-      return result;
-   }
-
-   protected <T> T getParam(PageQuery pageQuery,Class<T> classOfT) {
-      Gson gson = CreateGson.createGson();
-      gson.fromJson(JSONObject.fromObject(pageQuery.getItem()).toString(), classOfT);
-      return gson.fromJson(JSONObject.fromObject(pageQuery.getItem()).toString(), classOfT);
-   }
-
    public Result success(Object data) {
       return ResultGenerator.returnCodeMessage(BussinessCode.RESULT_GLOBAL_SUCCESS,data);
    }
@@ -61,6 +44,51 @@ public class BaseController {
    public Result error(String msg){
       return ResultGenerator.error(msg);
    }
+   public Result toResult(int rows){
+      return rows > 0 ? ResultGenerator.success() : ResultGenerator.error("操作失败!");
+   }
+   public Result toResult(boolean result){return result ? success() : error();}
+
+
+
+   /**
+    *  设置分页
+    * @param pageQuery
+    */
+   protected void startPage(PageQuery pageQuery){
+      PageInfo page = pageQuery.getPage();
+      int pageNum = page.getPageNum();
+      int pageSize = page.getPageSize();
+       if (StringUtils.isNotNull(pageNum)&&StringUtils.isNotNull(pageSize)) {
+          PageHelper.startPage(pageNum,pageSize);
+       }
+   }
+
+   /**
+    * 获取分页数据
+    * @param list
+    * @return
+    */
+   protected Result getPageInfo(List<?> list) {
+      Result result = ResultGenerator.success();
+      result.setData(new PageInfo(list));
+      return result;
+   }
+
+   /**
+    *  获取查询字段信息
+    * @param pageQuery  pageQuery
+    * @param classOfT  解析为哪个实体类
+    * @param <T>  接收返回数据的实体类类
+    * @return
+    */
+   protected <T> T getParam(PageQuery pageQuery,Class<T> classOfT) {
+      Gson gson = CreateGson.createGson();
+      gson.fromJson(JSONObject.fromObject(pageQuery.getItem()).toString(), classOfT);
+      return gson.fromJson(JSONObject.fromObject(pageQuery.getItem()).toString(), classOfT);
+   }
+
+
 
    /**
     * 获取用户缓存信息

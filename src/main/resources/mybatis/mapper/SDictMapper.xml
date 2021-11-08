@@ -3,30 +3,32 @@
 <mapper namespace="com.bdu.laborder.mapper.SDictMapper">
 
     <resultMap id="SDictResult" type="com.bdu.laborder.entity.SDict">
-        <result property="uuid"    column="uuid" />
-        <result property="code"    column="code" />
-        <result property="name" column="name" />
-        <result property="tableType" column="table_type" />
-        <result property="tableName" column="table_name" />
-        <result property="orderNum" column="order_num" />
-        <result property="remark" column="remark" />
-        <result property="status" column="status" />
-        <result property="createBy" column="create_by" />
+        <result property="uuid"    column="uuid"           />
+        <result property="code"    column="code"           />
+        <result property="name" column="name"              />
+        <result property="tableType" column="table_type"   />
+        <result property="tableName" column="table_name"   />
+        <result property="orderNum" column="order_num"     />
+        <result property="remark" column="remark"          />
+        <result property="status" column="status"          />
+        <result property="cssClass"   column="css_class"   />
+        <result property="listClass"  column="list_class"  />
+        <result property="createBy" column="create_by"     />
         <result property="createTime" column="create_time" />
-        <result property="updateBy" column="update_by" />
+        <result property="updateBy" column="update_by"     />
         <result property="updateTime" column="update_time" />
     </resultMap>
 
     <sql id="selectSDictTypeVo">
-        select uuid,code,name,status,remark, create_by, create_time, update_by,update_time
+        select uuid,code,name,status,remark,create_by,create_time,update_by,update_time
         from s_dict_type
     </sql>
     <sql id="selectSDictDataVo">
-        select uuid,code, name, table_name, table_type, order_num, remark, status, create_by, create_time, update_by,update_time
+        select uuid,code, name, table_name, table_type, order_num, remark, status,css_class,list_class, create_by, create_time, update_by,update_time
         from s_dict_data
     </sql>
 
-    <!--SDictType SQL  START-->
+    <!--############################## SDictType SQL  START ##############################-->
     <select id="selectSDictTypeList" resultMap="SDictResult"  parameterType="com.bdu.laborder.entity.SDict" >
         <include refid="selectSDictTypeVo" />
         <where>
@@ -40,14 +42,78 @@
                 AND date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
             </if>
         </where>
+        order by create_time desc
     </select>
 
+    <select id="checkDictTypeUnique" resultMap="SDictResult">
+        <include refid="selectSDictTypeVo" />
+        where code = #{code} limit 1
+    </select>
 
+    <select id="selectSDictTypeById"  parameterType="String" resultMap="SDictResult">
+        <include refid="selectSDictTypeVo"/>
+        where uuid = #{id}
+    </select>
 
+    <insert id="insertSDictType">
+        insert into s_dict_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">uuid,</if>
+            <if test="code != null">code,</if>
+            <if test="name != null">name,</if>
+            <if test="status != null">status,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">#{uuid},</if>
+            <if test="code != null">#{code},</if>
+            <if test="name != null">#{name},</if>
+            <if test="status != null">#{status},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            sysdate()
+        </trim>
+    </insert>
 
-    <!-- END -->
+    <delete id="deleteSDictTypeById">
+        delete from s_dict_type where uuid = #{id}
+    </delete>
 
-   <!--SDictData SQL  START-->
+    <update id="updateSDictType">
+        update  s_dict_type
+        <set>
+            <if test="code != null">code = #{code},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            update_time = sysdate()
+        </set>
+        where uuid = #{uuid}
+    </update>
+
+    <!--####################################### END ######################################-->
+
+    <update id="updateSDictDataType" parameterType="string">
+        update s_dict_data set
+        table_type = #{newTableType},
+        table_name = #{newTableName}
+        where table_type = #{oldTableType}
+    </update>
+
+    <select id="selectSDictByType" parameterType="com.bdu.laborder.entity.SDict" resultMap="SDictResult">
+        <include refid="selectSDictDataVo" />
+        where status ='0' and tableType =  #{tableType}
+    </select>
+
+    <select id="countSDictByType" resultType="Integer" >
+        select count(1) from s_dict_data where table_type = #{tableType}
+    </select>
+
+    <!--############################## SDictData SQL  START ##############################-->
+
     <select id="selectSDictList" parameterType="com.bdu.laborder.entity.SDict" resultMap="SDictResult">
         <include refid="selectSDictDataVo"/>
         <where>
@@ -70,9 +136,9 @@
         where uuid = #{id}
     </select>
 
-    <select id="selectSDictByType" parameterType="com.bdu.laborder.entity.SDict" resultMap="SDictResult">
-        <include refid="selectSDictDataVo" />
-        where status ='0' and tableType =  #{tableType}
+    <select id="selectSDitName" resultType="java.lang.String">
+        select name from s_dict_data
+        where table_type = #{tableType} and  code = #{code}
     </select>
 
     <insert id="insertSDict" parameterType="com.bdu.laborder.entity.SDict">
@@ -84,7 +150,9 @@
             <if test="name != null">name,</if>
             <if test="tableType != null">table_type,</if>
             <if test="tableName != null">table_name ,</if>
-            <if test="remark != null">remake,</if>
+            <if test="cssClass != null and cssClass != ''">css_class,</if>
+            <if test="listClass != null and listClass != ''">list_class,</if>
+            <if test="remark != null">remark,</if>
             <if test="status != null">status,</if>
             <if test="createBy != null">create_by,</if>
             create_time
@@ -96,6 +164,8 @@
             <if test="name != null">#{name},</if>
             <if test="tableType != null">#{tableType},</if>
             <if test="tableName != null">#{tableName},</if>
+            <if test="cssClass != null and cssClass != ''">#{cssClass},</if>
+            <if test="listClass != null and listClass != ''">#{listClass},</if>
             <if test="remark != null">#{remark},</if>
             <if test="status != null">#{status},</if>
             <if test="createBy != null">#{createBy},</if>
@@ -110,20 +180,15 @@
             <if test="name != null">name = #{name},</if>
             <if test="tableType != null">table_type = #{tableType},</if>
             <if test="tableName != null">table_name = #{tableName},</if>
+            <if test="cssClass != null">css_class = #{cssClass},</if>
+            <if test="listClass != null">list_class = #{listClass},</if>
             <if test="orderNum != null">order_num = #{orderNum},</if>
-            <if test="remark != null">remake = #{remark},</if>
+            <if test="remark != null">remark = #{remark},</if>
             <if test="status != null">status = #{status},</if>
             <if test="updateBy != null">update_by = #{updateBy},</if>
             update_time = sysdate()
         </set>
         where uuid = #{uuid}
-    </update>
-
-    <update id="updateSDictType" parameterType="string">
-        update s_dict_data set
-            table_type = #{newTableType},
-            table_name = #{newTableName}
-        where table_type = #{oldTableType}
     </update>
 
     <delete id="deleteSDictById" parameterType="int">
@@ -137,17 +202,5 @@
         </foreach>
      </delete>
 
-    <select id="selectSDitName" resultType="java.lang.String">
-        select name from s_dict_data
-        where tableType = #{tableType} and  code = #{code}
-    </select>
-
-    <select id="countSDictByType" resultType="int">
-        select count(1) from s_dict_data where tableType = #{tableType}
-    </select>
-
-    <select id="checkDictTypeUnique" resultMap="SDictResult">
-        <include refid="selectSDictTypeVo" />
-        where code = #{code} limit 1
-    </select>
+    <!--####################################### END ######################################-->
 </mapper>

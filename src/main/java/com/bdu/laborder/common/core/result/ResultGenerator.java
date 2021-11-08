@@ -41,6 +41,7 @@ public class ResultGenerator {
     public static Result success() {
         return returnCodeMessage(BussinessCode.RESULT_GLOBAL_SUCCESS);
     }
+
     /**
      *  失败
      * @param errorInfo

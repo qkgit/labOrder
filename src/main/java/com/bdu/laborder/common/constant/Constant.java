@@ -31,7 +31,9 @@ public class Constant {
     /** 文章发布状态 未发布*/
     public static final String NEWS_RELEASE_FALSE = "0";
 
-
+    /** 查询字典详情标识*/
+    public static final String DICT_TYPE = "type";
+    public static final String DICT_DATA = "data";
 
     /**
      * http请求

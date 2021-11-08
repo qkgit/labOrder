@@ -93,8 +93,9 @@ public class FileServiceImpl implements FileService {
 
     public static String getFileExt(String fileName) {
         int iIndex = fileName.lastIndexOf(".");
-        if (iIndex < 0)
+        if (iIndex < 0) {
             return "";
+        }
         return fileName.substring(iIndex + 1).toLowerCase();
     }
 }

@@ -20,9 +20,13 @@ public class SDict extends BaseEntity {
     /** 字典类型（父字典值） */
     private String tableName;
     /** 排序号 */
-    private String orderNum;
+    private Integer orderNum;
     /** 状态 */
     private String status;
     /** 备注 */
     private String remark;
+    /** 表单回显样式*/
+    private String listClass;
+    /** 样式属性*/
+    private String cssClass;
 }

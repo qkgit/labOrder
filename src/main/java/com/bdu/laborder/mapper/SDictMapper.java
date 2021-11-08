@@ -36,12 +36,7 @@ public interface SDictMapper {
      */
     public List<SDict> selectSDictByType(String tableType);
 
-    /**
-     *  查询子集字典数量
-     * @param tableType
-     * @return
-     */
-    public int countSDictByType(String tableType);
+    public SDict selectSDictTypeById(String id);
 
     /**
      * 根据id查询字典信息
@@ -51,6 +46,14 @@ public interface SDictMapper {
     public SDict selectSDictById(String id);
 
     /**
+     * 校验字典类型称是否唯一
+     *
+     * @param code 字典类型
+     * @return 结果
+     */
+    public SDict checkDictTypeUnique(String code);
+
+    /**
      *  根据字典类型和字典编码查询字典信息
      * @param tableType  字典类型 （父code）
      * @param code 字典编码（子code）
@@ -58,12 +61,23 @@ public interface SDictMapper {
      */
     public String selectSDitName(@Param("tableType") String tableType,@Param("code") String code);
 
+
+
+    /**
+     *  添加字典类型
+     * @param sDict
+     * @return
+     */
+    public int insertSDictType(SDict sDict);
+
     /**
      *  新增字典数据信息
      * @param sDict 字典数据信息
      * @return 结果
      */
     public int insertSDict(SDict sDict);
+
+    public int updateSDictType(SDict sDict);
 
     /**
      *  修改字典数据信息
@@ -79,14 +93,28 @@ public interface SDictMapper {
      * @param newTableName
      * @return
      */
-    public int updateSDictType(@Param("oldTableType") String oldTableType,@Param("newTableType") String newTableType,@Param("newTableName") String newTableName);
+    public int updateSDictDataType(@Param("oldTableType") String oldTableType,@Param("newTableType") String newTableType,@Param("newTableName") String newTableName);
+
+    /**
+     *  查询子集字典数量
+     * @param tableType
+     * @return
+     */
+    public int countSDictByType(String tableType);
+
+    /**
+     *  删除字典类型
+     * @param id
+     * @return
+     */
+    public int deleteSDictTypeById(String id);
 
     /**
      *  删除字典
      * @param id id
      * @return
      */
-    public int deleteSDictById(int id);
+    public int deleteSDictById(String id);
 
     /**
      *  批量删除字典
@@ -94,13 +122,5 @@ public interface SDictMapper {
      * @return
      */
     public int deleteSDictByIds(int[] ids);
-
-    /**
-     * 校验字典类型称是否唯一
-     *
-     * @param code 字典类型
-     * @return 结果
-     */
-    public SDict checkDictTypeUnique(String code);
 
 }

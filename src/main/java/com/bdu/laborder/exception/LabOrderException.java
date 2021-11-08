@@ -19,6 +19,7 @@ public class LabOrderException extends RuntimeException{
 
     public LabOrderException() {
         super();
+        this.errorMsg = "操作异常！请联系管理员";
     }
 
     public LabOrderException(BaseErrorInfoInterface errorInfoInterface) {
@@ -67,6 +68,7 @@ public class LabOrderException extends RuntimeException{
         this.errorMsg = errorMsg;
     }
 
+    @Override
     public String getMessage() {
         return errorMsg;
     }
