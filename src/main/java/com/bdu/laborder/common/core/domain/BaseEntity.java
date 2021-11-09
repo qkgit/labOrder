@@ -1,4 +1,4 @@
-package com.bdu.laborder.common.core.domain.entity;
+package com.bdu.laborder.common.core.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
