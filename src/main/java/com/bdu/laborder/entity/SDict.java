@@ -1,6 +1,6 @@
 package com.bdu.laborder.entity;
 
-import com.bdu.laborder.common.core.domain.entity.BaseEntity;
+import com.bdu.laborder.common.core.domain.BaseEntity;
 import lombok.Data;
 
 /**

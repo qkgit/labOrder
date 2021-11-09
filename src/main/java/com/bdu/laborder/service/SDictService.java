@@ -60,7 +60,7 @@ public interface SDictService {
     /**
      * 根据字典类型查询字典项（父查子）
      * @param tableType 类型id （父id）
-     * @return  字典数据集合
+     * @return  字典数据集合 (ORDER BY order_num,create_time)
      */
     public List<SDict> selectSDictByType(String tableType);
 
@@ -75,12 +75,19 @@ public interface SDictService {
     public List<SDict> selectSDictList(SDict sDict);
 
     /**
-     *  根据字典类型和字典编码查询字典信息
+     * 校验字典类型是否唯一
+     * @param sDict
+     * @return
+     */
+    public boolean checkDictUnique(SDict sDict);
+
+    /**
+     *  根据字典类型和字典编码查询字典值
      * @param tableType  字典类型 （父code）
      * @param code 字典编码（子code）
      * @return 字典值
      */
-    public String selectSDitName(@Param("tableType") String tableType, @Param("code") String code);
+    public String selectSDictName(@Param("tableType") String tableType, @Param("code") String code);
 
     /**
      *  新增字典数据信息

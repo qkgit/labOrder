@@ -55,13 +55,12 @@ public interface SDictMapper {
 
     /**
      *  根据字典类型和字典编码查询字典信息
-     * @param tableType  字典类型 （父code）
-     * @param code 字典编码（子code）
-     * @return 字典值
+     *  校验字典在本身类型下是否唯一
+     * @param tableType
+     * @param code
+     * @return
      */
-    public String selectSDitName(@Param("tableType") String tableType,@Param("code") String code);
-
-
+    public SDict selectSDictByCode(@Param("tableType") String tableType,@Param("code") String code);
 
     /**
      *  添加字典类型

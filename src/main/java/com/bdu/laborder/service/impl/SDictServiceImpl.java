@@ -67,7 +67,7 @@ public class SDictServiceImpl implements SDictService {
 
         SDict oldDict = sDictMapper.selectSDictTypeById(sDict.getUuid());
         try {
-            sDictMapper.updateSDictDataType(oldDict.getTableType(), sDict.getCode(), sDict.getName());
+            sDictMapper.updateSDictDataType(oldDict.getCode(), sDict.getCode(), sDict.getName());
             return sDictMapper.updateSDictType(sDict);
         }catch (Exception e){
             e.printStackTrace();
@@ -81,7 +81,7 @@ public class SDictServiceImpl implements SDictService {
         for (String id : ids) {
             SDict sDict = sDictMapper.selectSDictTypeById(id);
             if (sDictMapper.countSDictByType(sDict.getCode())>0) {
-                throw new LabOrderException(String.format("%1$s已分配,不能删除",sDict.getName()));
+                throw new LabOrderException(String.format("%1$s已分配字典项,不能删除",sDict.getName()));
             }
             try {
                 i += sDictMapper.deleteSDictTypeById(id);
@@ -96,7 +96,8 @@ public class SDictServiceImpl implements SDictService {
 
     @Override
     public List<SDict> selectSDictByType(String tableType) {
-        return null;
+        List<SDict> sDicts = sDictMapper.selectSDictByType(tableType);
+        return sDicts;
     }
 
 
@@ -110,16 +111,25 @@ public class SDictServiceImpl implements SDictService {
     }
 
     @Override
-    public String selectSDitName(String tableType, String code) {
-        String sDictName = sDictMapper.selectSDitName(tableType, code);
-        return sDictName == null? null:sDictName;
+    public boolean checkDictUnique(SDict sDict) {
+        SDict dict = sDictMapper.selectSDictByCode(sDict.getTableType(), sDict.getCode());
+        if (StringUtils.isNotNull(dict) && !dict.getUuid().equals(sDict.getUuid())){
+            return Constant.TRUE;
+        }
+        return Constant.FALSE;
+    }
+
+    @Override
+    public String selectSDictName(String tableType, String code) {
+        SDict dict = sDictMapper.selectSDictByCode(tableType, code);
+        return dict == null ? null : dict.getName();
     }
 
     @Override
     public int insertSDict(SDict sDict) {
         UUID uuid = UUID.randomUUID();
         sDict.setUuid(uuid.toString());
-        SDict sDictType = sDictMapper.checkDictTypeUnique(sDict.getCode());
+        SDict sDictType = sDictMapper.checkDictTypeUnique(sDict.getTableType());
         sDict.setTableName(sDictType.getName());
         return sDictMapper.insertSDict(sDict);
     }
@@ -134,7 +144,7 @@ public class SDictServiceImpl implements SDictService {
         int i =0;
         for (String id : ids) {
             try {
-                i += sDictMapper.deleteSDictTypeById(id);
+                i += sDictMapper.deleteSDictById(id);
             }catch (Exception e){
                 i =0;
                 throw new LabOrderException();

@@ -42,7 +42,7 @@
                 AND date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
             </if>
         </where>
-        order by create_time desc
+        order by create_time
     </select>
 
     <select id="checkDictTypeUnique" resultMap="SDictResult">
@@ -105,7 +105,7 @@
 
     <select id="selectSDictByType" parameterType="com.bdu.laborder.entity.SDict" resultMap="SDictResult">
         <include refid="selectSDictDataVo" />
-        where status ='0' and tableType =  #{tableType}
+        where status ='0' and table_type =  #{tableType} order by order_num,create_time
     </select>
 
     <select id="countSDictByType" resultType="Integer" >
@@ -136,9 +136,9 @@
         where uuid = #{id}
     </select>
 
-    <select id="selectSDitName" resultType="java.lang.String">
-        select name from s_dict_data
-        where table_type = #{tableType} and  code = #{code}
+    <select id="selectSDictByCode" resultMap="SDictResult">
+        <include refid="selectSDictDataVo" />
+        where table_type = #{tableType} and  code = #{code} limit 1
     </select>
 
     <insert id="insertSDict" parameterType="com.bdu.laborder.entity.SDict">
@@ -191,7 +191,7 @@
         where uuid = #{uuid}
     </update>
 
-    <delete id="deleteSDictById" parameterType="int">
+    <delete id="deleteSDictById" parameterType="String">
         delete from s_dict_data where uuid = #{id}
     </delete>
 

@@ -79,7 +79,7 @@ public class SDictController extends BaseController {
         return getPageInfo(dictPageInfo);
     }
 
-    @GetMapping("/type/{sDictType}")
+    @GetMapping("/data/type/{sDictType}")
     public Result getDictByType(@PathVariable String sDictType){
         List<SDict> sDicts = sDictService.selectSDictByType(sDictType);
         if (StringUtils.isNull(sDicts)){
@@ -100,7 +100,7 @@ public class SDictController extends BaseController {
             return error("字典编码不能为空！");
         }
         // 判断code是否唯一
-        String sDitName = sDictService.selectSDitName(sDict.getTableType(), sDict.getCode());
+        String sDitName = sDictService.selectSDictName(sDict.getTableType(), sDict.getCode());
         if (sDitName!=null){
             return error("新增字典 '"+sDict.getName()+"' 失败，字典编码重复！");
         }
@@ -119,8 +119,7 @@ public class SDictController extends BaseController {
             return error("字典编码不能为空！");
         }
         // 判断code是否唯一
-        String sDitName = sDictService.selectSDitName(sDict.getTableType(), sDict.getCode());
-        if (sDitName!=null){
+        if (sDictService.checkDictUnique(sDict)){
             return error("修改字典 '"+sDict.getName()+"' 失败，字典编码重复！");
         }
         sDict.setUpdateBy(getUserName());
