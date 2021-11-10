@@ -34,6 +34,8 @@ public class User implements Serializable {
     private String institute;
     /* 专业 */
     private String major;
+    /* 班级 */
+    private String grade;
     /* 用户头像    https://gitee.com/qkget233/images/raw/master/PiqFjhwzPilZ.jpg */
     private String avatar;
     /* 是否为第一次登录*/
