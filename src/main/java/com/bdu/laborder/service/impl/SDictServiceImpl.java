@@ -6,6 +6,7 @@ import com.bdu.laborder.exception.LabOrderException;
 import com.bdu.laborder.mapper.SDictMapper;
 import com.bdu.laborder.service.SDictService;
 import com.bdu.laborder.utils.StringUtils;
+import com.bdu.laborder.utils.UuidUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -57,8 +58,7 @@ public class SDictServiceImpl implements SDictService {
 
     @Override
     public int insertSDictType(SDict sDict) {
-        UUID uuid = UUID.randomUUID();
-        sDict.setUuid(uuid.toString());
+        sDict.setUuid(UuidUtil.getUuid());
         return sDictMapper.insertSDictType(sDict);
     }
 
@@ -127,8 +127,7 @@ public class SDictServiceImpl implements SDictService {
 
     @Override
     public int insertSDict(SDict sDict) {
-        UUID uuid = UUID.randomUUID();
-        sDict.setUuid(uuid.toString());
+        sDict.setUuid(UuidUtil.getUuid());
         SDict sDictType = sDictMapper.checkDictTypeUnique(sDict.getTableType());
         sDict.setTableName(sDictType.getName());
         return sDictMapper.insertSDict(sDict);
