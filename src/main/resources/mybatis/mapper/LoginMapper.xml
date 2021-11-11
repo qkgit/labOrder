@@ -5,7 +5,7 @@
 
     <select id="getUserByUserName" resultType="com.bdu.laborder.entity.User">
 		select user_id,login_name,password,is_firstlogin
-		from user
+		from s_user
 		<where >
 			1=1
 		 	<if test="loginName!=null" >
@@ -18,7 +18,7 @@
 
 	<select id="getUserById" resultType="com.bdu.laborder.entity.User">
 		select *
-		from user
+		from s_user
 		<where>
 			<if test="userId != null" >
 				user_id=#{userId}
