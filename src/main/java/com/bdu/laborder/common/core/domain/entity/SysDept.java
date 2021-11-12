@@ -14,7 +14,6 @@ import java.util.List;
  * @data 2021/11/9 17:14
  */
 public class SysDept extends BaseEntity {
-    private static final long serialVersionUID = 1L;
 
     /** 部门ID */
     private String deptId;
@@ -51,6 +50,8 @@ public class SysDept extends BaseEntity {
 
     /** 子部门 */
     private List<SysDept> children = new ArrayList<SysDept>();
+
+
 
     public String getDeptId() {
         return deptId;

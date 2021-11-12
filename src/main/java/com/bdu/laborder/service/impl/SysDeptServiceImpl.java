@@ -7,6 +7,7 @@ import com.bdu.laborder.exception.LabOrderException;
 import com.bdu.laborder.mapper.SysDeptMapper;
 import com.bdu.laborder.service.SysDeptService;
 import com.bdu.laborder.utils.StringUtils;
+import com.bdu.laborder.utils.UuidUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -85,6 +86,7 @@ public class SysDeptServiceImpl implements SysDeptService {
         if (!UserConstants.DEPT_NORMAL.equals(info.getStatus())) {
             throw new LabOrderException("部门停用，不允许新增");
         }
+        dept.setDeptId(UuidUtil.getUuid());
         dept.setAncestors(info.getAncestors() + "," + dept.getParentId());
         return deptMapper.insertDept(dept);
     }
