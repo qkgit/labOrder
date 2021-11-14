@@ -76,4 +76,58 @@
         <include refid="selectDeptVo"/>
         where dept_id = #{deptId}
     </select>
+
+    <select id="selectChildrenDeptById" resultMap="SysDeptResult">
+        select * from s_dept where find_in_set(#{deptId}, ancestors)
+    </select>
+
+    <select id="selectNormalChildrenDeptById" resultType="int">
+        select count(*) from s_dept where status = 0 and del_flag = '0' and find_in_set(#{deptId}, ancestors)
+    </select>
+
+    <update id="updateDept">
+        update s_dept
+        <set>
+            <if test="parentId != null and parentId != ''">parent_id = #{parentId},</if>
+            <if test="deptName != null and deptName != ''">dept_name = #{deptName},</if>
+            <if test="ancestors != null and ancestors != ''">ancestors = #{ancestors},</if>
+            <if test="orderNum != null and orderNum != ''">order_num = #{orderNum},</if>
+            <if test="leader != null">leader = #{leader},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            update_time = sysdate()
+        </set>
+        where dept_id = #{deptId}
+    </update>
+
+    <update id="updateDeptStatus">
+        update s_dept
+        <set>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            update_time = sysdate()
+        </set>
+        where find_in_set(#{deptId}, ancestors)
+    </update>
+
+    <update id="updateDeptChildren">
+        update s_dept set ancestors =
+        <foreach collection="depts" item="item" index="index"
+                 separator=" " open="case dept_id" close="end">
+            when #{item.deptId} then #{item.ancestors}
+        </foreach>
+        where dept_id in
+        <foreach collection="depts" item="item" index="index"
+                 separator="," open="(" close=")">
+            #{item.deptId}
+        </foreach>
+    </update>
+
+    <delete id="deleteDeptById">
+        update s_dept set del_flag = '2' where dept_id = #{deptId}
+    </delete>
+
+
 </mapper>
