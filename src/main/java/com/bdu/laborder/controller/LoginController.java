@@ -64,7 +64,7 @@ public class LoginController {
             }
 
             //判断用户是否为首次登录
-            if (Constant.IS_FIRST_LOGIN.equals(loginUser.getIsFirstlogin())){
+            if (Constant.IS_FIRST_LOGIN.equals(loginUser.getIsFirstLogin())){
                 //  返回信息 进入修改密码页面
                 return ResultGenerator.returnCodeMessage(BussinessCode.IS_FIRST_LOGIN,token);
             }

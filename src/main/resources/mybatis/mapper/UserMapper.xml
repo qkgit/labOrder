@@ -37,8 +37,8 @@
                 and roles = #{roles}
             </if>
             <if test="institute != ''">
-                and institute like #{institute}
-                or major like #{institute}
+                and institute like concat('%', #{institute} , '%')
+                or major like concat('%',#{institute},'%')
             </if>
         </where>
           order by create_date desc
