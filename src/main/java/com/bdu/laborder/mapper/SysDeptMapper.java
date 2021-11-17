@@ -72,11 +72,18 @@ public interface SysDeptMapper {
     public int updateDept(SysDept dept);
 
     /**
-     * 修改所在部门的父级部门状态
+     * 修改所在部门的子级部门状态
      *
      * @param dept 部门
      */
     public void updateDeptStatus(SysDept dept);
+
+    /**
+     *  开启部门
+     * @param deptId
+     * @return
+     */
+    public int openDeptStatus(@Param("deptId") String deptId,@Param("updateBy") String updateBy);
 
     /**
      * 修改子元素关系

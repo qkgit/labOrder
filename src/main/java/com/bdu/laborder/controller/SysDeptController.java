@@ -46,6 +46,13 @@ public class SysDeptController extends BaseController {
         return success(depts);
     }
 
+    @GetMapping("/tree")
+    public Result getDeptTree(SysDept dept) {
+        List<SysDept> depts = deptService.selectDeptList(dept);
+        return success(deptService.buildDeptTreeSelect(depts));
+    }
+
+
     @GetMapping(value = "/{deptId}")
     public Result getInfo(@PathVariable String deptId) {
         return success(deptService.selectDeptById(deptId));
