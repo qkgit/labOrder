@@ -1,7 +1,7 @@
 package com.bdu.laborder.service.impl;
 
 import com.bdu.laborder.common.constant.BussinessCode;
-import com.bdu.laborder.entity.User;
+import com.bdu.laborder.common.core.domain.entity.SysUser;
 import com.bdu.laborder.entity.UserRequest;
 import com.bdu.laborder.exception.LabOrderException;
 import com.bdu.laborder.mapper.UserMapper;
@@ -36,25 +36,19 @@ public class UserServiceImpl implements UserService {
     JwtUtils jwtUtils;
 
     @Override
-    public PageInfo<User> getUserList(PageQuery pageQuery) {
-        PageInfo page = pageQuery.getPage();
-        Gson gson = CreateGson.createGson();
-        UserRequest item = gson.fromJson(JSONObject.fromObject(pageQuery.getItem()).toString(), UserRequest.class);
-        PageHelper.startPage(page.getPageNum(),page.getPageSize());
-        List<User> userList = userMapper.getUserList(item);
-        PageInfo<User> pageInfo = new PageInfo<>(userList);
-        return pageInfo;
-
+    public List<SysUser> getUserList(SysUser user) {
+        List<SysUser> userList = userMapper.getUserList(user);
+        return userList;
     }
 
     @Override
-    public User getUserById(Integer id) {
-        User user = userMapper.getUserById(id);
+    public SysUser getUserById(Integer id) {
+        SysUser user = userMapper.getUserById(id);
         return user;
     }
 
     @Override
-    public int addUser(User user)  {
+    public int addUser(SysUser user)  {
         String loginName = user.getLoginName();
         if(userMapper.selectUserByLoginName(loginName) != null){
             throw new LabOrderException(BussinessCode.USER_NAME_REREAT);
@@ -70,7 +64,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int updateUser(User user) {
+    public int updateUser(SysUser user) {
         int i = userMapper.updateUser(user);
         if (i!=0){
             return i;
@@ -119,7 +113,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public int restPwd(Integer id) {
         //通过id 查询用户
-        User user = userMapper.getUserById(id);
+        SysUser user = userMapper.getUserById(id);
         String loginName = user.getLoginName();
         String password = loginName.substring(loginName.length()-6);
         password = MD5Util.MD5Encode(password,"UTF-8");

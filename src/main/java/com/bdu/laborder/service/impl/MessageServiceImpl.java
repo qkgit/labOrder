@@ -2,7 +2,7 @@ package com.bdu.laborder.service.impl;
 
 import com.bdu.laborder.common.constant.BussinessCode;
 import com.bdu.laborder.entity.Message;
-import com.bdu.laborder.entity.User;
+import com.bdu.laborder.common.core.domain.entity.SysUser;
 import com.bdu.laborder.exception.LabOrderException;
 import com.bdu.laborder.mapper.MessageMapper;
 import com.bdu.laborder.service.MessageService;
@@ -40,7 +40,7 @@ public class MessageServiceImpl implements MessageService {
         String content = jsonParam.get("content").toString();
         // 获取用户信息
         Integer userId = getUserId(request);
-        User user = userService.getUserById(userId);
+        SysUser user = userService.getUserById(userId);
         // 添加留言
         Message message = new Message();
         message.setUserId(userId);

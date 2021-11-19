@@ -1,10 +1,11 @@
 package com.bdu.laborder.service;
 
-import com.bdu.laborder.entity.User;
+import com.bdu.laborder.common.core.domain.entity.SysUser;
 import com.bdu.laborder.utils.PageQuery;
 import com.github.pagehelper.PageInfo;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @Author Qi
@@ -12,10 +13,10 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface UserService  {
 
-    PageInfo<User> getUserList(PageQuery pageQuery);
-    User getUserById(Integer id);
-    int addUser(User user);
-    int updateUser(User user);
+    List<SysUser> getUserList(SysUser user);
+    SysUser getUserById(Integer id);
+    int addUser(SysUser user);
+    int updateUser(SysUser user);
     int deleteUser(Integer id);
     int updatePwd(HttpServletRequest request );
     int restPwd(Integer id);

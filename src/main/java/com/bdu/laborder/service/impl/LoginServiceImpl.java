@@ -1,13 +1,12 @@
 package com.bdu.laborder.service.impl;
 
-import com.bdu.laborder.entity.User;
+import com.bdu.laborder.common.core.domain.entity.SysUser;
 import com.bdu.laborder.mapper.LoginMapper;
 import com.bdu.laborder.service.LoginService;
 import com.bdu.laborder.utils.JwtUtils;
 import com.bdu.laborder.utils.MD5Util;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -23,8 +22,8 @@ public class LoginServiceImpl implements LoginService {
     JwtUtils jwtUtils;
 
     @Override
-    public User login(String loginName,String password) {
-        User user = loginMapper.getUserByUserName(loginName);
+    public SysUser login(String loginName, String password) {
+        SysUser user = loginMapper.getUserByUserName(loginName);
         if (user != null){
             String userPassword = user.getPassword();
             password = MD5Util.MD5Encode(password,"UTF-8");
@@ -36,7 +35,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public User selectUserByToken(String token) {
+    public SysUser selectUserByToken(String token) {
         //根据token获取用户数据
         Claims claims = null;
         try {
@@ -45,7 +44,7 @@ public class LoginServiceImpl implements LoginService {
             //获取clamis
             String userId = claims.getId();
             //根据id查询用户信息
-            User user = loginMapper.getUserById(userId);
+            SysUser user = loginMapper.getUserById(userId);
             if (user !=null){
                 user.setPassword(null);
                 return user;

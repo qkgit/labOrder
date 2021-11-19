@@ -1,6 +1,6 @@
 package com.bdu.laborder.mapper;
 
-import com.bdu.laborder.entity.User;
+import com.bdu.laborder.common.core.domain.entity.SysUser;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -13,9 +13,9 @@ import org.springframework.stereotype.Repository;
 @Mapper
 public interface LoginMapper {
 
-    User getUserByUserName(@Param("loginName")String loginName);
+    SysUser getUserByUserName(@Param("loginName")String loginName);
 
-    User getUserById(@Param("userId")String userId);
+    SysUser getUserById(@Param("userId")String userId);
 
 
 

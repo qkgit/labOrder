@@ -3,7 +3,7 @@ package com.bdu.laborder.common.core.domain.controller;
 import com.bdu.laborder.common.constant.BussinessCode;
 import com.bdu.laborder.common.core.result.Result;
 import com.bdu.laborder.common.core.result.ResultGenerator;
-import com.bdu.laborder.entity.User;
+import com.bdu.laborder.common.core.domain.entity.SysUser;
 import com.bdu.laborder.service.UserService;
 import com.bdu.laborder.utils.*;
 import com.github.pagehelper.PageHelper;
@@ -93,7 +93,7 @@ public class BaseController {
    /**
     * 获取用户缓存信息
     */
-   public User getLoginUser() {
+   public SysUser getLoginUser() {
       HttpServletRequest request = ServletUtils.getRequest();
       String token = request.getHeader("X-Token");
       if (token == null){
@@ -102,7 +102,7 @@ public class BaseController {
       // 解析token 获取id
       String userId = jwtUtils.parseJwt(token).getId();
       if (StringUtils.isNotEmpty(userId)){
-         User loginUser = userService.getUserById(Integer.parseInt(userId));
+         SysUser loginUser = userService.getUserById(Integer.parseInt(userId));
          return loginUser;
       }
       return null;

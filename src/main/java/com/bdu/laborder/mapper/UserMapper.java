@@ -1,6 +1,6 @@
 package com.bdu.laborder.mapper;
 
-import com.bdu.laborder.entity.User;
+import com.bdu.laborder.common.core.domain.entity.SysUser;
 import com.bdu.laborder.entity.UserRequest;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -19,22 +19,22 @@ public interface UserMapper {
     /**
      * 查询用户列表
      */
-    List<User> getUserList(UserRequest item);
+    List<SysUser> getUserList(SysUser item);
 
     /**
      *  根据id查询用户信息
      */
-    User getUserById(@Param("id") Integer id);
+    SysUser getUserById(@Param("id") Integer id);
 
     /**
      *  新增用户
      */
-    int addUser(User user);
+    int addUser(SysUser user);
 
     /**
      * 修改用户
      */
-    int updateUser(User user);
+    int updateUser(SysUser user);
 
     /**
      *  删除用户

@@ -1,4 +1,4 @@
-package com.bdu.laborder.entity;
+package com.bdu.laborder.common.core.domain.entity;
 
 import com.bdu.laborder.common.core.domain.BaseEntity;
 import lombok.Data;
@@ -8,7 +8,7 @@ import lombok.Data;
  * @data 2020/12/9 17:59
  */
 @Data
-public class User extends BaseEntity {
+public class SysUser extends BaseEntity {
     private static final long serialVersionUID = 1L;
     /** 用户ID */
     private Integer userId;
@@ -38,5 +38,9 @@ public class User extends BaseEntity {
     private String avatar;
     /** 是否为第一次登录*/
     private String isFirstLogin;
+    /** 帐号状态（0正常 1停用） */
+    private String status;
+    /** 删除标志（0代表存在 2代表删除） */
+    private String delFlag;
 
 }

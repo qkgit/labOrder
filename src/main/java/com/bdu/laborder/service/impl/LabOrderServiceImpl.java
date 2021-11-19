@@ -2,6 +2,7 @@ package com.bdu.laborder.service.impl;
 
 import com.bdu.laborder.common.constant.BussinessCode;
 import com.bdu.laborder.common.constant.Constant;
+import com.bdu.laborder.common.core.domain.entity.SysUser;
 import com.bdu.laborder.entity.*;
 import com.bdu.laborder.exception.LabOrderException;
 import com.bdu.laborder.mapper.LabExpMapper;
@@ -165,7 +166,7 @@ public class LabOrderServiceImpl implements LabOrderService {
         List<LabOrderDetil> userPageList = pageInfo.getList();
         for (LabOrderDetil user : userPageList) {
             int userId = user.getUserId();
-            User userById = userMapper.getUserById(userId);
+            SysUser userById = userMapper.getUserById(userId);
             user.setLoginName(userById.getLoginName());
             user.setRealName(userById.getRealName());
             user.setInstitute(userById.getInstitute());

@@ -1,6 +1,6 @@
 package com.bdu.laborder.service;
 
-import com.bdu.laborder.entity.User;
+import com.bdu.laborder.common.core.domain.entity.SysUser;
 
 /**
  * @Author Qi
@@ -12,13 +12,13 @@ public interface LoginService {
     /**
      *  登录功能 验证用户登录信息是否正确
      * */
-    User login(String loginName,String password);
+    SysUser login(String loginName, String password);
 
     /**
      * 根据id查询用户
      * @param token
      * @return
      */
-    User selectUserByToken(String token);
+    SysUser selectUserByToken(String token);
 
 }

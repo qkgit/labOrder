@@ -4,7 +4,7 @@ import com.bdu.laborder.common.constant.BussinessCode;
 import com.bdu.laborder.common.constant.Constant;
 import com.bdu.laborder.common.core.result.Result;
 import com.bdu.laborder.common.core.result.ResultGenerator;
-import com.bdu.laborder.entity.User;
+import com.bdu.laborder.common.core.domain.entity.SysUser;
 import com.bdu.laborder.service.LoginService;
 import com.bdu.laborder.utils.JwtUtils;
 import com.bdu.laborder.utils.RedisUtil;
@@ -33,7 +33,7 @@ public class LoginController {
     RedisUtil redisUtil;
 
     @PostMapping("/login")
-    public Result login(@RequestBody User user) {
+    public Result login(@RequestBody SysUser user) {
         String loginName = user.getLoginName().replace(" ","");
         String password = user.getPassword().replace(" ","");
         System.out.println("====username: "+loginName+"  ====password: "+password+"  ====  ");
@@ -42,7 +42,7 @@ public class LoginController {
             return ResultGenerator.returnCodeMessage(BussinessCode.RESULT_LOGIN_NULL);
         }
         //根据用户名密码判断是否存在用户
-        User loginUser = loginService.login(loginName,password);
+        SysUser loginUser = loginService.login(loginName,password);
 
         if (loginUser != null){
             //验证登录成功
@@ -75,7 +75,7 @@ public class LoginController {
 
     @PostMapping("/user/info")
     public Result getUserInfo(String token) {
-        User user = loginService.selectUserByToken(token);
+        SysUser user = loginService.selectUserByToken(token);
         if (user == null) {
             return ResultGenerator.error(BussinessCode.RESULT_INFO_FAIL);
         }

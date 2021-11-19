@@ -3,14 +3,14 @@
 <mapper namespace="com.bdu.laborder.mapper.UserMapper">
     <insert id="addUser">
         insert into `s_user`
-        (`login_name`,`password`,`roles`,`real_name`,`sex`,`institute`,`major`,`avatar`,`create_date`)
+        (`login_name`,`password`,`roles`,`real_name`,`sex`,`institute`,`major`,`avatar`,`create_time`)
         values
         (#{loginName},#{password},#{roles},#{realName},#{sex},#{institute},#{major},#{avatar},now())
     </insert>
     <update id="updateUser">
         update `s_user` set
         `roles`=#{roles},`real_name`=#{realName},`sex`=#{sex},`institute`=#{institute},
-        `major`=#{major},`avatar`=#{avatar},`create_date`=now()
+        `major`=#{major},`avatar`=#{avatar},`update_time`=now()
         where `user_id`=#{userId}
     </update>
     <update id="updatePwd">
@@ -26,25 +26,31 @@
         UPDATE  `s_user` set `is_delete`="1" WHERE `user_id`=#{id}
     </delete>
 
-    <select id="getUserList" resultType="com.bdu.laborder.entity.User">
-        select * from s_user
-        <where>
-            1=1 and  is_delete="0"
-            <if test="loginName != ''">
-                and login_name like "%"#{loginName}"%"
-            </if>
-            <if test="roles != ''">
-                and roles = #{roles}
-            </if>
-            <if test="institute != ''">
-                and institute like concat('%', #{institute} , '%')
-                or major like concat('%',#{institute},'%')
-            </if>
-        </where>
-          order by create_date desc
+    <select id="getUserList" resultType="com.bdu.laborder.common.core.domain.entity.SysUser">
+        select u.user_id,u.dept_id,u.login_name,u.real_name,u.sex,u.mobile,u.email,u.avatar,u.institute,u.major,u.is_firstlogin,
+        u.create_by, u.create_time, d.dept_name, d.leader from s_user u left join s_dept d on u.dept_id = d.dept_id
+        where u.del_flag = "0"
+        <if test="loginName != null and loginName != ''">
+            and (u.login_name like concat('%',#{loginName},'%') or u.real_name like concat('%',#{loginName},'%'))
+        </if>
+        <if test="status != null and status != ''">
+            and u.status = #{status}
+        </if>
+        <if test="mobile != null and mobile != ''">
+            and u.mobile like concat('%',#{mobile}'%')
+        </if>
+        <if test="deptId != null and deptId != ''">
+            AND (u.dept_id = #{deptId}
+            OR u.dept_id IN ( SELECT t.dept_id FROM s_dept t WHERE find_in_set(#{deptId}, ancestors) ))
+        </if>
+        <if test="institute != ''">
+            and institute like concat('%', #{institute} , '%')
+            or major like concat('%',#{institute},'%')
+        </if>
+        order by create_time desc
     </select>
 
-    <select id="getUserById" resultType="com.bdu.laborder.entity.User">
+    <select id="getUserById" resultType="com.bdu.laborder.common.core.domain.entity.SysUser">
         select * from s_user where is_delete="0" and user_id=#{id}
     </select>
     <select id="selectUserByLoginName" resultType="java.lang.Integer">

@@ -1,9 +1,10 @@
 package com.bdu.laborder.controller;
 
 import com.bdu.laborder.common.constant.BussinessCode;
+import com.bdu.laborder.common.core.domain.controller.BaseController;
 import com.bdu.laborder.common.core.result.Result;
 import com.bdu.laborder.common.core.result.ResultGenerator;
-import com.bdu.laborder.entity.User;
+import com.bdu.laborder.common.core.domain.entity.SysUser;
 import com.bdu.laborder.service.UserService;
 import com.bdu.laborder.utils.PageQuery;
 import com.github.pagehelper.PageInfo;
@@ -11,27 +12,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @Author Qi
  * @data 2021/2/4 13:56
  */
 @RestController
-public class UserController {
+public class UserController extends BaseController {
 
     @Autowired
     UserService userService;
 
     @PostMapping("/users")
     public Result getUserList(@RequestBody PageQuery pageQuery){
-        PageInfo<User> userList = userService.getUserList(pageQuery);
-        return  ResultGenerator.returnCodeMessage(BussinessCode.RESULT_GLOBAL_SUCCESS,userList);
+        startPage(pageQuery);
+        SysUser user = getParam(pageQuery, SysUser.class);
+        List<SysUser> userList = userService.getUserList(user);
+        return  getPageInfo(userList);
     }
 
     @GetMapping("/user/{id}")
     public Result getUserById(@PathVariable Integer id){
         Result result = ResultGenerator.returnCodeMessage(BussinessCode.RESULT_GLOBAL_FAIL);
-        User user = userService.getUserById(id);
+        SysUser user = userService.getUserById(id);
         if (user == null){
             return result;
         }
@@ -40,7 +44,7 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public Result addUser(@RequestBody User user) {
+    public Result addUser(@RequestBody SysUser user) {
         Result result = ResultGenerator.returnCodeMessage(BussinessCode.RESULT_GLOBAL_FAIL);
         String loginName = user.getLoginName();
         if (loginName.isEmpty()){
@@ -56,7 +60,7 @@ public class UserController {
     }
 
     @PutMapping("/user")
-    public Result updateUser(@RequestBody User user){
+    public Result updateUser(@RequestBody SysUser user){
         Result result = ResultGenerator.returnCodeMessage(BussinessCode.RESULT_GLOBAL_FAIL);
         int i = userService.updateUser(user);
         if (i != 0) {
