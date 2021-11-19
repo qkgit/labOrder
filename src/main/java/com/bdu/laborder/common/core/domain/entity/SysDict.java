@@ -1,4 +1,4 @@
-package com.bdu.laborder.entity;
+package com.bdu.laborder.common.core.domain.entity;
 
 import com.bdu.laborder.common.core.domain.BaseEntity;
 import lombok.Data;
@@ -8,7 +8,7 @@ import lombok.Data;
  * @data 2021/9/27 14:10
  */
 @Data
-public class SDict extends BaseEntity {
+public class SysDict extends BaseEntity {
     /** id */
     private String uuid;
     /** 字典编码 */

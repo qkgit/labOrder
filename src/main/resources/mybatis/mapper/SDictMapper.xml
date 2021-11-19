@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bdu.laborder.mapper.SDictMapper">
 
-    <resultMap id="SDictResult" type="com.bdu.laborder.entity.SDict">
+    <resultMap id="SDictResult" type="com.bdu.laborder.common.core.domain.entity.SysDict">
         <result property="uuid"    column="uuid"           />
         <result property="code"    column="code"           />
         <result property="name" column="name"              />
@@ -29,7 +29,7 @@
     </sql>
 
     <!--############################## SDictType SQL  START ##############################-->
-    <select id="selectSDictTypeList" resultMap="SDictResult"  parameterType="com.bdu.laborder.entity.SDict" >
+    <select id="selectSDictTypeList" resultMap="SDictResult"  parameterType="com.bdu.laborder.common.core.domain.entity.SysDict" >
         <include refid="selectSDictTypeVo" />
         <where>
             <if test="code != null and code != ''">AND code = #{code}</if>
@@ -103,7 +103,7 @@
         where table_type = #{oldTableType}
     </update>
 
-    <select id="selectSDictByType" parameterType="com.bdu.laborder.entity.SDict" resultMap="SDictResult">
+    <select id="selectSDictByType" parameterType="com.bdu.laborder.common.core.domain.entity.SysDict" resultMap="SDictResult">
         <include refid="selectSDictDataVo" />
         where status ='0' and table_type =  #{tableType} order by order_num,create_time
     </select>
@@ -114,7 +114,7 @@
 
     <!--############################## SDictData SQL  START ##############################-->
 
-    <select id="selectSDictList" parameterType="com.bdu.laborder.entity.SDict" resultMap="SDictResult">
+    <select id="selectSDictList" parameterType="com.bdu.laborder.common.core.domain.entity.SysDict" resultMap="SDictResult">
         <include refid="selectSDictDataVo"/>
         <where>
             table_type = #{tableType}
@@ -141,7 +141,7 @@
         where table_type = #{tableType} and  code = #{code} limit 1
     </select>
 
-    <insert id="insertSDict" parameterType="com.bdu.laborder.entity.SDict">
+    <insert id="insertSDict" parameterType="com.bdu.laborder.common.core.domain.entity.SysDict">
         insert into s_dict_data
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="uuid != null">uuid,</if>
@@ -173,7 +173,7 @@
         </trim>
     </insert>
 
-    <update id="updateSDict" parameterType="com.bdu.laborder.entity.SDict">
+    <update id="updateSDict" parameterType="com.bdu.laborder.common.core.domain.entity.SysDict">
         update  s_dict_data
         <set>
             <if test="code != null">code = #{code},</if>

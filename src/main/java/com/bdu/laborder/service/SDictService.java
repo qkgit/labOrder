@@ -1,6 +1,6 @@
 package com.bdu.laborder.service;
 
-import com.bdu.laborder.entity.SDict;
+import com.bdu.laborder.common.core.domain.entity.SysDict;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -17,7 +17,7 @@ public interface SDictService {
      * @param id  id
      * @return 字典数据
      */
-    public SDict selectSDictById(String id,String type);
+    public SysDict selectSDictById(String id, String type);
 
 
 
@@ -26,7 +26,7 @@ public interface SDictService {
      * @param sDict
      * @return
      */
-    public List<SDict> selectSDictTypeList(SDict sDict);
+    public List<SysDict> selectSDictTypeList(SysDict sDict);
 
     /**
      * 校验字典类型是否唯一
@@ -34,7 +34,7 @@ public interface SDictService {
      * @param sDict 字典类型
      * @return 结果
      */
-    public boolean checkDictTypeUnique(SDict sDict);
+    public boolean checkDictTypeUnique(SysDict sDict);
 
     /**
      *  批量删除字典类型
@@ -48,21 +48,21 @@ public interface SDictService {
      * @param sDict
      * @return
      */
-    public int insertSDictType(SDict sDict);
+    public int insertSDictType(SysDict sDict);
 
     /**
      *  修改字典类型 信息
      * @param sDict 字典数据信息
      * @return 结果
      */
-    public int updateSDictType(SDict sDict);
+    public int updateSDictType(SysDict sDict);
 
     /**
      * 根据字典类型查询字典项（父查子）
      * @param tableType 类型id （父id）
      * @return  字典数据集合 (ORDER BY order_num,create_time)
      */
-    public List<SDict> selectSDictByType(String tableType);
+    public List<SysDict> selectSDictByType(String tableType);
 
 
     /** ============================================================================================*/
@@ -72,14 +72,14 @@ public interface SDictService {
      * @param sDict 字典数据查询信息
      * @return 字典数据集合信息
      */
-    public List<SDict> selectSDictList(SDict sDict);
+    public List<SysDict> selectSDictList(SysDict sDict);
 
     /**
      * 校验字典类型是否唯一
      * @param sDict
      * @return
      */
-    public boolean checkDictUnique(SDict sDict);
+    public boolean checkDictUnique(SysDict sDict);
 
     /**
      *  根据字典类型和字典编码查询字典值
@@ -94,14 +94,14 @@ public interface SDictService {
      * @param sDict 字典数据信息
      * @return 结果
      */
-    public int insertSDict(SDict sDict);
+    public int insertSDict(SysDict sDict);
 
     /**
      *  修改字典数据信息
      * @param sDict 字典数据信息
      * @return 结果
      */
-    public int updateSDict(SDict sDict);
+    public int updateSDict(SysDict sDict);
 
     public int deleteDictByIds(String[] ids);
 

@@ -1,6 +1,6 @@
 package com.bdu.laborder.mapper;
 
-import com.bdu.laborder.entity.SDict;
+import com.bdu.laborder.common.core.domain.entity.SysDict;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -20,30 +20,30 @@ public interface SDictMapper {
      * @param sDict
      * @return
      */
-    public List<SDict> selectSDictTypeList(SDict sDict);
+    public List<SysDict> selectSDictTypeList(SysDict sDict);
 
     /**
      * 根据条件分页查询字典数据
      * @param sDict 字典数据信息
      * @return 字典数据集合信息
      */
-    public List<SDict> selectSDictList(SDict sDict);
+    public List<SysDict> selectSDictList(SysDict sDict);
 
     /**
      * 根据字典类型查询字典项（父查子）
      * @param tableType 类型id （父id）
      * @return  字典数据集合
      */
-    public List<SDict> selectSDictByType(String tableType);
+    public List<SysDict> selectSDictByType(String tableType);
 
-    public SDict selectSDictTypeById(String id);
+    public SysDict selectSDictTypeById(String id);
 
     /**
      * 根据id查询字典信息
      * @param id  id
      * @return 字典数据
      */
-    public SDict selectSDictById(String id);
+    public SysDict selectSDictById(String id);
 
     /**
      * 校验字典类型称是否唯一
@@ -51,7 +51,7 @@ public interface SDictMapper {
      * @param code 字典类型
      * @return 结果
      */
-    public SDict checkDictTypeUnique(String code);
+    public SysDict checkDictTypeUnique(String code);
 
     /**
      *  根据字典类型和字典编码查询字典信息
@@ -60,30 +60,30 @@ public interface SDictMapper {
      * @param code
      * @return
      */
-    public SDict selectSDictByCode(@Param("tableType") String tableType,@Param("code") String code);
+    public SysDict selectSDictByCode(@Param("tableType") String tableType, @Param("code") String code);
 
     /**
      *  添加字典类型
      * @param sDict
      * @return
      */
-    public int insertSDictType(SDict sDict);
+    public int insertSDictType(SysDict sDict);
 
     /**
      *  新增字典数据信息
      * @param sDict 字典数据信息
      * @return 结果
      */
-    public int insertSDict(SDict sDict);
+    public int insertSDict(SysDict sDict);
 
-    public int updateSDictType(SDict sDict);
+    public int updateSDictType(SysDict sDict);
 
     /**
      *  修改字典数据信息
      * @param sDict 字典数据信息
      * @return 结果
      */
-    public int updateSDict(SDict sDict);
+    public int updateSDict(SysDict sDict);
 
     /**
      *  同步修改子 字典类型 （修改父字典）
