@@ -1,6 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bdu.laborder.mapper.UserMapper">
+    <resultMap type="com.bdu.laborder.common.core.domain.entity.SysUser" id="SysUserResult">
+        <id     property="userId"       column="user_id"      />
+        <result property="deptId"       column="dept_id"      />
+        <result property="roles"        column="roles"        />
+        <result property="loginName"    column="login_name"   />
+        <result property="password"     column="password"     />
+        <result property="realName"     column="real_name"    />
+        <result property="email"        column="email"        />
+        <result property="mobile"       column="mobile"       />
+        <result property="sex"          column="sex"          />
+        <result property="avatar"       column="avatar"       />
+        <result property="institute"    column="institute"    />
+        <result property="major"        column="major"        />
+        <result property="status"       column="status"       />
+        <result property="delFlag"      column="del_flag"     />
+        <result property="createBy"     column="create_by"    />
+        <result property="createTime"   column="create_time"  />
+        <result property="updateBy"     column="update_by"    />
+        <result property="updateTime"   column="update_time"  />
+        <association property="dept"    column="dept_id" javaType="com.bdu.laborder.common.core.domain.entity.SysDept" resultMap="deptResult" />
+    </resultMap>
+
+    <resultMap id="deptResult" type="com.bdu.laborder.common.core.domain.entity.SysDept">
+        <id     property="deptId"     column="dept_id"     />
+        <result property="parentId"   column="parent_id"   />
+        <result property="deptName"   column="dept_name"   />
+        <result property="orderNum"   column="order_num"   />
+        <result property="leader"     column="leader"      />
+        <result property="status"     column="status"      />
+    </resultMap>
+
+
+
+
     <insert id="addUser">
         insert into `s_user`
         (`login_name`,`password`,`roles`,`real_name`,`sex`,`institute`,`major`,`avatar`,`create_time`)
@@ -27,8 +61,9 @@
     </delete>
 
     <select id="getUserList" resultType="com.bdu.laborder.common.core.domain.entity.SysUser">
-        select u.user_id,u.dept_id,u.login_name,u.real_name,u.sex,u.mobile,u.email,u.avatar,u.institute,u.major,u.is_firstlogin,
-        u.create_by, u.create_time, d.dept_name, d.leader from s_user u left join s_dept d on u.dept_id = d.dept_id
+        select u.user_id,u.dept_id,u.roles,u.login_name,u.real_name,u.sex,u.mobile,u.email,u.avatar,u.status,u.institute,u.major,u.is_firstlogin,
+        u.create_by, u.create_time, d.dept_name, d.leader
+        from s_user u left join s_dept d on u.dept_id = d.dept_id
         where u.del_flag = "0"
         <if test="loginName != null and loginName != ''">
             and (u.login_name like concat('%',#{loginName},'%') or u.real_name like concat('%',#{loginName},'%'))
@@ -51,7 +86,7 @@
     </select>
 
     <select id="getUserById" resultType="com.bdu.laborder.common.core.domain.entity.SysUser">
-        select * from s_user where is_delete="0" and user_id=#{id}
+        select * from s_user where del_flag="0" and user_id=#{id}
     </select>
     <select id="selectUserByLoginName" resultType="java.lang.Integer">
         select user_id from s_user where login_name=#{loginName}
