@@ -16,8 +16,8 @@ public interface OrderLabMapper {
 
     int userOrderLab(LabOrderDetil labOrderDetil);
 
-    List<String> getLoIdListByUserId(Integer id);
-    List<Integer> getAwaitLoIdListByUser(Integer id);
+    List<String> getLoIdListByUserId(String id);
+    List<Integer> getAwaitLoIdListByUser(String id);
 
     int deleteOrderByUser(Integer id);
 }

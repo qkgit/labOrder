@@ -6,10 +6,7 @@ import com.bdu.laborder.entity.UserRequest;
 import com.bdu.laborder.exception.LabOrderException;
 import com.bdu.laborder.mapper.UserMapper;
 import com.bdu.laborder.service.UserService;
-import com.bdu.laborder.utils.CreateGson;
-import com.bdu.laborder.utils.JwtUtils;
-import com.bdu.laborder.utils.MD5Util;
-import com.bdu.laborder.utils.PageQuery;
+import com.bdu.laborder.utils.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.gson.Gson;
@@ -42,7 +39,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public SysUser getUserById(Integer id) {
+    public SysUser getUserById(String id) {
         SysUser user = userMapper.getUserById(id);
         return user;
     }
@@ -56,6 +53,7 @@ public class UserServiceImpl implements UserService {
         String pwd = user.getPassword();
         pwd = MD5Util.MD5Encode(pwd,"UTF-8");
         user.setPassword(pwd);
+        user.setUserId(UuidUtil.getUuid());
         int i = userMapper.addUser(user);
         if (i != 0){
             return i;
@@ -73,7 +71,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int deleteUser(Integer id) {
+    public int deleteUser(String id) {
         int i = userMapper.deleteUser(id);
         return i;
     }
@@ -86,8 +84,8 @@ public class UserServiceImpl implements UserService {
         Claims claims = jwtUtils.parseJwt(token);
         // 获取id
         String userId = claims.getId();
-        int id = Integer.parseInt(userId);
-        String password = getUserById(id).getPassword();
+
+        String password = getUserById(userId).getPassword();
 
         com.alibaba.fastjson.JSONObject jsonParam = this.getJSONParam(request);
         String oldPwd = jsonParam.get("oldPwd").toString();
@@ -104,14 +102,13 @@ public class UserServiceImpl implements UserService {
         }
         // 对密码进行加密
         pwd = MD5Util.MD5Encode(pwd, "UTF-8");
-        int i = userMapper.updatePwd(id, pwd);
-        return i;
+        return  userMapper.updatePwd(userId, pwd);
 
 
     }
 
     @Override
-    public int restPwd(Integer id) {
+    public int restPwd(String id) {
         //通过id 查询用户
         SysUser user = userMapper.getUserById(id);
         String loginName = user.getLoginName();

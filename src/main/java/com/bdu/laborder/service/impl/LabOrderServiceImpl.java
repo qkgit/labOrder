@@ -165,13 +165,13 @@ public class LabOrderServiceImpl implements LabOrderService {
         PageInfo<LabOrderDetil> pageInfo = new PageInfo<>(orderUserList);
         List<LabOrderDetil> userPageList = pageInfo.getList();
         for (LabOrderDetil user : userPageList) {
-            int userId = user.getUserId();
+            String userId = user.getUserId();
             SysUser userById = userMapper.getUserById(userId);
             user.setLoginName(userById.getLoginName());
             user.setRealName(userById.getRealName());
             user.setInstitute(userById.getInstitute());
             user.setMajor(userById.getMajor());
-            user.setRoles(userById.getRoles());
+//            user.setRoles(userById.getRoles());
         }
         pageInfo.setList(userPageList);
         return pageInfo;

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-/**
+/** 用户管理控制层
  * @Author Qi
  * @data 2021/2/4 13:56
  */
@@ -33,7 +33,7 @@ public class UserController extends BaseController {
     }
 
     @GetMapping("/user/{id}")
-    public Result getUserById(@PathVariable Integer id){
+    public Result getUserById(@PathVariable String id){
         Result result = ResultGenerator.returnCodeMessage(BussinessCode.RESULT_GLOBAL_FAIL);
         SysUser user = userService.getUserById(id);
         if (user == null){
@@ -52,6 +52,7 @@ public class UserController extends BaseController {
         }
         String password = loginName.substring(loginName.length()-6);
         user.setPassword(password);
+        user.setCreateBy(getUserName());
         int i = userService.addUser(user);
         if (i != 0) {
             result = ResultGenerator.returnCodeMessage(BussinessCode.RESULT_GLOBAL_SUCCESS);
@@ -70,7 +71,7 @@ public class UserController extends BaseController {
     }
 
     @DeleteMapping("/user/{id}")
-    public Result deleteUser(@PathVariable Integer id){
+    public Result deleteUser(@PathVariable String id){
         Result result = ResultGenerator.returnCodeMessage(BussinessCode.RESULT_GLOBAL_FAIL);
         int i = userService.deleteUser(id);
         if (i != 0) {
@@ -90,7 +91,7 @@ public class UserController extends BaseController {
     }
 
     @PutMapping("/resetPwd/{id}")
-    public Result resetPwd(@PathVariable Integer id){
+    public Result resetPwd(@PathVariable String id){
         Result result = ResultGenerator.returnCodeMessage(BussinessCode.RESULT_GLOBAL_FAIL);
         int i = userService.restPwd(id);
         if (i != 0) {
@@ -99,6 +100,10 @@ public class UserController extends BaseController {
         return result;
     }
 
+    @PutMapping("/user/changeStatus")
+    public Result changeUserStatus(){
+        return error();
+    }
 
 
 }

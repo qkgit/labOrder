@@ -14,10 +14,10 @@ import java.util.List;
 public interface UserService  {
 
     List<SysUser> getUserList(SysUser user);
-    SysUser getUserById(Integer id);
+    SysUser getUserById(String id);
     int addUser(SysUser user);
     int updateUser(SysUser user);
-    int deleteUser(Integer id);
+    int deleteUser(String id);
     int updatePwd(HttpServletRequest request );
-    int restPwd(Integer id);
+    int restPwd(String id);
 }

@@ -41,7 +41,7 @@ public class OrderLabServiceImpl implements OrderLabService {
 
     @Override
     public int orderLab(HttpServletRequest request) {
-        Integer id = getUserId(request);
+        String id = getUserId(request);
         // 获取实验室预约id
         com.alibaba.fastjson.JSONObject jsonParam = this.getJSONParam(request);
         String labOrderId = jsonParam.get("loId").toString();
@@ -103,7 +103,7 @@ public class OrderLabServiceImpl implements OrderLabService {
 
     @Override
     public PageInfo<LabOrder> getOrderListByUser(HttpServletRequest request) {
-        Integer id = getUserId(request);
+        String id = getUserId(request);
         // 获取pageQuery
         com.alibaba.fastjson.JSONObject jsonParam = this.getJSONParam(request);
         Gson gson = CreateGson.createGson();
@@ -128,7 +128,7 @@ public class OrderLabServiceImpl implements OrderLabService {
 
     @Override
     public int CancelOrder(HttpServletRequest request) {
-        Integer id = getUserId(request);
+        String id = getUserId(request);
         com.alibaba.fastjson.JSONObject jsonParam = this.getJSONParam(request);
         String labOrderId = jsonParam.get("loId").toString();
         int loId = Integer.parseInt(labOrderId);
@@ -215,7 +215,7 @@ public class OrderLabServiceImpl implements OrderLabService {
      * @param request
      * @return
      */
-    public Integer getUserId(HttpServletRequest request) {
+    public String getUserId(HttpServletRequest request) {
         String userId = null;
         try {
             // 获取token
@@ -228,7 +228,6 @@ public class OrderLabServiceImpl implements OrderLabService {
             // token解析失败 返回异常让用户重新登录
             throw new LabOrderException(BussinessCode.RESULT_INFO_FAIL);
         }
-        int id = Integer.parseInt(userId);
-        return id;
+        return userId;
     }
 }

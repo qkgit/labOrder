@@ -3,6 +3,8 @@ package com.bdu.laborder.common.core.domain.entity;
 import com.bdu.laborder.common.core.domain.BaseEntity;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * @Author Qi
  * @data 2020/12/9 17:59
@@ -11,15 +13,26 @@ import lombok.Data;
 public class SysUser extends BaseEntity {
     private static final long serialVersionUID = 1L;
     /** 用户ID */
-    private Integer userId;
+    private String userId;
     /** 登录名 学号或工号 */
     private String loginName;
     /** 密码 */
     private String password;
     /** 用户真实姓名 */
     private String realName;
-    /** 用户身份 0：管理员 1：教师 2：学生 */
-    private String roles;
+
+    /** 角色对象 */
+    private List<SysRole> roles;
+
+    /** 角色组 */
+    private String[] roleIds;
+
+    /** 岗位组 */
+    private String[] postIds;
+
+    /** 角色ID */
+    private String roleId;
+
     /** 性别 */
     private String sex;
     /** 年龄 */

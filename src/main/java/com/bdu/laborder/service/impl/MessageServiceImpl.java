@@ -39,7 +39,7 @@ public class MessageServiceImpl implements MessageService {
         com.alibaba.fastjson.JSONObject jsonParam = this.getJSONParam(request);
         String content = jsonParam.get("content").toString();
         // 获取用户信息
-        Integer userId = getUserId(request);
+        String userId = getUserId(request);
         SysUser user = userService.getUserById(userId);
         // 添加留言
         Message message = new Message();
@@ -71,7 +71,7 @@ public class MessageServiceImpl implements MessageService {
      * @param request
      * @return
      */
-    public Integer getUserId(HttpServletRequest request) {
+    public String getUserId(HttpServletRequest request) {
         String userId = null;
         try {
             // 获取token
@@ -84,8 +84,7 @@ public class MessageServiceImpl implements MessageService {
             // token解析失败 返回异常让用户重新登录
             throw new LabOrderException(BussinessCode.RESULT_INFO_FAIL);
         }
-        int id = Integer.parseInt(userId);
-        return id;
+        return userId;
     }
 
     /**

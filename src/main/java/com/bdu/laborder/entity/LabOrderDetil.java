@@ -17,7 +17,7 @@ import java.util.Date;
 public class LabOrderDetil {
     private int lodId;
     private int loId;
-    private int userId;
+    private String userId;
     /* 登录名 学号或工号 */
     private String loginName;
     /* 用户真实姓名 */

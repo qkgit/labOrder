@@ -102,7 +102,7 @@ public class BaseController {
       // 解析token 获取id
       String userId = jwtUtils.parseJwt(token).getId();
       if (StringUtils.isNotEmpty(userId)){
-         SysUser loginUser = userService.getUserById(Integer.parseInt(userId));
+         SysUser loginUser = userService.getUserById(userId);
          return loginUser;
       }
       return null;

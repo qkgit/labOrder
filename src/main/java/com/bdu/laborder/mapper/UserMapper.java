@@ -24,7 +24,7 @@ public interface UserMapper {
     /**
      *  根据id查询用户信息
      */
-    SysUser getUserById(@Param("id") Integer id);
+    SysUser getUserById(@Param("id") String id);
 
     /**
      *  新增用户
@@ -39,7 +39,7 @@ public interface UserMapper {
     /**
      *  删除用户
      */
-    int deleteUser(Integer id);
+    int deleteUser(String id);
 
     /**
      * 根据登录名查找用户
@@ -49,7 +49,7 @@ public interface UserMapper {
     /**
      *  修改密码
      */
-    int updatePwd(Integer id,String pwd);
+    int updatePwd(String id,String pwd);
 
     /**
      * 修改用户头像
@@ -59,5 +59,5 @@ public interface UserMapper {
      */
     int updateUserAvatar(String id,String url);
 
-    int restPwd(@Param("id")int id,@Param("pwd")String pwd);
+    int restPwd(@Param("id")String id,@Param("pwd")String pwd);
 }
