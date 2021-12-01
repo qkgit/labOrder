@@ -2,12 +2,16 @@ package com.bdu.laborder.controller;
 
 import com.bdu.laborder.common.constant.BussinessCode;
 import com.bdu.laborder.common.constant.Constant;
+import com.bdu.laborder.common.constant.UserConstants;
+import com.bdu.laborder.common.core.domain.controller.BaseController;
 import com.bdu.laborder.common.core.result.Result;
 import com.bdu.laborder.common.core.result.ResultGenerator;
 import com.bdu.laborder.common.core.domain.entity.SysUser;
 import com.bdu.laborder.service.LoginService;
 import com.bdu.laborder.utils.JwtUtils;
 import com.bdu.laborder.utils.RedisUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,8 +25,8 @@ import java.util.Map;
  * @data 2020/12/13 0:32
  */
 @RestController
-public class LoginController {
-
+public class LoginController extends BaseController {
+    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
     @Autowired
     LoginService loginService;
 
@@ -36,7 +40,7 @@ public class LoginController {
     public Result login(@RequestBody SysUser user) {
         String loginName = user.getLoginName().replace(" ","");
         String password = user.getPassword().replace(" ","");
-        System.out.println("====username: "+loginName+"  ====password: "+password+"  ====  ");
+        logger.info("\n===== 用户登录: "+loginName+" ===");
         //判断用户名密码是否为空
         if (loginName.isEmpty()||password.isEmpty()){
             return ResultGenerator.returnCodeMessage(BussinessCode.RESULT_LOGIN_NULL);
@@ -45,6 +49,9 @@ public class LoginController {
         SysUser loginUser = loginService.login(loginName,password);
 
         if (loginUser != null){
+            if (UserConstants.EXCEPTION.equals(loginUser.getStatus())){
+                return error("用户被关闭，请联系管理员");
+            }
             //验证登录成功
             String token ;
             //在缓存中查找用户token
@@ -58,7 +65,7 @@ public class LoginController {
 //            dataMap.put("realName", loginUser.getRealName());
 //            dataMap.put("avatar", loginUser.getAvatar());
                 //生成token并存入数据返回
-                token = jwtUtils.createJwt(Integer.toString(loginUser.getUserId()), loginUser.getLoginName(), dataMap);
+                token = jwtUtils.createJwt(loginUser.getUserId(), loginUser.getLoginName(), dataMap);
                 redisUtil.set("token :"+loginUser.getUserId(),token,36000);
 
             }
