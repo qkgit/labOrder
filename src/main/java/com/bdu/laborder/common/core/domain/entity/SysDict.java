@@ -23,8 +23,6 @@ public class SysDict extends BaseEntity {
     private Integer orderNum;
     /** 状态 */
     private String status;
-    /** 备注 */
-    private String remark;
     /** 表单回显样式*/
     private String listClass;
     /** 样式属性*/
