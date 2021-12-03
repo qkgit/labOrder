@@ -20,4 +20,5 @@ public interface UserService  {
     int deleteUser(String id);
     int updatePwd(HttpServletRequest request );
     int restPwd(String id);
+    int updateUserStatus(String userId,String status);
 }

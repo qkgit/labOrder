@@ -60,4 +60,6 @@ public interface UserMapper {
     int updateUserAvatar(String id,String url);
 
     int restPwd(@Param("id")String id,@Param("pwd")String pwd);
+
+    int  updateUserStatus(SysUser user);
 }

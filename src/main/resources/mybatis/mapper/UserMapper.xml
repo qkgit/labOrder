@@ -47,9 +47,9 @@
 
     <insert id="addUser">
         insert into `s_user`
-        (`login_name`,`password`,`real_name`,`sex`,`institute`,`major`,`avatar`,`create_time`)
+        (`user_Id`,`login_name`,`password`,`real_name`,`sex`,`institute`,`major`,`avatar`,`create_time`)
         values
-        (#{loginName},#{password},#{realName},#{sex},#{institute},#{major},#{avatar},now())
+        (#{userId},#{loginName},#{password},#{realName},#{sex},#{institute},#{major},#{avatar},now())
     </insert>
     <update id="updateUser">
         update `s_user` set
@@ -108,5 +108,11 @@
         update `s_user` set
         `password`=#{pwd},`is_firstlogin`="1"
         where `user_id`=#{id}
+    </update>
+
+    <update id="updateUserStatus">
+        update `s_user` set
+        `status` = #{status},`update_by`=#{updateBy},`update_time` =sysdate()
+        where `user_id`=#{userId}
     </update>
 </mapper>

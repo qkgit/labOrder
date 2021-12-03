@@ -119,6 +119,13 @@ public class UserServiceImpl implements UserService {
         return i;
     }
 
+    @Override
+    public int updateUserStatus(String userId, String status) {
+        SysUser user = getUserById(userId);
+        user.setStatus(status);
+        return userMapper.updateUserStatus(user);
+    }
+
     /**
      *  获取request中携带的参数
      * @param request
