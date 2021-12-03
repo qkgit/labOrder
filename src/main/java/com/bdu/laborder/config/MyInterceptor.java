@@ -36,12 +36,12 @@ public class MyInterceptor implements HandlerInterceptor {
             // 获取缓存中存储的token
             String o = (String)redisUtil.get("token :"+userId);
             if (!token.equals(o)){
-                // token过期 返回异常让用户重新登录
-                throw new LabOrderException(BussinessCode.RESULT_INFO_FAIL);
+                //  Redis内token过期 返回异常让用户重新登录
+                throw new LabOrderException(BussinessCode.RESULT_TOKEN_OVER);
             }
         }catch (Exception e){
-            // token解析失败 返回异常让用户重新登录
-            throw new LabOrderException(BussinessCode.RESULT_INFO_FAIL);
+            // token解析失败或token过期  返回异常让用户重新登录
+            throw new LabOrderException(BussinessCode.RESULT_TOKEN_OVER);
         }
         return true;
     }

@@ -1,6 +1,8 @@
 package com.bdu.laborder.service.impl;
 
+import com.bdu.laborder.common.constant.BussinessCode;
 import com.bdu.laborder.common.core.domain.entity.SysUser;
+import com.bdu.laborder.exception.LabOrderException;
 import com.bdu.laborder.mapper.LoginMapper;
 import com.bdu.laborder.service.LoginService;
 import com.bdu.laborder.utils.JwtUtils;
@@ -53,7 +55,8 @@ public class LoginServiceImpl implements LoginService {
         }catch (Exception e){
             //如果token过期或失败 返回错误并重新登录
             e.printStackTrace();
-            return null;
+            // token解析失败或token过期  返回异常让用户重新登录
+            throw new LabOrderException(BussinessCode.RESULT_TOKEN_OVER);
         }
     }
 

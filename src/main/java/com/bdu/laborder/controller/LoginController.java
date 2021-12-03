@@ -7,6 +7,7 @@ import com.bdu.laborder.common.core.domain.controller.BaseController;
 import com.bdu.laborder.common.core.result.Result;
 import com.bdu.laborder.common.core.result.ResultGenerator;
 import com.bdu.laborder.common.core.domain.entity.SysUser;
+import com.bdu.laborder.exception.LabOrderException;
 import com.bdu.laborder.service.LoginService;
 import com.bdu.laborder.utils.JwtUtils;
 import com.bdu.laborder.utils.RedisUtil;
@@ -40,7 +41,7 @@ public class LoginController extends BaseController {
     public Result login(@RequestBody SysUser user) {
         String loginName = user.getLoginName().replace(" ","");
         String password = user.getPassword().replace(" ","");
-        logger.info("\n===== 用户登录: "+loginName+" ===");
+
         //判断用户名密码是否为空
         if (loginName.isEmpty()||password.isEmpty()){
             return ResultGenerator.returnCodeMessage(BussinessCode.RESULT_LOGIN_NULL);
@@ -91,17 +92,21 @@ public class LoginController extends BaseController {
 
     @PostMapping("/logout")
     public Result logout(HttpServletRequest request) {
-        //根据token 获取用户
-        // 获取token
-        String token = request.getHeader("X-Token");
-        if (token == null){
-            token = request.getHeader("Token");
+        try {
+            // 获取token
+            String token = request.getHeader("X-Token");
+            if (token == null){
+                token = request.getHeader("Token");
+            }
+            // 解析token 获取id
+            String userId = jwtUtils.parseJwt(token).getId();
+            // 删除token
+            redisUtil.del("token :"+userId);
+            return success();
+        }catch (Exception e){
+            // token解析失败 返回异常让用户重新登录
+            return ResultGenerator.error(BussinessCode.RESULT_TOKEN_OVER);
         }
-        // 解析token 获取id
-        String userId = jwtUtils.parseJwt(token).getId();
-        // 删除token
-        redisUtil.del("token :"+userId);
-        return ResultGenerator.returnCodeMessage(BussinessCode.RESULT_GLOBAL_SUCCESS);
     }
 
 

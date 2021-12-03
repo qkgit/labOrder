@@ -15,8 +15,8 @@ import com.bdu.laborder.exception.BaseErrorInfoInterface;
 public enum BussinessCode implements BaseErrorInfoInterface {
 
     //通用
-    RESULT_GLOBAL_SUCCESS ("200","成功"),
-    RESULT_GLOBAL_FAIL("999","失败"),
+    RESULT_GLOBAL_SUCCESS ("200","O(∩_∩)O 操作成功！"),
+    RESULT_GLOBAL_FAIL("999","/(ㄒoㄒ)/~~ 操作失败！"),
     RESULT_FIELD_NULL("000","必填字段不能为空！"),
     BODY_NOT_MATCH("400","请求的数据格式不符!"),
     INTERNAL_SERVER_ERROR("500", "服务器内部错误!"),
@@ -24,9 +24,10 @@ public enum BussinessCode implements BaseErrorInfoInterface {
     // 登录模块
     RESULT_LOGIN_NULL("1501","用户名密码不能为空！"),
     RESULT_LOGIN_FAIL("1502","登录失败！用户名或密码错误"),
-    RESULT_INFO_FAIL("1503","登录过期，请重新登录！"),
-    UPDATE_PWD_NULL("1504","密码必须大于6位!"),
+    RESULT_TOKEN_OVER("1503","登录过期，请重新登录！"),
+    RESULT_INFO_FAIL("1504","获取用户信息失败，请重新登录"),
     IS_FIRST_LOGIN("1505","首次登录！"),
+    UPDATE_PWD_NULL("1506","密码必须大于6位!"),
 
 
     // 用户模块
