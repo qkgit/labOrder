@@ -6,7 +6,7 @@ import com.bdu.laborder.common.core.domain.entity.SysUser;
 import com.bdu.laborder.exception.LabOrderException;
 import com.bdu.laborder.mapper.MessageMapper;
 import com.bdu.laborder.service.MessageService;
-import com.bdu.laborder.service.UserService;
+import com.bdu.laborder.service.SysUserService;
 import com.bdu.laborder.utils.JwtUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -29,7 +29,7 @@ public class MessageServiceImpl implements MessageService {
     @Autowired
     JwtUtils jwtUtils;
     @Autowired
-    UserService userService;
+    SysUserService userService;
     @Autowired
     MessageMapper messageMapper;
 

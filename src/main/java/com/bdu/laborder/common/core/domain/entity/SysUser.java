@@ -35,8 +35,7 @@ public class SysUser extends BaseEntity {
 
     /** 性别 */
     private String sex;
-    /** 年龄 */
-    private String age;
+
     /** 所属部门id*/
     private String deptId;
     /** 部门对象*/

@@ -8,7 +8,7 @@ import com.bdu.laborder.exception.LabOrderException;
 import com.bdu.laborder.mapper.LabExpMapper;
 import com.bdu.laborder.mapper.LabOrderMapper;
 import com.bdu.laborder.mapper.LabsMapper;
-import com.bdu.laborder.mapper.UserMapper;
+import com.bdu.laborder.mapper.SysUserMapper;
 import com.bdu.laborder.service.LabOrderService;
 import com.bdu.laborder.utils.CreateGson;
 import com.bdu.laborder.utils.PageQuery;
@@ -38,7 +38,7 @@ public class LabOrderServiceImpl implements LabOrderService {
     @Autowired
     LabExpMapper labExpMapper;
     @Autowired
-    UserMapper userMapper;
+    SysUserMapper userMapper;
 
     @Override
     public PageInfo<LabOrder> queryAllLabList(PageQuery pageQuery) {

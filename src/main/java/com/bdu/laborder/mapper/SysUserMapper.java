@@ -14,7 +14,7 @@ import java.util.List;
  */
 @Repository
 @Mapper
-public interface UserMapper {
+public interface SysUserMapper {
 
     /**
      * 查询用户列表
@@ -49,7 +49,7 @@ public interface UserMapper {
     /**
      *  修改密码
      */
-    int updatePwd(String id,String pwd);
+    int updatePwd(@Param("id") String id,@Param("pwd") String pwd);
 
     /**
      * 修改用户头像
@@ -57,9 +57,33 @@ public interface UserMapper {
      * @param url
      * @return
      */
-    int updateUserAvatar(String id,String url);
+    int updateUserAvatar(@Param("id") String id,@Param("url") String url);
 
     int restPwd(@Param("id")String id,@Param("pwd")String pwd);
 
     int  updateUserStatus(SysUser user);
+
+    /**
+     * 校验用户名称是否唯一
+     *
+     * @param loginName 用户名称
+     * @return 结果
+     */
+    public int checkUserNameUnique(String loginName);
+
+    /**
+     * 校验手机号码是否唯一
+     *
+     * @param mobile 手机号码
+     * @return 结果
+     */
+    public SysUser checkPhoneUnique(String mobile);
+
+    /**
+     * 校验email是否唯一
+     *
+     * @param email 用户邮箱
+     * @return 结果
+     */
+    public SysUser checkEmailUnique(String email);
 }

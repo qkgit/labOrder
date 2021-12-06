@@ -1,7 +1,8 @@
 package com.bdu.laborder;
 
-import com.bdu.laborder.entity.SDict;
-import com.bdu.laborder.mapper.SDictMapper;
+import com.bdu.laborder.common.core.domain.entity.SysUser;
+import com.bdu.laborder.mapper.SysDeptMapper;
+import com.bdu.laborder.mapper.SysUserMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,14 +14,19 @@ import java.util.List;
 class LaborderApplicationTests {
 
     @Autowired
-    SDictMapper sDictMapper;
+    SysDeptMapper deptMapper;
+    @Autowired
+    SysUserMapper userMapper;
+
     @Test
     void contextLoads() {
-        SDict sDict = new SDict();
-        sDict.setCode("root");
-        List<SDict> sDicts = sDictMapper.selectSDictList(sDict);
-        System.out.println(sDicts);
+        List<SysUser> userList = userMapper.getUserList(new SysUser());
+        if (userList.get(1).getDept() != null){
+            System.out.println(userList.get(1).getDept().toString());
+        }
+        System.out.println("null");
     }
+
 
 
 }

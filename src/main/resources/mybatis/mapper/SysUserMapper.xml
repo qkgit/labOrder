@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.bdu.laborder.mapper.UserMapper">
+<mapper namespace="com.bdu.laborder.mapper.SysUserMapper">
     <resultMap type="com.bdu.laborder.common.core.domain.entity.SysUser" id="SysUserResult">
         <id     property="userId"       column="user_id"      />
         <result property="deptId"       column="dept_id"      />
@@ -14,6 +14,7 @@
         <result property="institute"    column="institute"    />
         <result property="major"        column="major"        />
         <result property="status"       column="status"       />
+        <result property="isFirstLogin" column="is_firstlogin"/>
         <result property="delFlag"      column="del_flag"     />
         <result property="createBy"     column="create_by"    />
         <result property="createTime"   column="create_time"  />
@@ -46,10 +47,33 @@
 
 
     <insert id="addUser">
-        insert into `s_user`
-        (`user_Id`,`login_name`,`password`,`real_name`,`sex`,`institute`,`major`,`avatar`,`create_time`)
-        values
-        (#{userId},#{loginName},#{password},#{realName},#{sex},#{institute},#{major},#{avatar},now())
+        insert into `s_user` (
+        <if test="userId != null and userId != ''">user_id,</if>
+        <if test="deptId != null and deptId != ''">dept_id,</if>
+        <if test="loginName != null and loginName != ''">login_name,</if>
+        <if test="password != null and password != ''">password,</if>
+        <if test="realName != null and realName != ''">real_name,</if>
+        <if test="sex != null and sex != ''">sex,</if>
+        <if test="mobile != null and mobile != ''">mobile,</if>
+        <if test="email != null and email != ''">email,</if>
+        <if test="avatar != null and avatar != ''">avatar,</if>
+        <if test="status != null and status != ''">status,</if>
+        <if test="createBy != null and createBy != ''">create_by,</if>
+        create_time
+        )values(
+        <if test="userId != null and userId != ''">#{userId},</if>
+        <if test="deptId != null and deptId != ''">#{deptId},</if>
+        <if test="loginName != null and loginName != ''">#{loginName},</if>
+        <if test="password != null and password != ''">#{password},</if>
+        <if test="realName != null and realName != ''">#{realName},</if>
+        <if test="sex != null and sex != ''">#{sex},</if>
+        <if test="mobile != null and mobile != ''">#{mobile},</if>
+        <if test="email != null and email != ''">#{email},</if>
+        <if test="avatar != null and avatar != ''">#{avatar},</if>
+        <if test="status != null and status != ''">#{status},</if>
+        <if test="createBy != null and createBy != ''">#{createBy},</if>
+        sysdate()
+        )
     </insert>
     <update id="updateUser">
         update `s_user` set
@@ -115,4 +139,16 @@
         `status` = #{status},`update_by`=#{updateBy},`update_time` =sysdate()
         where `user_id`=#{userId}
     </update>
+
+    <select id="checkUserNameUnique" resultType="int">
+        select count(1) from s_user where login_name = #{loginName} limit 1
+    </select>
+
+    <select id="checkPhoneUnique" resultMap="SysUserResult">
+        select user_id, mobile from s_user where mobile = #{loginName} limit 1
+    </select>
+
+    <select id="checkEmailUnique" resultMap="SysUserResult">
+        select user_id, email from s_user where email = #{email} limit 1
+    </select>
 </mapper>

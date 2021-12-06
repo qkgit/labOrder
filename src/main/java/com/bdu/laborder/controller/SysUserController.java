@@ -1,13 +1,14 @@
 package com.bdu.laborder.controller;
 
 import com.bdu.laborder.common.constant.BussinessCode;
+import com.bdu.laborder.common.constant.UserConstants;
 import com.bdu.laborder.common.core.domain.controller.BaseController;
 import com.bdu.laborder.common.core.result.Result;
 import com.bdu.laborder.common.core.result.ResultGenerator;
 import com.bdu.laborder.common.core.domain.entity.SysUser;
-import com.bdu.laborder.service.UserService;
+import com.bdu.laborder.service.SysUserService;
 import com.bdu.laborder.utils.PageQuery;
-import com.github.pagehelper.PageInfo;
+import com.bdu.laborder.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,10 +20,10 @@ import java.util.List;
  * @data 2021/2/4 13:56
  */
 @RestController
-public class UserController extends BaseController {
+public class SysUserController extends BaseController {
 
     @Autowired
-    UserService userService;
+    SysUserService userService;
 
     @PostMapping("/users")
     public Result getUserList(@RequestBody PageQuery pageQuery){
@@ -45,19 +46,25 @@ public class UserController extends BaseController {
 
     @PostMapping("/user")
     public Result addUser(@RequestBody SysUser user) {
-        Result result = ResultGenerator.returnCodeMessage(BussinessCode.RESULT_GLOBAL_FAIL);
         String loginName = user.getLoginName();
-        if (loginName.isEmpty()){
-            return ResultGenerator.returnCodeMessage(BussinessCode.RESULT_FIELD_NULL);
+        if (UserConstants.NOT_UNIQUE.equals(userService.checkLoginNameUnique(loginName))) {
+            return error("新增用户'"+user.getRealName()+"'失败，学号或工号已存在！");
+        }
+        if (StringUtils.isNotEmpty(user.getMobile())
+                && UserConstants.NOT_UNIQUE.equals(userService.checkMobileUnique(user))){
+            return error("新增用户'"+user.getRealName()+"'失败，手机号码已存在！");
+        }
+        if (StringUtils.isNotEmpty(user.getEmail())
+                && UserConstants.NOT_UNIQUE.equals(userService.checkEmailUnique(user))){
+            return error("新增用户'"+user.getRealName()+"'失败，邮箱已存在！");
+        }
+        if (loginName.length()<6){
+            return error("新增用户'"+user.getRealName()+"'失败，学号或工号格式不符合规范！");
         }
         String password = loginName.substring(loginName.length()-6);
         user.setPassword(password);
         user.setCreateBy(getUserName());
-        int i = userService.addUser(user);
-        if (i != 0) {
-            result = ResultGenerator.returnCodeMessage(BussinessCode.RESULT_GLOBAL_SUCCESS);
-        }
-        return result;
+        return toResult(userService.addUser(user));
     }
 
     @PutMapping("/user")
@@ -101,8 +108,9 @@ public class UserController extends BaseController {
     }
 
     @PutMapping("/user/changeStatus")
-    public Result changeUserStatus(){
-        return error();
+    public Result changeUserStatus(@RequestParam String userId,@RequestParam String status){
+
+        return toResult(userService.updateUserStatus(userId,status));
     }
 
 
