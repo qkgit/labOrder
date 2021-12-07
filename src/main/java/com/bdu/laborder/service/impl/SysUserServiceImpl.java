@@ -1,23 +1,25 @@
 package com.bdu.laborder.service.impl;
 
 import com.bdu.laborder.common.constant.BussinessCode;
+import com.bdu.laborder.common.constant.UserConstants;
+import com.bdu.laborder.common.core.domain.entity.SysDict;
+import com.bdu.laborder.common.core.domain.entity.SysRole;
 import com.bdu.laborder.common.core.domain.entity.SysUser;
-import com.bdu.laborder.entity.UserRequest;
+import com.bdu.laborder.common.core.domain.entity.SysUserRole;
 import com.bdu.laborder.exception.LabOrderException;
-import com.bdu.laborder.mapper.UserMapper;
-import com.bdu.laborder.service.UserService;
+import com.bdu.laborder.mapper.SDictMapper;
+import com.bdu.laborder.mapper.SysUserMapper;
+import com.bdu.laborder.mapper.SysUserRoleMapper;
+import com.bdu.laborder.service.SysUserService;
 import com.bdu.laborder.utils.*;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.google.gson.Gson;
 import io.jsonwebtoken.Claims;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,40 +27,81 @@ import java.util.List;
  * @data 2021/2/4 13:58
  */
 @Service
-public class UserServiceImpl implements UserService {
+public class SysUserServiceImpl implements SysUserService {
 
     @Autowired
-    UserMapper userMapper;
+    SysUserMapper userMapper;
     @Autowired
     JwtUtils jwtUtils;
+    @Autowired
+    SDictMapper dictMapper;
+    @Autowired
+    SysUserRoleMapper userRoleMapper;
 
+    /**
+     *  根据条件分页查询用户列表
+     * @param user
+     * @return
+     */
     @Override
     public List<SysUser> getUserList(SysUser user) {
         List<SysUser> userList = userMapper.getUserList(user);
         return userList;
     }
 
+    /**
+     * 通过用户ID查询用户
+     * @param id
+     * @return
+     */
     @Override
     public SysUser getUserById(String id) {
         SysUser user = userMapper.getUserById(id);
         return user;
     }
 
+    /**
+     *  新增用户
+     * @param user
+     * @return
+     */
     @Override
     public int addUser(SysUser user)  {
-        String loginName = user.getLoginName();
-        if(userMapper.selectUserByLoginName(loginName) != null){
-            throw new LabOrderException(BussinessCode.USER_NAME_REREAT);
-        }
-        String pwd = user.getPassword();
-        pwd = MD5Util.MD5Encode(pwd,"UTF-8");
-        user.setPassword(pwd);
+        user.setPassword(MD5Util.MD5Encode(user.getPassword(),"UTF-8"));
         user.setUserId(UuidUtil.getUuid());
+        // 新增用户
         int i = userMapper.addUser(user);
-        if (i != 0){
-            return i;
+        // 新增用户角色关联
+        insertUserRole(user);
+        // 新增用户岗位关联
+        //insertUserPost(user);
+
+        return i;
+    }
+
+    private void insertUserRole(SysUser user) {
+        String[] roleIds = user.getRoleIds();
+        List<SysUserRole> list = new ArrayList<SysUserRole>();
+
+        if (StringUtils.isNotNull(roleIds)){
+            // 新增用户角色信息
+            for (String roleId : roleIds) {
+                SysUserRole ur = new SysUserRole();
+                ur.setUserId(user.getUserId());
+                ur.setRoleId(roleId);
+                list.add(ur);
+            }
+        }else {
+            // 添加默认角色 在字典中配置
+            SysUserRole ur = new SysUserRole();
+            SysDict defaultRole = dictMapper.selectSDictByCode("sys_default_role", "0");
+            ur.setUserId(user.getUserId());
+            ur.setRoleId(defaultRole.getName());
+            list.add(ur);
         }
-        return 0;
+        if (list.size() > 0){
+            userRoleMapper.batchUserRole(list);
+        }
     }
 
     @Override
@@ -124,6 +167,47 @@ public class UserServiceImpl implements UserService {
         SysUser user = getUserById(userId);
         user.setStatus(status);
         return userMapper.updateUserStatus(user);
+    }
+
+    /**
+     *  校验登录名是否唯一
+     * @param loginName 用户登录名（学号或工号）
+     * @return
+     */
+    @Override
+    public String checkLoginNameUnique(String loginName) {
+        int count = userMapper.checkUserNameUnique(loginName);
+        return count>0? UserConstants.NOT_UNIQUE : UserConstants.UNIQUE;
+    }
+
+    /**
+     *  校验手机号是否唯一
+     * @param user 用户信息
+     * @return 1：是   0：否
+     */
+    @Override
+    public String checkMobileUnique(SysUser user) {
+        SysUser info = userMapper.checkPhoneUnique(user.getMobile());
+        if (StringUtils.isNotNull(info) && !info.getUserId().equals(user.getUserId())){
+            return UserConstants.NOT_UNIQUE;
+        }else {
+            return UserConstants.UNIQUE;
+        }
+    }
+
+    /**
+     * 校验Email是否唯一
+     * @param user 用户信息
+     * @return
+     */
+    @Override
+    public String checkEmailUnique(SysUser user) {
+        SysUser info = userMapper.checkEmailUnique(user.getEmail());
+        if (StringUtils.isNotNull(info) && !info.getUserId().equals(user.getUserId())){
+            return UserConstants.NOT_UNIQUE;
+        }else {
+            return UserConstants.UNIQUE;
+        }
     }
 
     /**
