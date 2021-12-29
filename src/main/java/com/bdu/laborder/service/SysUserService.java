@@ -33,10 +33,17 @@ public interface SysUserService {
      * @return
      */
     int addUser(SysUser user);
+
+    /**
+     *  更新用户信息
+     * @param user
+     * @return
+     */
     int updateUser(SysUser user);
-    int deleteUser(String id);
+
+    int deleteUser(String[] ids);
     int updatePwd(HttpServletRequest request );
-    int restPwd(String id);
+    int restPwd(String[] ids);
     int updateUserStatus(String userId,String status);
 
     /**
@@ -62,4 +69,11 @@ public interface SysUserService {
      * @return 结果
      */
     public String checkEmailUnique(SysUser user);
+
+    /**
+     * 校验用户是否允许操作
+     *
+     * @param user 用户信息
+     */
+    public void checkUserAllowed(SysUser user);
 }

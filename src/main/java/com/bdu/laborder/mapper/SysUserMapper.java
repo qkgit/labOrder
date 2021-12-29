@@ -42,6 +42,14 @@ public interface SysUserMapper {
     int deleteUser(String id);
 
     /**
+     * 批量删除用户信息
+     *
+     * @param userIds 需要删除的用户ID
+     * @return 结果
+     */
+    public int deleteUserByIds(String[] userIds);
+
+    /**
      * 根据登录名查找用户
      */
     Integer selectUserByLoginName( String loginName);

@@ -12,4 +12,22 @@
             (#{item.userId},#{item.roleId})
         </foreach>
     </insert>
+
+    <select id="selectRoleListByUserId" resultType="java.lang.String">
+        select r.role_id from s_role r
+        left join s_user_role ur on ur.role_id = r.role_id
+        left join s_user u on u.user_id = ur.user_id
+        where u.user_id = #{userId}
+    </select>
+
+    <delete id="deleteUserRoleByUserId">
+        delete from s_user_role where user_id=#{userId}
+    </delete>
+
+    <delete id="deleteUserRole">
+        delete from s_user_role where user_id in
+        <foreach collection="array" item="userId" open="("  separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
 </mapper>

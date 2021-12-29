@@ -4,7 +4,7 @@ import com.bdu.laborder.common.constant.BussinessCode;
 import com.bdu.laborder.common.core.result.Result;
 import com.bdu.laborder.common.core.result.ResultGenerator;
 import com.bdu.laborder.common.core.domain.entity.SysUser;
-import com.bdu.laborder.service.UserService;
+import com.bdu.laborder.service.SysUserService;
 import com.bdu.laborder.utils.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -29,7 +29,7 @@ public class BaseController {
    @Autowired
    RedisUtil redisUtil;
    @Autowired
-   UserService userService;
+   SysUserService userService;
 
    /** 处理返回信息 */
    public Result success(){
@@ -108,6 +108,9 @@ public class BaseController {
       return null;
    }
 
+   public String getUserId(){
+      return getLoginUser().getUserId();
+   }
    public String getUserName(){
       return this.getLoginUser().getRealName();
    }

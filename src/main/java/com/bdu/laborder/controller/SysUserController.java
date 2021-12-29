@@ -9,6 +9,7 @@ import com.bdu.laborder.common.core.domain.entity.SysUser;
 import com.bdu.laborder.service.SysUserService;
 import com.bdu.laborder.utils.PageQuery;
 import com.bdu.laborder.utils.StringUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,13 +36,15 @@ public class SysUserController extends BaseController {
 
     @GetMapping("/user/{id}")
     public Result getUserById(@PathVariable String id){
-        Result result = ResultGenerator.returnCodeMessage(BussinessCode.RESULT_GLOBAL_FAIL);
-        SysUser user = userService.getUserById(id);
-        if (user == null){
-            return result;
+        if (StringUtils.isNotNull(id)){
+            SysUser user = userService.getUserById(id);
+            if (user == null){
+                return error();
+            }
+            return success(user);
+        }else {
+            return  ResultGenerator.returnCodeMessage(BussinessCode.RESULT_FIELD_NULL);
         }
-        result = ResultGenerator.returnCodeMessage(BussinessCode.RESULT_GLOBAL_SUCCESS,user);
-        return result;
     }
 
     @PostMapping("/user")
@@ -69,22 +72,30 @@ public class SysUserController extends BaseController {
 
     @PutMapping("/user")
     public Result updateUser(@RequestBody SysUser user){
-        Result result = ResultGenerator.returnCodeMessage(BussinessCode.RESULT_GLOBAL_FAIL);
-        int i = userService.updateUser(user);
-        if (i != 0) {
-            result = ResultGenerator.returnCodeMessage(BussinessCode.RESULT_GLOBAL_SUCCESS);
+        userService.checkUserAllowed(user);
+        if (StringUtils.isNotEmpty(user.getMobile())
+                && UserConstants.NOT_UNIQUE.equals(userService.checkMobileUnique(user))){
+            return error("新增用户'"+user.getRealName()+"'失败，手机号码已存在！");
         }
-        return result;
+        if (StringUtils.isNotEmpty(user.getEmail())
+                && UserConstants.NOT_UNIQUE.equals(userService.checkEmailUnique(user))){
+            return error("新增用户'"+user.getRealName()+"'失败，邮箱已存在！");
+        }
+        user.setUpdateBy(getUserName());
+        return toResult(userService.updateUser(user));
     }
 
-    @DeleteMapping("/user/{id}")
-    public Result deleteUser(@PathVariable String id){
-        Result result = ResultGenerator.returnCodeMessage(BussinessCode.RESULT_GLOBAL_FAIL);
-        int i = userService.deleteUser(id);
-        if (i != 0) {
-            result = ResultGenerator.returnCodeMessage(BussinessCode.RESULT_GLOBAL_SUCCESS);
+    @DeleteMapping("/user/{ids}")
+    public Result deleteUser(@PathVariable String[] ids){
+        if (ArrayUtils.contains(ids, getUserId())) {
+            return error("当前用户不能删除");
         }
-        return result;
+        return toResult(userService.deleteUser(ids));
+    }
+
+    @PutMapping("/user/changeStatus")
+    public Result changeUserStatus(@RequestParam(value = "userId") String userId,@RequestParam(value = "status") String status){
+        return toResult(userService.updateUserStatus(userId,status));
     }
 
     @PutMapping("/user/updatePwd")
@@ -97,21 +108,15 @@ public class SysUserController extends BaseController {
         return result;
     }
 
-    @PutMapping("/resetPwd/{id}")
-    public Result resetPwd(@PathVariable String id){
-        Result result = ResultGenerator.returnCodeMessage(BussinessCode.RESULT_GLOBAL_FAIL);
-        int i = userService.restPwd(id);
-        if (i != 0) {
-            result = ResultGenerator.returnCodeMessage(BussinessCode.RESULT_GLOBAL_SUCCESS);
+    @PutMapping("/resetPwd/{ids}")
+    public Result resetPwd(@PathVariable String[] ids){
+        if (ArrayUtils.contains(ids, getUserId())) {
+            return error("当前用户不能删除");
         }
-        return result;
+        return toResult(userService.restPwd(ids));
     }
 
-    @PutMapping("/user/changeStatus")
-    public Result changeUserStatus(@RequestParam String userId,@RequestParam String status){
 
-        return toResult(userService.updateUserStatus(userId,status));
-    }
 
 
 }

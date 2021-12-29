@@ -3,7 +3,6 @@ package com.bdu.laborder.service.impl;
 import com.bdu.laborder.common.constant.BussinessCode;
 import com.bdu.laborder.common.constant.UserConstants;
 import com.bdu.laborder.common.core.domain.entity.SysDict;
-import com.bdu.laborder.common.core.domain.entity.SysRole;
 import com.bdu.laborder.common.core.domain.entity.SysUser;
 import com.bdu.laborder.common.core.domain.entity.SysUserRole;
 import com.bdu.laborder.exception.LabOrderException;
@@ -57,6 +56,8 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public SysUser getUserById(String id) {
         SysUser user = userMapper.getUserById(id);
+        List<String> roleIds = userRoleMapper.selectRoleListByUserId(id);
+        user.setRoleIds(roleIds.toArray(new String[roleIds.size()]));
         return user;
     }
 
@@ -104,19 +105,38 @@ public class SysUserServiceImpl implements SysUserService {
         }
     }
 
+    /**
+     *  更新用户信息
+     * @param user
+     * @return
+     */
     @Override
     public int updateUser(SysUser user) {
-        int i = userMapper.updateUser(user);
-        if (i!=0){
-            return i;
-        }
-        return 0;
+        String userId = user.getUserId();
+
+        // 删除用户与角色关联
+        userRoleMapper.deleteUserRoleByUserId(userId);
+        // 新增用户与角色管理
+        insertUserRole(user);
+//        // 删除用户与岗位关联
+//        userPostMapper.deleteUserPostByUserId(userId);
+//        // 新增用户与岗位管理
+//        insertUserPost(user);
+
+        return userMapper.updateUser(user);
+
     }
 
     @Override
-    public int deleteUser(String id) {
-        int i = userMapper.deleteUser(id);
-        return i;
+    public int deleteUser(String[] ids) {
+        for (String id : ids) {
+            checkUserAllowed(new SysUser(id));
+        }
+        // 删除用户与角色关联
+        userRoleMapper.deleteUserRole(ids);
+        // 删除用户与岗位关联
+//        userPostMapper.deleteUserPost(userIds);
+        return userMapper.deleteUserByIds(ids);
     }
 
     @Override
@@ -151,14 +171,20 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
-    public int restPwd(String id) {
-        //通过id 查询用户
-        SysUser user = userMapper.getUserById(id);
-        String loginName = user.getLoginName();
-        String password = loginName.substring(loginName.length()-6);
-        password = MD5Util.MD5Encode(password,"UTF-8");
-
-        int i = userMapper.restPwd(user.getUserId(),password);
+    public int restPwd(String[] ids) {
+        int i = 0;
+        for (String id : ids) {
+            //通过id 查询用户
+            SysUser user = userMapper.getUserById(id);
+            checkUserAllowed(user);
+            try {
+                String password = MD5Util.MD5Encode(user.getLoginName().substring(user.getLoginName().length()-6),"UTF-8");
+                i += userMapper.restPwd(user.getUserId(),password);
+            } catch (Exception e) {
+                i = 0;
+                e.printStackTrace();
+            }
+        }
         return i;
     }
 
@@ -207,6 +233,17 @@ public class SysUserServiceImpl implements SysUserService {
             return UserConstants.NOT_UNIQUE;
         }else {
             return UserConstants.UNIQUE;
+        }
+    }
+
+    /**
+     * 校验用户是否允许操作
+     * @param user 用户信息
+     */
+    @Override
+    public void checkUserAllowed(SysUser user) {
+        if (StringUtils.isNotNull(user.getUserId()) && user.isAdmin()) {
+            throw new LabOrderException("不允许操作超级管理员用户");
         }
     }
 
