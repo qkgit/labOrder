@@ -20,12 +20,12 @@ public class BaseEntity implements Serializable {
     /** 创建者 */
     private String createBy;
     /** 创建时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createTime;
     /** 更新者 */
     private String updateBy;
     /** 更新时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updateTime;
     /** 备注 */
     private String remark;
@@ -92,5 +92,18 @@ public class BaseEntity implements Serializable {
 
     public void setParams(Map<String, Object> params) {
         this.params = params;
+    }
+
+    @Override
+    public String toString() {
+        return "BaseEntity{" +
+                "searchValue='" + searchValue + '\'' +
+                ", createBy='" + createBy + '\'' +
+                ", createTime=" + createTime +
+                ", updateBy='" + updateBy + '\'' +
+                ", updateTime=" + updateTime +
+                ", remark='" + remark + '\'' +
+                ", params=" + params +
+                '}';
     }
 }
