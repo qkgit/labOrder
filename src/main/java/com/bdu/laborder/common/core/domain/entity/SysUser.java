@@ -95,6 +95,9 @@ public class SysUser extends BaseEntity {
      */
     private String delFlag;
 
+    public SysUser() {
+    }
+
     public SysUser(String userId) {
         this.userId = userId;
     }
