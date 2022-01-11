@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdu.laborder.mapper.CourseTimeMapper">
+    <resultMap id="CourseTimeResult" type="com.bdu.laborder.entity.CourseTime">
+        <id property="uuid" column="uuid"                        />
+        <result property="version" column="version"              />
+        <result property="isDefault" column="is_default"         />
+        <result property="num" column="num"                      />
+        <result property="classTime" column="class_time"         />
+        <result property="remark" column="remark"                />
+        <result property="createBy" column="create_by"           />
+        <result property="createTime" column="create_time"       />
+        <result property="updateBy" column="update_by"           />
+        <result property="updateTime" column="update_time"       />
+    </resultMap>
+
+    <sql id="selectCourseTimeVO">
+        select uuid,version,is_default,num,class_time,remark,create_by,create_time,update_by,update_time
+        from s_course_time
+    </sql>
+
+
+    <select id="selectTimeList" resultMap="CourseTimeResult" parameterType="com.bdu.laborder.entity.CourseTime">
+        <include refid="selectCourseTimeVO" />
+        <where>
+            <if test="version != null and version != 0">AND version = #{version}</if>
+            <if test="remark != null and remark != ''">AND remark = #{remark}</if>
+        </where>
+        order by version desc
+    </select>
+
+    <select id="getTimeById" resultMap="CourseTimeResult">
+        <include refid="selectCourseTimeVO" />
+        where uuid = #{id}
+    </select>
+
+    <insert id="addCourseTime">
+        insert into  `s_course_time`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuid != null and uuid != ''">uuid,</if>
+            <if test="version != null and version != 0">version,</if>
+            <if test="isDefault != null and isDefault != ''">is_default,</if>
+            <if test="num != null and num != 0">num,</if>
+            <if test="classTime != null and classTime != ''">class_time,</if>
+            <if test="remark != null and remark != ''">remark,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuid != null and uuid != ''">#{uuid},</if>
+            <if test="version != null and version != 0">#{version},</if>
+            <if test="isDefault != null and isDefault != ''">#{isDefault},</if>
+            <if test="num != null and num != 0">#{num},</if>
+            <if test="classTime != null and classTime != ''">#{classTime},</if>
+            <if test="remark != null and remark != ''">#{remark},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate()
+        </trim>
+
+
+    </insert>
+
+    <select id="getMaxVersion" resultType="int">
+        SELECT MAX(version) FROM `s_course_time`
+    </select>
+</mapper>
