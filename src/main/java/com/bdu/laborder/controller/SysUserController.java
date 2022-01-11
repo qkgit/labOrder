@@ -98,16 +98,6 @@ public class SysUserController extends BaseController {
         return toResult(userService.updateUserStatus(userId,status));
     }
 
-    @PutMapping("/user/updatePwd")
-    public Result updataPwd(HttpServletRequest request ){
-        Result result = ResultGenerator.returnCodeMessage(BussinessCode.RESULT_GLOBAL_FAIL);
-        int i = userService.updatePwd(request);
-        if (i != 0) {
-            result = ResultGenerator.returnCodeMessage(BussinessCode.RESULT_GLOBAL_SUCCESS);
-        }
-        return result;
-    }
-
     @PutMapping("/resetPwd/{ids}")
     public Result resetPwd(@PathVariable String[] ids){
         if (ArrayUtils.contains(ids, getUserId())) {
@@ -115,6 +105,16 @@ public class SysUserController extends BaseController {
         }
         return toResult(userService.restPwd(ids));
     }
+
+    //    @PutMapping("/user/updatePwd")
+//    public Result updataPwd(HttpServletRequest request ){
+//        Result result = ResultGenerator.returnCodeMessage(BussinessCode.RESULT_GLOBAL_FAIL);
+//        int i = userService.updatePwd(request);
+//        if (i != 0) {
+//            result = ResultGenerator.returnCodeMessage(BussinessCode.RESULT_GLOBAL_SUCCESS);
+//        }
+//        return result;
+//    }
 
 
 
