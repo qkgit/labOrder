@@ -1,7 +1,6 @@
 package com.bdu.laborder.mapper;
 
 import com.bdu.laborder.common.core.domain.entity.SysUser;
-import com.bdu.laborder.entity.UserRequest;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
