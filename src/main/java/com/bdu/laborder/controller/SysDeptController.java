@@ -27,7 +27,7 @@ public class SysDeptController extends BaseController {
     SysDeptService deptService;
 
     @GetMapping("/list")
-    public Result list( SysDept dept) {
+    public Result list(SysDept dept) {
         List<SysDept> depts = deptService.selectDeptList(dept);
         return success(depts);
     }
