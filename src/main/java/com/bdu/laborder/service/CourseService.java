@@ -38,4 +38,27 @@ public interface CourseService {
      * @return
      */
     public int updateTime(CourseTime courseTime);
+
+    /**
+     * 设为默认
+     * @param id
+     * @return
+     */
+    public int setDefaultTime(String id);
+
+    /**
+     * 生成新版本
+     * @param id
+     * @param creatUser
+     * @return
+     */
+    public int creatNewVersion(String id,String creatUser);
+
+    /**
+     * 删除课程时间
+     * @param ids
+     * @return
+     */
+    public int deleteTimes(String[] ids);
+
 }

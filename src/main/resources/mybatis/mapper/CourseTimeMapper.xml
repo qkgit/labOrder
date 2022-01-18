@@ -34,6 +34,15 @@
         where uuid = #{id}
     </select>
 
+    <select id="getMaxVersion" resultType="int">
+        SELECT MAX(version) FROM `s_course_time`
+    </select>
+
+    <select id="getDefaultTime" resultMap="CourseTimeResult">
+        <include refid="selectCourseTimeVO" />
+        where is_default = '1'
+    </select>
+
     <insert id="addCourseTime">
         insert into  `s_course_time`
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -60,7 +69,29 @@
 
     </insert>
 
-    <select id="getMaxVersion" resultType="int">
-        SELECT MAX(version) FROM `s_course_time`
-    </select>
+
+
+    <update id="updateCourseTime">
+        update s_course_time
+        <set>
+            <if test="remark != null and remark != ''">remark = #{remark},</if>
+            <if test="num != null and num != 0">num =#{num},</if>
+            <if test="isDefault != null and isDefault != ''">is_default = #{isDefault},</if>
+            <if test="classTime != null and classTime != ''">class_time = #{classTime},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            update_time = sysdate()
+        </set>
+        where uuid = #{uuid}
+    </update>
+
+    <update id="updateCourseTimeDefault">
+        update s_course_time set is_default = #{value}, update_time = sysdate() where uuid = #{id}
+    </update>
+
+    <delete id="deletCourseTimeByIds">
+        delete from s_course_time where uuid in
+        <foreach collection="array" item="ids" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </delete>
 </mapper>

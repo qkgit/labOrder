@@ -2,6 +2,7 @@ package com.bdu.laborder.mapper;
 
 import com.bdu.laborder.entity.CourseTime;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,5 +22,13 @@ public interface CourseTimeMapper {
 
     int getMaxVersion();
 
+    CourseTime getDefaultTime();
+
     int addCourseTime(CourseTime courseTime);
+
+    int updateCourseTime(CourseTime courseTime);
+
+    int updateCourseTimeDefault(@Param("id") String id, @Param("value") String value);
+
+    int deletCourseTimeByIds(String[] ids);
 }
