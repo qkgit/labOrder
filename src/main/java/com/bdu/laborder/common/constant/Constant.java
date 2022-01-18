@@ -14,6 +14,10 @@ public class Constant {
     public static final boolean TRUE = true;
     public static final boolean FALSE = false;
 
+    /** 通用默认值*/
+    public static final String DEFAULT_TRUE = "1";
+    public static final String DEFAULT_FALSE = "0";
+
     /** 预约状态 未开始*/
     public static final String NOT_START="1";
     /** 预约状态 进行中*/
@@ -34,6 +38,8 @@ public class Constant {
     /** 查询字典详情标识*/
     public static final String DICT_TYPE = "type";
     public static final String DICT_DATA = "data";
+
+
 
     /**
      * http请求
