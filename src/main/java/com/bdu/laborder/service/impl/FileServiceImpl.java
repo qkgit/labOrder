@@ -2,7 +2,6 @@ package com.bdu.laborder.service.impl;
 
 import com.bdu.laborder.config.FileStorageProperties;
 import com.bdu.laborder.exception.LabOrderException;
-import com.bdu.laborder.mapper.UserMapper;
 import com.bdu.laborder.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -10,7 +9,6 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -29,8 +27,8 @@ import java.util.UUID;
 public class FileServiceImpl implements FileService {
 
     private final Path fileStorageLocation;
-    @Autowired
-    UserMapper userMapper;
+//    @Autowired
+//    UserMapper userMapper;
 
     @Autowired
     public FileServiceImpl(FileStorageProperties fileStorageProperties) {
