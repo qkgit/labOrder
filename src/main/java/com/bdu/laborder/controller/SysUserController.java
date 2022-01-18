@@ -106,15 +106,15 @@ public class SysUserController extends BaseController {
         return toResult(userService.restPwd(ids));
     }
 
-    //    @PutMapping("/user/updatePwd")
-//    public Result updataPwd(HttpServletRequest request ){
-//        Result result = ResultGenerator.returnCodeMessage(BussinessCode.RESULT_GLOBAL_FAIL);
-//        int i = userService.updatePwd(request);
-//        if (i != 0) {
-//            result = ResultGenerator.returnCodeMessage(BussinessCode.RESULT_GLOBAL_SUCCESS);
-//        }
-//        return result;
-//    }
+        @PutMapping("/user/updatePwd")
+    public Result updataPwd(HttpServletRequest request ){
+        Result result = ResultGenerator.returnCodeMessage(BussinessCode.RESULT_GLOBAL_FAIL);
+        int i = userService.updatePwd(request);
+        if (i != 0) {
+            result = ResultGenerator.returnCodeMessage(BussinessCode.RESULT_GLOBAL_SUCCESS);
+        }
+        return result;
+    }
 
 
 

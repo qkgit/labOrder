@@ -42,7 +42,13 @@
         <result property="status"       column="role_status"    />
     </resultMap>
 
-
+    <sql id="userVo">
+        select user_id, dept_id, login_name, password, real_name, email, mobile, sex, avatar,
+               institute, major,
+               status, is_firstlogin, del_flag,
+               create_by, create_time, update_by, update_time
+        from s_user
+    </sql>
 
     <insert id="addUser">
         insert into `s_user` (
@@ -75,7 +81,7 @@
     </insert>
 
     <update id="updateUser" parameterType="com.bdu.laborder.common.core.domain.entity.SysUser">
-        update `s_user`
+        update s_user
         <set>
             <if test="deptId != null and deptId != ''">dept_id = #{deptId},</if>
             <if test="loginName != null and loginName != ''">login_name = #{loginName},</if>
@@ -102,11 +108,11 @@
         `avatar` = #{url} where `user_id`=#{id}
     </update>
     <delete id="deleteUser">
-        UPDATE  `s_user` set `is_delete`="1" WHERE `user_id`=#{id}
+        UPDATE  s_user set del_flag = '1' WHERE user_id = #{id}
     </delete>
 
     <delete id="deleteUserByIds">
-        update s_user set is_delete = '1' where user_id in
+        update s_user set del_flag = '1' where user_id in
         <foreach collection="array" item="userId" open="(" separator="," close=")">
             #{userId}
         </foreach>
@@ -140,7 +146,8 @@
     </select>
 
     <select id="getUserById" resultType="com.bdu.laborder.common.core.domain.entity.SysUser">
-        select * from s_user where del_flag="0" and user_id=#{id}
+        <include refid="userVo" />
+        where del_flag="0" and user_id=#{id}
     </select>
     <select id="selectUserByLoginName" resultType="java.lang.Integer">
         select user_id from s_user where login_name=#{loginName}
