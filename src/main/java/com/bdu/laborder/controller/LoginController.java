@@ -68,7 +68,6 @@ public class LoginController extends BaseController {
                 //生成token并存入数据返回
                 token = jwtUtils.createJwt(loginUser.getUserId(), loginUser.getLoginName(), dataMap);
                 redisUtil.set("token :"+loginUser.getUserId(),token,36000);
-
             }
 
             //判断用户是否为首次登录
