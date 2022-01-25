@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdu.laborder.mapper.ClassroomMapper">
+    <resultMap id="ClassroomResult" type="com.bdu.laborder.entity.Classroom">
+        <id property="uuid" column="uuid"                        />
+        <result property="name" column="name"                    />
+        <result property="address" column="address"              />
+        <result property="cap" column="cap"                      />
+        <result property="status" column="status"                />
+        <result property="leader" column="leader"                />
+        <result property="leaderId" column="leader_id"           />
+        <result property="delFlag" column="del_flag"             />
+        <result property="remark" column="remark"                />
+        <result property="createBy" column="create_by"           />
+        <result property="createTime" column="create_time"       />
+        <result property="updateBy" column="update_by"           />
+        <result property="updateTime" column="update_time"       />
+    </resultMap>
+
+    <sql id="selectClassroomVO">
+        select uuid,name,address,cap,status,leader,leader_id,del_flag,remark,create_by,create_time,update_by,update_time
+        from s_classroom
+    </sql>
+
+    <select id="selectClassroomList" resultMap="ClassroomResult">
+        <include refid="selectClassroomVO" />
+        <where>
+            <if test="name != null and name != ''">name like concat('%',#{name},'%')</if>
+            <if test="address != null and address != ''">address like concat('%',#{address},'%')</if>
+            <if test="leader != null and leader != ''">leader like concat('%',#{leader},'%')</if>
+            <if test="status != null and status != ''">status = #{status}</if>
+        </where>
+        order by create_time,update_time desc
+    </select>
+
+</mapper>

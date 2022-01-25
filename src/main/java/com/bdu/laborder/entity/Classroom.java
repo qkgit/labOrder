@@ -21,6 +21,8 @@ public class Classroom extends BaseEntity {
     private String status;
     /** 负责人*/
     private String leader;
+    /** 负责人id*/
+    private String leaderId;
     /** 删除标识 */
     private String delFlag;
 
@@ -78,5 +80,27 @@ public class Classroom extends BaseEntity {
 
     public void setLeader(String leader) {
         this.leader = leader;
+    }
+
+    public String getLeaderId() {
+        return leaderId;
+    }
+
+    public void setLeaderId(String leaderId) {
+        this.leaderId = leaderId;
+    }
+
+    @Override
+    public String toString() {
+        return "Classroom{" +
+                "uuid='" + uuid + '\'' +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", cap='" + cap + '\'' +
+                ", status='" + status + '\'' +
+                ", leader='" + leader + '\'' +
+                ", leaderId='" + leaderId + '\'' +
+                ", delFlag='" + delFlag + '\'' +
+                "} " + super.toString();
     }
 }
