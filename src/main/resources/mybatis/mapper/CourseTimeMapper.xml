@@ -24,7 +24,7 @@
         <include refid="selectCourseTimeVO" />
         <where>
             <if test="version != null and version != 0">AND version = #{version}</if>
-            <if test="remark != null and remark != ''">AND remark = #{remark}</if>
+            <if test="remark != null and remark != ''">AND remark concat('%',#{remark},'%')</if>
         </where>
         order by version desc
     </select>

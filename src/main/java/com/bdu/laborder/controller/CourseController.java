@@ -28,10 +28,6 @@ public class CourseController extends BaseController {
         startPage(pageQuery);
         CourseTime courseTime = getParam(pageQuery, CourseTime.class);
         List<CourseTime> timeList = courseService.getTimeList(courseTime);
-        for (CourseTime time : timeList) {
-            System.out.println(time);
-            time.setCreateTime(new Date());
-        }
         return getPageInfo(timeList);
     }
 
