@@ -1,9 +1,12 @@
 package com.bdu.laborder.common.core.domain.entity;
 
+import com.bdu.laborder.common.constant.UserConstants;
 import com.bdu.laborder.common.core.domain.BaseEntity;
 import lombok.Data;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Author Qi
@@ -120,11 +123,17 @@ public class SysUser extends BaseEntity {
     }
 
     public boolean isAdmin() {
-        return isAdmin(this.userId);
+        return isAdmin(this.roles);
     }
 
-    public static boolean isAdmin(String userId) {
-        return userId != null && "1".equals(userId);
+    public static boolean isAdmin(List<SysRole> roles) {
+        if (roles != null){
+            return roles.stream()
+                    .map(r -> r.getRoleId())
+                    .collect(Collectors.toList())
+                    .contains(UserConstants.ADMIN_ROLE_ID);
+        }
+       return false;
     }
 
 }

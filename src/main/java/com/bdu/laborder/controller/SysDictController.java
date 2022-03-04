@@ -22,7 +22,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/dict")
-public class SDictController extends BaseController {
+public class SysDictController extends BaseController {
 
     @Autowired
     SDictService sDictService;

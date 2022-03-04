@@ -177,5 +177,4 @@
         select user_id, email from s_user where email = #{email} limit 1
     </select>
 
-
 </mapper>

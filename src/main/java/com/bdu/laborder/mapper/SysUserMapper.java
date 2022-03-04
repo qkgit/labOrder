@@ -1,5 +1,6 @@
 package com.bdu.laborder.mapper;
 
+import com.bdu.laborder.common.core.domain.entity.SysRole;
 import com.bdu.laborder.common.core.domain.entity.SysUser;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -24,6 +25,7 @@ public interface SysUserMapper {
      *  根据id查询用户信息
      */
     SysUser getUserById(@Param("id") String id);
+
 
     /**
      *  新增用户
