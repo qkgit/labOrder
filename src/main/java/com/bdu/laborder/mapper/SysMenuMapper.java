@@ -32,12 +32,44 @@ public interface SysMenuMapper {
     public List<SysMenu> selectMenuListByUserId(SysMenu menu);
 
     /**
+     * 根据菜单ID查询信息
+     *
+     * @param menuId 菜单ID
+     * @return 菜单信息
+     */
+    public SysMenu selectMenuById(String menuId);
+
+    /**
      * 新增菜单信息
      *
      * @param menu 菜单信息
      * @return 结果
      */
     public int insertMenu(SysMenu menu);
+
+    /**
+     * 修改菜单信息
+     *
+     * @param menu 菜单信息
+     * @return 结果
+     */
+    public int updateMenu(SysMenu menu);
+
+    /**
+     * 删除菜单管理信息
+     *
+     * @param menuId 菜单ID
+     * @return 结果
+     */
+    public int deleteMenuById(String menuId);
+
+    /**
+     * 是否存在菜单子节点
+     *
+     * @param menuId 菜单ID
+     * @return 结果
+     */
+    public int hasChildByMenuId(String menuId);
 
     /**
      * 校验菜单名称是否唯一
