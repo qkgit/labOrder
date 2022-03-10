@@ -132,6 +132,31 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         return !isNull(object);
     }
 
+
+    public static boolean equals(CharSequence cs1, CharSequence cs2) {
+        if (cs1 == cs2) {
+            return true;
+        } else if (cs1 != null && cs2 != null) {
+            if (cs1.length() != cs2.length()) {
+                return false;
+            } else if (cs1 instanceof String && cs2 instanceof String) {
+                return cs1.equals(cs2);
+            } else {
+                int length = cs1.length();
+
+                for(int i = 0; i < length; ++i) {
+                    if (cs1.charAt(i) != cs2.charAt(i)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+        } else {
+            return false;
+        }
+    }
+
     /**
      * * 判断一个对象是否是数组类型（Java基本型别的数组）
      *
