@@ -23,9 +23,42 @@ public interface SysRoleMapper {
     public List<SysRole> selectRoleList(SysRole role);
 
     /**
+     * 通过角色ID查询角色
+     *
+     * @param roleId 角色ID
+     * @return 角色对象信息
+     */
+    public SysRole selectRoleById(String roleId);
+
+    /**
      * 根据id 查询用户角色
      * @param id
      * @return
      */
     List<SysRole> getUserRolesById(String id);
+
+
+    /**
+     * 新增角色信息
+     *
+     * @param role 角色信息
+     * @return 结果
+     */
+    public int insertRole(SysRole role);
+
+    /**
+     * 校验角色名称是否唯一
+     *
+     * @param roleName 角色名称
+     * @return 角色信息
+     */
+    public SysRole checkRoleNameUnique(String roleName);
+
+    /**
+     * 校验角色权限是否唯一
+     *
+     * @param roleKey 角色权限
+     * @return 角色信息
+     */
+    public SysRole checkRoleKeyUnique(String roleKey);
 }

@@ -1,7 +1,10 @@
 package com.bdu.laborder.mapper;
 
+import com.bdu.laborder.common.core.domain.entity.SysRoleMenu;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @Title 角色与菜单关联表 数据层
@@ -19,4 +22,28 @@ public interface SysRoleMenuMapper {
      * @return 结果
      */
     public int checkMenuExistRole(String menuId);
+
+    /**
+     * 批量新增角色菜单信息
+     *
+     * @param roleMenuList 角色菜单列表
+     * @return 结果
+     */
+    public int batchRoleMenu(List<SysRoleMenu> roleMenuList);
+
+    /**
+     * 通过角色ID删除角色和菜单关联
+     *
+     * @param roleId 角色ID
+     * @return 结果
+     */
+    public int deleteRoleMenuByRoleId(String roleId);
+
+    /**
+     * 批量删除角色菜单关联信息
+     *
+     * @param ids 需要删除的数据ID
+     * @return 结果
+     */
+    public int deleteRoleMenu(String[] ids);
 }

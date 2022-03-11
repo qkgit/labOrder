@@ -1,6 +1,7 @@
 package com.bdu.laborder.common.core.domain;
 
 import com.bdu.laborder.common.core.domain.entity.SysDept;
+import com.bdu.laborder.common.core.domain.entity.SysMenu;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
@@ -34,6 +35,12 @@ public class TreeSelect implements Serializable {
         this.id = dept.getDeptId();
         this.label = dept.getDeptName();
         this.children = dept.getChildren().stream().map(TreeSelect::new).collect(Collectors.toList());
+    }
+
+    public TreeSelect(SysMenu menu) {
+        this.id = menu.getMenuId();
+        this.label = menu.getMenuName();
+        this.children = menu.getChildren().stream().map(TreeSelect::new).collect(Collectors.toList());
     }
 
 //    public TreeSelect(SysMenu menu) {

@@ -12,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -71,5 +72,26 @@ public class SysMenuController extends BaseController {
             return error("菜单已分配,不允许删除");
         }
         return toResult(menuService.deleteMenuById(menuId));
+    }
+
+    /**
+     * 获取菜单下拉树列表
+     */
+    @GetMapping("/treeselect")
+    public Result treeSelect(SysMenu menu){
+        List<SysMenu> menuList = menuService.selectMenuList(menu, getUserId());
+        return success(menuService.buildMenuTreeSelect(menuList));
+    }
+
+    /**
+     * 加载对应角色菜单列表树
+     */
+    @GetMapping(value = "/roleMenuTreeselect/{roleId}")
+    public Result roleMenuTreeSelect(@PathVariable("roleId") String roleId){
+        List<SysMenu> menus = menuService.selectMenuList(getUserId());
+        HashMap<String, List> resultMap = new HashMap<>();
+        resultMap.put("menus",menuService.buildMenuTreeSelect(menus));
+        resultMap.put("checkedKeys",null);
+        return success(resultMap);
     }
 }

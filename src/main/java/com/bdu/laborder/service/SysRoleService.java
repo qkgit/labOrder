@@ -18,4 +18,35 @@ public interface SysRoleService {
      * @return 角色数据集合信息
      */
     public List<SysRole> selectRoleList(SysRole role);
-}
+
+    /**
+     * 通过角色ID查询角色
+     *
+     * @param roleId 角色ID
+     * @return 角色对象信息
+     */
+    public SysRole selectRoleById(String roleId);
+
+    /**
+     * 新增保存角色信息
+     *
+     * @param role 角色信息
+     * @return 结果
+     */
+    public int insertRole(SysRole role);
+
+    /**
+     * 校验角色名称是否唯一
+     *
+     * @param role 角色信息
+     * @return 结果
+     */
+    public String checkRoleNameUnique(SysRole role);
+
+    /**
+     * 校验角色权限是否唯一
+     *
+     * @param role 角色信息
+     * @return 结果
+     */
+    public String checkRoleKeyUnique(SysRole role);}
