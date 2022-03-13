@@ -62,7 +62,7 @@ public class SysMenuServiceImpl implements SysMenuService {
     @Override
     public List<String> selectMenuListByRoleId(String roleId) {
         SysRole role = roleMapper.selectRoleById(roleId);
-        return null;
+        return menuMapper.selectMenuListByRoleId(roleId,role.isMenuCheckStrictly());
     }
 
     /**
