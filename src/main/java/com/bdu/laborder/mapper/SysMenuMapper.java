@@ -32,12 +32,36 @@ public interface SysMenuMapper {
     public List<SysMenu> selectMenuListByUserId(SysMenu menu);
 
     /**
+     * 根据角色ID查询菜单树信息
+     *
+     * @param roleId 角色ID
+     * @param menuCheckStrictly 菜单树选择项是否关联显示
+     * @return 选中菜单列表
+     */
+    public List<String> selectMenuListByRoleId(@Param("roleId") String roleId, @Param("menuCheckStrictly") boolean menuCheckStrictly);
+
+    /**
      * 根据菜单ID查询信息
      *
      * @param menuId 菜单ID
      * @return 菜单信息
      */
     public SysMenu selectMenuById(String menuId);
+
+    /**
+     * 根据用户ID查询菜单
+     *
+     * @return 菜单列表
+     */
+    public List<SysMenu> selectMenuTreeAll();
+
+    /**
+     * 根据用户ID查询菜单
+     *
+     * @param userId 用户ID
+     * @return 菜单列表
+     */
+    public List<SysMenu> selectMenuTreeByUserId(String userId);
 
     /**
      * 新增菜单信息
