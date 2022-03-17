@@ -36,6 +36,22 @@ public interface SysRoleService {
     public int insertRole(SysRole role);
 
     /**
+     * 修改保存角色信息
+     *
+     * @param role 角色信息
+     * @return 结果
+     */
+    public int updateRole(SysRole role);
+
+    /**
+     * 修改角色状态
+     *
+     * @param role 角色信息
+     * @return 结果
+     */
+    public int updateRoleStatus(SysRole role);
+
+    /**
      * 校验角色名称是否唯一
      *
      * @param role 角色信息
@@ -49,4 +65,13 @@ public interface SysRoleService {
      * @param role 角色信息
      * @return 结果
      */
-    public String checkRoleKeyUnique(SysRole role);}
+    public String checkRoleKeyUnique(SysRole role);
+
+    /**
+     * 校验角色是否允许操作
+     *
+     * @param role 角色信息
+     */
+    public void checkRoleAllowed(SysRole role);
+
+}

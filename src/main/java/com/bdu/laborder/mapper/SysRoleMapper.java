@@ -47,6 +47,14 @@ public interface SysRoleMapper {
     public int insertRole(SysRole role);
 
     /**
+     * 修改角色信息
+     *
+     * @param role 角色信息
+     * @return 结果
+     */
+    public int updateRole(SysRole role);
+
+    /**
      * 校验角色名称是否唯一
      *
      * @param roleName 角色名称

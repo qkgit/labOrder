@@ -91,7 +91,7 @@ public class SysMenuController extends BaseController {
         List<SysMenu> menus = menuService.selectMenuList(getUserId());
         HashMap<String, List> resultMap = new HashMap<>();
         resultMap.put("menus",menuService.buildMenuTreeSelect(menus));
-        resultMap.put("checkedKeys",null);
+        resultMap.put("checkedKeys",menuService.selectMenuListByRoleId(roleId));
         return success(resultMap);
     }
 }

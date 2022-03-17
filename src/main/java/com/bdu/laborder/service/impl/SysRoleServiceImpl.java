@@ -3,6 +3,7 @@ package com.bdu.laborder.service.impl;
 import com.bdu.laborder.common.constant.UserConstants;
 import com.bdu.laborder.common.core.domain.entity.SysRole;
 import com.bdu.laborder.common.core.domain.entity.SysRoleMenu;
+import com.bdu.laborder.exception.LabOrderException;
 import com.bdu.laborder.mapper.SysRoleMapper;
 import com.bdu.laborder.mapper.SysRoleMenuMapper;
 import com.bdu.laborder.service.SysRoleService;
@@ -81,6 +82,33 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     /**
+     * 修改保存角色信息
+     *
+     * @param role 角色信息
+     * @return 结果
+     */
+    @Override
+    @Transactional
+    public int updateRole(SysRole role) {
+        // 修改角色信息
+        roleMapper.updateRole(role);
+        // 重置角色菜单关联
+        roleMenuMapper.deleteRoleMenuByRoleId(role.getRoleId());
+        return insertRoleMenu(role);
+    }
+
+    /**
+     * 修改角色状态
+     *
+     * @param role 角色信息
+     * @return 结果
+     */
+    @Override
+    public int updateRoleStatus(SysRole role) {
+        return roleMapper.updateRole(role);
+    }
+
+    /**
      * 校验角色名称是否唯一
      *
      * @param role 角色信息
@@ -108,5 +136,17 @@ public class SysRoleServiceImpl implements SysRoleService {
             return UserConstants.NOT_UNIQUE;
         }
         return UserConstants.UNIQUE;
+    }
+
+    /**
+     * 校验角色是否允许操作
+     *
+     * @param role 角色信息
+     */
+    @Override
+    public void checkRoleAllowed(SysRole role) {
+        if (StringUtils.isNotNull(role.getRoleId()) && role.isAdmin()) {
+            throw new LabOrderException("不允许操作超级管理员用户");
+        }
     }
 }

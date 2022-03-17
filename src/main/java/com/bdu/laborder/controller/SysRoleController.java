@@ -48,4 +48,22 @@ public class SysRoleController extends BaseController {
         return toResult(roleService.insertRole(role));
     }
 
+    @PutMapping
+    public Result edit(@Validated @RequestBody SysRole role){
+        roleService.checkRoleAllowed(role);
+        if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleNameUnique(role))) {
+            return error("修改角色'" + role.getRoleName() + "'失败，角色名称已存在");
+        } else if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleKeyUnique(role))) {
+            return error("修改角色'" + role.getRoleName() + "'失败，角色权限已存在");
+        }
+        role.setUpdateBy(getUserName());
+        return toResult(roleService.updateRole(role));
+    }
+
+    @PutMapping("/changeStatus")
+    public Result changeStatus(@RequestBody SysRole role){
+        roleService.checkRoleAllowed(role);
+        role.setUpdateBy(getUserName());
+        return toResult(roleService.updateRoleStatus(role));
+    }
 }
