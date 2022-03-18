@@ -6,6 +6,7 @@ import com.bdu.laborder.common.core.domain.entity.SysRoleMenu;
 import com.bdu.laborder.exception.LabOrderException;
 import com.bdu.laborder.mapper.SysRoleMapper;
 import com.bdu.laborder.mapper.SysRoleMenuMapper;
+import com.bdu.laborder.mapper.SysUserRoleMapper;
 import com.bdu.laborder.service.SysRoleService;
 import com.bdu.laborder.utils.StringUtils;
 import com.bdu.laborder.utils.UuidUtil;
@@ -29,6 +30,9 @@ public class SysRoleServiceImpl implements SysRoleService {
 
     @Autowired
     private SysRoleMenuMapper roleMenuMapper;
+
+    @Autowired
+    private SysUserRoleMapper userRoleMapper;
 
     @Override
     public List<SysRole> selectRoleList(SysRole role) {
@@ -106,6 +110,40 @@ public class SysRoleServiceImpl implements SysRoleService {
     @Override
     public int updateRoleStatus(SysRole role) {
         return roleMapper.updateRole(role);
+    }
+
+    /**
+     * 批量删除角色信息
+     *
+     * @param roleIds
+     * @return
+     */
+    @Override
+    @Transactional
+    public int deleteRoleByIds(String[] roleIds) {
+        for (String roleId : roleIds) {
+            checkRoleAllowed(new SysRole(roleId));
+            SysRole role = selectRoleById(roleId);
+            if (countUserRoleByRoleId(roleId) > 0) {
+                throw new LabOrderException(String.format("%1$s已分配,不能删除", role.getRoleName()));
+            }
+        }
+        // 删除角色与菜单关联
+        roleMenuMapper.deleteRoleMenu(roleIds);
+        // 删除角色与部门关联
+        // roleDeptMapper.deleteRoleDept(roleIds);
+        return roleMapper.deleteRoleByIds(roleIds);
+    }
+
+    /**
+     * 通过角色ID查询角色使用数量
+     *
+     * @param roleId 角色ID
+     * @return 结果
+     */
+    @Override
+    public int countUserRoleByRoleId(String roleId) {
+        return userRoleMapper.countUserRoleByRoleId(roleId);
     }
 
     /**

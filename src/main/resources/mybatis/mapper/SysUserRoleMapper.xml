@@ -30,4 +30,8 @@
             #{userId}
         </foreach>
     </delete>
+
+    <select id="countUserRoleByRoleId" resultType="int">
+        select count(1) from s_user_role where role_id = #{roleId}
+    </select>
 </mapper>

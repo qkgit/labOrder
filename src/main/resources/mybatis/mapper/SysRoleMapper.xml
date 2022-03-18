@@ -112,4 +112,17 @@
         </set>
         where role_id = #{roleId}
     </update>
+
+    <delete id="deleteRoleById">
+        update s_role set del_flag = '2' where role_id = #{roleId}
+    </delete>
+
+    <delete id="deleteRoleByIds">
+        update s_role set del_flag = '2' where role_id in
+        <foreach collection="array" item="roleId" open="(" separator="," close=")">
+            #{roleId}
+        </foreach>
+    </delete>
+
+
 </mapper>

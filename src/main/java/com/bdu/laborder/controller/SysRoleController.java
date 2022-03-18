@@ -60,6 +60,11 @@ public class SysRoleController extends BaseController {
         return toResult(roleService.updateRole(role));
     }
 
+    @DeleteMapping("/{roleIds}")
+    public Result remove(@PathVariable String[] roleIds) {
+        return toResult(roleService.deleteRoleByIds(roleIds));
+    }
+
     @PutMapping("/changeStatus")
     public Result changeStatus(@RequestBody SysRole role){
         roleService.checkRoleAllowed(role);

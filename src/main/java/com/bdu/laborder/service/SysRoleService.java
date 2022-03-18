@@ -52,6 +52,21 @@ public interface SysRoleService {
     public int updateRoleStatus(SysRole role);
 
     /**
+     * 批量删除角色信息
+     * @param roleIds
+     * @return
+     */
+    public int deleteRoleByIds(String[] roleIds);
+
+    /**
+     * 通过角色ID查询角色使用数量
+     *
+     * @param roleId 角色ID
+     * @return 结果
+     */
+    public int countUserRoleByRoleId(String roleId);
+
+    /**
      * 校验角色名称是否唯一
      *
      * @param role 角色信息
