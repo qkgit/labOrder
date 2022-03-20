@@ -77,4 +77,5 @@ public class UserConstants {
     public static final int PASSWORD_MAX_LENGTH = 20;
 
     public static final String ADMIN_ROLE_ID = "0";
+    public static final String ROOT_MENU_ID = "0";
 }

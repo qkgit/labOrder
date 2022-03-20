@@ -4,11 +4,13 @@ import com.bdu.laborder.common.constant.BussinessCode;
 import com.bdu.laborder.common.constant.Constant;
 import com.bdu.laborder.common.constant.UserConstants;
 import com.bdu.laborder.common.core.domain.controller.BaseController;
+import com.bdu.laborder.common.core.domain.entity.SysMenu;
 import com.bdu.laborder.common.core.result.Result;
 import com.bdu.laborder.common.core.result.ResultGenerator;
 import com.bdu.laborder.common.core.domain.entity.SysUser;
 import com.bdu.laborder.exception.LabOrderException;
 import com.bdu.laborder.service.LoginService;
+import com.bdu.laborder.service.SysMenuService;
 import com.bdu.laborder.utils.JwtUtils;
 import com.bdu.laborder.utils.RedisUtil;
 import org.slf4j.Logger;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -30,7 +33,8 @@ public class LoginController extends BaseController {
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
     @Autowired
     LoginService loginService;
-
+    @Autowired
+    private SysMenuService menuService;
     @Autowired
     JwtUtils jwtUtils;
 
@@ -108,5 +112,10 @@ public class LoginController extends BaseController {
         }
     }
 
+    @GetMapping("/getRouters")
+    public Result getRouters(){
+        List<SysMenu> menus = menuService.selectMenuTreeByUserId(getUserId());
+        return success(menuService.buildMenus(menus));
+    }
 
 }
