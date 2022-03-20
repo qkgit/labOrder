@@ -3,8 +3,12 @@ package com.bdu.laborder.service.impl;
 import com.bdu.laborder.common.constant.UserConstants;
 import com.bdu.laborder.common.core.domain.entity.SysRole;
 import com.bdu.laborder.common.core.domain.entity.SysRoleMenu;
+import com.bdu.laborder.common.core.domain.entity.SysUser;
+import com.bdu.laborder.common.core.domain.entity.SysUserRole;
+import com.bdu.laborder.exception.LabOrderException;
 import com.bdu.laborder.mapper.SysRoleMapper;
 import com.bdu.laborder.mapper.SysRoleMenuMapper;
+import com.bdu.laborder.mapper.SysUserRoleMapper;
 import com.bdu.laborder.service.SysRoleService;
 import com.bdu.laborder.utils.StringUtils;
 import com.bdu.laborder.utils.UuidUtil;
@@ -28,6 +32,9 @@ public class SysRoleServiceImpl implements SysRoleService {
 
     @Autowired
     private SysRoleMenuMapper roleMenuMapper;
+
+    @Autowired
+    private SysUserRoleMapper userRoleMapper;
 
     @Override
     public List<SysRole> selectRoleList(SysRole role) {
@@ -81,6 +88,67 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     /**
+     * 修改保存角色信息
+     *
+     * @param role 角色信息
+     * @return 结果
+     */
+    @Override
+    @Transactional
+    public int updateRole(SysRole role) {
+        // 修改角色信息
+        roleMapper.updateRole(role);
+        // 重置角色菜单关联
+        roleMenuMapper.deleteRoleMenuByRoleId(role.getRoleId());
+        return insertRoleMenu(role);
+    }
+
+    /**
+     * 修改角色状态
+     *
+     * @param role 角色信息
+     * @return 结果
+     */
+    @Override
+    public int updateRoleStatus(SysRole role) {
+        return roleMapper.updateRole(role);
+    }
+
+    /**
+     * 批量删除角色信息
+     *
+     * @param roleIds
+     * @return
+     */
+    @Override
+    @Transactional
+    public int deleteRoleByIds(String[] roleIds) {
+        for (String roleId : roleIds) {
+            checkRoleAllowed(new SysRole(roleId));
+            SysRole role = selectRoleById(roleId);
+            if (countUserRoleByRoleId(roleId) > 0) {
+                throw new LabOrderException(String.format("%1$s已分配,不能删除", role.getRoleName()));
+            }
+        }
+        // 删除角色与菜单关联
+        roleMenuMapper.deleteRoleMenu(roleIds);
+        // 删除角色与部门关联
+        // roleDeptMapper.deleteRoleDept(roleIds);
+        return roleMapper.deleteRoleByIds(roleIds);
+    }
+
+    /**
+     * 通过角色ID查询角色使用数量
+     *
+     * @param roleId 角色ID
+     * @return 结果
+     */
+    @Override
+    public int countUserRoleByRoleId(String roleId) {
+        return userRoleMapper.countUserRoleByRoleId(roleId);
+    }
+
+    /**
      * 校验角色名称是否唯一
      *
      * @param role 角色信息
@@ -108,5 +176,70 @@ public class SysRoleServiceImpl implements SysRoleService {
             return UserConstants.NOT_UNIQUE;
         }
         return UserConstants.UNIQUE;
+    }
+
+    /**
+     * 校验角色是否允许操作
+     *
+     * @param role 角色信息
+     */
+    @Override
+    public void checkRoleAllowed(SysRole role) {
+        if (StringUtils.isNotNull(role.getRoleId()) && role.isAdmin()) {
+            throw new LabOrderException("不允许操作超级管理员用户");
+        }
+    }
+
+    /**
+     * 根据条件分页查询已分配用户角色列表
+     *
+     * @param user 用户信息
+     * @return 用户信息集合信息
+     */
+    @Override
+    public List<SysUser> selectAllocatedList(SysUser user) {
+        return userRoleMapper.selectAllocatedList(user);
+    }
+
+    /**
+     * 根据条件分页查询未分配用户角色列表
+     *
+     * @param user 用户信息
+     * @return 用户信息集合信息
+     */
+    @Override
+    public List<SysUser> selectUnallocatedList(SysUser user) {
+        return userRoleMapper.selectUnallocatedList(user);
+    }
+
+    /**
+     * (批量)取消授权用户角色
+     *
+     * @param roleId  角色ID
+     * @param userIds 需要取消授权的用户数据ID
+     * @return 结果
+     */
+    @Override
+    public int deleteAuthUsers(String roleId, String[] userIds) {
+        return userRoleMapper.deleteUserRoleInfos(roleId,userIds);
+    }
+
+    /**
+     * 批量选择授权用户角色
+     *
+     * @param roleId  角色ID
+     * @param userIds 需要删除的用户数据ID
+     * @return 结果
+     */
+    @Override
+    public int insertAuthUsers(String roleId, String[] userIds) {
+        ArrayList<SysUserRole> list = new ArrayList<>();
+        for (String userId : userIds) {
+            SysUserRole ur = new SysUserRole();
+            ur.setRoleId(roleId);
+            ur.setUserId(userId);
+            list.add(ur);
+        }
+        return userRoleMapper.batchUserRole(list);
     }
 }
