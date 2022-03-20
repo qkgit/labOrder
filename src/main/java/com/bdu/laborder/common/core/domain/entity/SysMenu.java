@@ -61,8 +61,6 @@ public class SysMenu extends BaseEntity {
     /** 菜单图标 */
     private String icon;
 
-    /** 菜单图标类型 */
-    private String iconType;
 
     /** 子菜单 */
     private List<SysMenu> children = new ArrayList<SysMenu>();
@@ -207,14 +205,6 @@ public class SysMenu extends BaseEntity {
     public void setIcon(String icon)
     {
         this.icon = icon;
-    }
-
-    public String getIconType() {
-        return iconType;
-    }
-
-    public void setIconType(String iconType) {
-        this.iconType = iconType;
     }
 
     public List<SysMenu> getChildren()
