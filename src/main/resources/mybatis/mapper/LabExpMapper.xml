@@ -20,10 +20,10 @@
         select * from lab_exp
         <where>
             1=1 and is_delete = "0"
-            <if test="eName != ''">
+            <if test="eName != null and eName != ''">
                 and exp_name like "%"#{eName}"%"
             </if>
-            <if test="eType != ''">
+            <if test="eType != null and eType != ''">
                 and exp_type = #{eType}
             </if>
         </where>
