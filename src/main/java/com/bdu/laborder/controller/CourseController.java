@@ -2,13 +2,13 @@ package com.bdu.laborder.controller;
 
 import com.bdu.laborder.common.core.domain.controller.BaseController;
 import com.bdu.laborder.common.core.result.Result;
+import com.bdu.laborder.entity.Course;
 import com.bdu.laborder.entity.CourseTime;
-import com.bdu.laborder.service.CourseService;
+import com.bdu.laborder.service.CourseTimeService;
 import com.bdu.laborder.utils.PageQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,20 +20,35 @@ import java.util.List;
 @RequestMapping("/course")
 public class CourseController extends BaseController {
 
+    
     @Autowired
-    CourseService courseService;
+    CourseTimeService timeService;
+
+    /** ############################## 课程 start ################################ */
+
+    @PostMapping("/list")
+    public Result getCourseList(@RequestBody PageQuery pageQuery){
+        startPage(pageQuery);
+        Course course = getParam(pageQuery, Course.class);
+        return success();
+    }
+
+    /** ############################## 课程 start ################################ */
+
+
+    /** ############################## 课程时间 start ################################ */
 
     @PostMapping("/times")
     public Result getTimeList(@RequestBody PageQuery pageQuery){
         startPage(pageQuery);
         CourseTime courseTime = getParam(pageQuery, CourseTime.class);
-        List<CourseTime> timeList = courseService.getTimeList(courseTime);
+        List<CourseTime> timeList = timeService.getTimeList(courseTime);
         return getPageInfo(timeList);
     }
 
     @GetMapping("/time/{id}")
     public Result getTimeById(@PathVariable() String id){
-        return success(courseService.getTime(id));
+        return success(timeService.getTime(id));
     }
 
     @PostMapping("/time")
@@ -42,7 +57,7 @@ public class CourseController extends BaseController {
             return error("课程节数与设置时间数量不一致！");
         }
        courseTime.setCreateBy(getUserName());
-        return toResult(courseService.insertTime(courseTime));
+        return toResult(timeService.insertTime(courseTime));
     }
 
     @PutMapping("/time")
@@ -51,24 +66,23 @@ public class CourseController extends BaseController {
             return error("课程节数与设置时间数量不一致！");
         }
         courseTime.setUpdateBy(getUserName());
-        return toResult(courseService.updateTime(courseTime));
+        return toResult(timeService.updateTime(courseTime));
     }
 
     @PutMapping("/time/{id}")
     public Result setDefaultTime(@PathVariable String id){
-        return toResult(courseService.setDefaultTime(id));
+        return toResult(timeService.setDefaultTime(id));
     }
 
     @PostMapping("/time/{id}")
     public Result creatNewVersion(@PathVariable String id){
-        return toResult(courseService.creatNewVersion(id,getUserName()));
+        return toResult(timeService.creatNewVersion(id,getUserName()));
     }
 
     @DeleteMapping("/time/{ids}")
     public Result removeTime(@PathVariable String[] ids){
-        return toResult(courseService.deleteTimes(ids));
+        return toResult(timeService.deleteTimes(ids));
     }
-
 
     /**
      *  校验课程时间节数与设置时间数量是否不一致
@@ -78,4 +92,6 @@ public class CourseController extends BaseController {
     private boolean checkTimeSize(CourseTime courseTime){
         return courseTime.getNum() != courseTime.getTimes().size();
     }
+
+    /** ############################## 课程时间 end ################################ */
 }
