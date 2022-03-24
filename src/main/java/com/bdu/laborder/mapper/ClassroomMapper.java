@@ -14,5 +14,16 @@ import java.util.List;
 @Mapper
 @Repository
 public interface ClassroomMapper {
+
     List<Classroom> selectClassroomList(Classroom classroom);
+
+    Classroom getClassroom(String id);
+
+    int insertClassroom(Classroom classroom);
+
+    int updateClassroom(Classroom classroom);
+
+    int deleteClassroomByIds(String[] ids);
+
+    Classroom checkAddressUnique(Classroom classroom);
 }

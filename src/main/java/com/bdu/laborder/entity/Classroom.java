@@ -15,6 +15,8 @@ public class Classroom extends BaseEntity {
     private String name;
     /** 位置 */
     private String address;
+    /** 楼层 */
+    private String level;
     /** 容量 */
     private String cap;
     /** 状态 */
@@ -88,6 +90,14 @@ public class Classroom extends BaseEntity {
 
     public void setLeaderId(String leaderId) {
         this.leaderId = leaderId;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
     }
 
     @Override
