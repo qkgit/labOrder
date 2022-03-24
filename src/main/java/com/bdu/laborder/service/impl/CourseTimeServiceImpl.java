@@ -5,7 +5,7 @@ import com.bdu.laborder.entity.ClassTime;
 import com.bdu.laborder.entity.CourseTime;
 import com.bdu.laborder.exception.LabOrderException;
 import com.bdu.laborder.mapper.CourseTimeMapper;
-import com.bdu.laborder.service.CourseService;
+import com.bdu.laborder.service.CourseTimeService;
 import com.bdu.laborder.utils.CreateGson;
 import com.bdu.laborder.utils.UuidUtil;
 import com.google.gson.Gson;
@@ -24,7 +24,7 @@ import java.util.List;
  * @data 2022/1/6 11:28
  */
 @Service
-public class CourseServiceImpl implements CourseService {
+public class CourseTimeServiceImpl implements CourseTimeService {
 
     @Autowired
     CourseTimeMapper courseTimeMapper;

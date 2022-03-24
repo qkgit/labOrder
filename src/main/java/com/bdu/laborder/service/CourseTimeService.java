@@ -9,7 +9,7 @@ import java.util.List;
  * @Author Qi
  * @data 2022/1/6 11:10
  */
-public interface CourseService {
+public interface CourseTimeService {
 
     /**
      *  获取课程时间列表

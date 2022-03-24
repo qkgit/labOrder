@@ -12,9 +12,9 @@ import java.util.List;
 public class CourseTime extends BaseEntity {
 
     private String uuid;
-    /** 课程节数*/
+    /** 课程节数 */
     private int num;
-    /** 时间段*/
+    /** 时间段 */
     private String classTime;
     private List<ClassTime> times;
     /** 是否默认*/
