@@ -4,6 +4,7 @@ import com.bdu.laborder.common.constant.Constant;
 import com.bdu.laborder.common.constant.UserConstants;
 import com.bdu.laborder.common.core.domain.TreeSelect;
 import com.bdu.laborder.common.core.domain.entity.SysDept;
+import com.bdu.laborder.common.core.domain.entity.SysUser;
 import com.bdu.laborder.exception.LabOrderException;
 import com.bdu.laborder.mapper.SysDeptMapper;
 import com.bdu.laborder.service.SysDeptService;
@@ -13,9 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @Title
@@ -106,6 +109,50 @@ public class SysDeptServiceImpl implements SysDeptService {
     public List<TreeSelect> buildDeptTreeSelect(List<SysDept> depts) {
         List<SysDept> deptTree = buildDeptTree(depts);
         return deptTree.stream().map(TreeSelect::new).collect(Collectors.toList());
+    }
+
+    /**
+     * 根据userList构建部门用户下拉树
+     * @param userList 用户数据
+     * @return
+     */
+    @Override
+    public List<TreeSelect> buildDeptUserTreeSelct(List<SysUser> userList) {
+        // 取父级部门id
+        List<String> parentDeptList = userList.stream()
+                .flatMap(u -> Stream.of(u.getDept().getAncestors().split(",")))
+                .collect(Collectors.toList());
+        // 取用户所在部门id
+        List<String> userDeptList = userList.stream()
+                .map(SysUser::getDeptId)
+                .collect(Collectors.toList());
+        // 获取所有部门
+        List<SysDept> deptList = Stream.of(parentDeptList, userDeptList)
+                .flatMap(Collection::stream)
+                .distinct()
+                .filter(i -> !UserConstants.ROOT_DEPT_ID.equals(i))
+                .map(i -> selectDeptById(i))
+                .collect(Collectors.toList());
+
+        List<TreeSelect> deptTreeSelect = buildDeptTreeSelect(deptList);
+        setUser(deptTreeSelect, userDeptList, userList);
+        return deptTreeSelect;
+    }
+
+    private void setUser(List<TreeSelect> deptTreeSelect, List<String> userDeptList, List<SysUser> userList) {
+        for (TreeSelect treeSelect : deptTreeSelect) {
+            if (userDeptList.contains(treeSelect.getId())) {
+                treeSelect.setChildren(
+                        userList.stream()
+                                .filter(u -> treeSelect.getId().equals(u.getDeptId()))
+                                .map(TreeSelect::new)
+                                .collect(Collectors.toList())
+                );
+            }
+            if (StringUtils.isNotEmpty(treeSelect.getChildren())) {
+                setUser(treeSelect.getChildren(), userDeptList, userList);
+            }
+        }
     }
 
     @Override

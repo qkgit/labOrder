@@ -86,6 +86,11 @@ public class SysRoleController extends BaseController {
         return getPageInfo(sysRoles);
     }
 
+    /**
+     *  查询角色未分配用户列表
+     * @param pageQuery
+     * @return
+     */
     @PostMapping("/authUser/unallocatedList")
     public Result unallocatedUserList(@RequestBody PageQuery pageQuery){
         startPage(pageQuery);
@@ -111,8 +116,9 @@ public class SysRoleController extends BaseController {
      * @param userIds
      * @return
      */
-    @PutMapping("//authUser/selectAll")
+    @PutMapping("/authUser/selectAll")
     public Result selectAuthUserAll(String roleId,String[] userIds){
         return toResult(roleService.insertAuthUsers(roleId,userIds));
     }
+
 }

@@ -32,6 +32,11 @@ public class SysDeptController extends BaseController {
         return success(depts);
     }
 
+    /**
+     * 查询部门列表（排除节点）
+     * @param deptId 排除节点id
+     * @return
+     */
     @GetMapping("/list/exclude/{deptId}")
     public Result excludeChild(@PathVariable(value = "deptId",required = false) String deptId) {
         List<SysDept> depts = deptService.selectDeptList(new SysDept());

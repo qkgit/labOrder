@@ -136,4 +136,28 @@ public class SysUser extends BaseEntity {
        return false;
     }
 
+    @Override
+    public String toString() {
+        return "SysUser{" +
+                "userId='" + userId + '\'' +
+                ", deptId='" + deptId + '\'' +
+                ", loginName='" + loginName + '\'' +
+                ", password='" + password + '\'' +
+                ", realName='" + realName + '\'' +
+                ", email='" + email + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", sex='" + sex + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", institute='" + institute + '\'' +
+                ", major='" + major + '\'' +
+                ", status='" + status + '\'' +
+                ", isFirstLogin='" + isFirstLogin + '\'' +
+                ", delFlag='" + delFlag + '\'' +
+                ", dept=" + dept +
+                ", roleIds=" + Arrays.toString(roleIds) +
+                ", roleId='" + roleId + '\'' +
+                ", roles=" + roles +
+                ", postIds=" + Arrays.toString(postIds) +
+                "} " + super.toString();
+    }
 }

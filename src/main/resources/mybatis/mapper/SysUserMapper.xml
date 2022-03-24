@@ -27,6 +27,7 @@
     <resultMap id="deptResult" type="com.bdu.laborder.common.core.domain.entity.SysDept">
         <id     property="deptId"   column="dept_id"     />
         <result property="parentId" column="parent_id"   />
+        <result property="ancestors" column="ancestors"  />
         <result property="deptName" column="dept_name"   />
         <result property="orderNum" column="order_num"   />
         <result property="leader"   column="leader"      />
@@ -121,7 +122,7 @@
     <select id="getUserList" parameterType="com.bdu.laborder.common.core.domain.entity.SysUser" resultMap="SysUserResult">
         select u.user_id,u.dept_id,u.login_name,u.real_name,u.sex,u.mobile,u.email,u.avatar,
                u.status,u.institute,u.major,u.is_firstlogin,u.create_by, u.create_time,
-               d.dept_name, d.leader,r.role_id,r.role_name,r.role_sort
+               d.dept_name, d.leader,d.ancestors,r.role_id,r.role_name,r.role_sort
         from s_user u
         left join s_dept d on u.dept_id = d.dept_id
         left join s_user_role ur on u.user_id = ur.user_id

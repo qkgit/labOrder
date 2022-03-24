@@ -2,6 +2,7 @@ package com.bdu.laborder.service;
 
 import com.bdu.laborder.common.core.domain.TreeSelect;
 import com.bdu.laborder.common.core.domain.entity.SysDept;
+import com.bdu.laborder.common.core.domain.entity.SysUser;
 import com.bdu.laborder.mapper.SysDeptMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -38,6 +39,13 @@ public interface SysDeptService {
      * @return 下拉树结构列表
      */
     public List<TreeSelect> buildDeptTreeSelect(List<SysDept> depts);
+
+    /**
+     * 根据userList构建部门用户下拉树
+     * @param userList 用户数据
+     * @return
+     */
+    public List<TreeSelect> buildDeptUserTreeSelct(List<SysUser> userList);
 
     /**
      * 根据角色ID查询部门树信息
