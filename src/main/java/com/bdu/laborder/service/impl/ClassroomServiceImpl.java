@@ -63,6 +63,7 @@ public class ClassroomServiceImpl implements ClassroomService {
      */
     @Override
     public int updateClassroom(Classroom classroom) {
+        classroom.setLeader(userMapper.getUserById(classroom.getLeaderId()).getRealName());
         return classroomMapper.updateClassroom(classroom);
     }
 
