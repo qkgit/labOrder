@@ -19,4 +19,62 @@
         select uuid,name,leader,leader_id,type,credit,remark,create_by,create_time,update_by,update_time
         from s_course
     </sql>
+
+    <select id="selectCourseList" resultMap="CourseResult">
+        <include refid="selectCourseVo" />
+        <where>
+            <if test="name != null and name != ''"> AND name like concat('%',#{name},'%')</if>
+            <if test="leader != null and leader != ''"> AND leader like concat('%',#{leader},'%')</if>
+        </where>
+        order by create_time desc
+    </select>
+
+    <select id="selectCourseById" resultMap="CourseResult">
+        <include refid="selectCourseVo" />
+        where uuid = #{id}
+    </select>
+
+    <insert id="insertCourse">
+        insert into s_course (
+            <if test="uuid != null and uuid != ''">uuid,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="leader != null and leader != ''">leader,</if>
+            <if test="leaderId != null and leaderId != ''">leader_id,</if>
+            <if test="type != null and type != ''">type,</if>
+            <if test="credit != null and credit != ''">credit,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            create_time
+        ) values (
+            <if test="uuid != null and uuid != ''">#{uuid},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="leader != null and leader != ''">#{leader},</if>
+            <if test="leaderId != null and leaderId != ''">#{leaderId},</if>
+            <if test="type != null and type != ''">#{type},</if>
+            <if test="credit != null and credit != ''">#{credit},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate()
+        )
+
+    </insert>
+
+    <update id="updateCourse">
+        update s_course
+        <set>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="leader != null and leader != ''">leader = #{name},</if>
+            <if test="leaderId != null and leaderId != ''">leader_id = #{leaderId},</if>
+            <if test="type != null and type != ''">type = #{type},</if>
+            <if test="credit != null and credit != ''">credit = #{credit},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            update_time = sysdate()
+        </set>
+        where uuid = #{uuid}
+    </update>
+
+    <delete id="removeCourseByIds">
+        delete from s_course where uuid in
+        <foreach collection="array" item="ids" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </delete>
 </mapper>

@@ -4,6 +4,7 @@ import com.bdu.laborder.common.core.domain.controller.BaseController;
 import com.bdu.laborder.common.core.result.Result;
 import com.bdu.laborder.entity.Course;
 import com.bdu.laborder.entity.CourseTime;
+import com.bdu.laborder.service.CourseService;
 import com.bdu.laborder.service.CourseTimeService;
 import com.bdu.laborder.utils.PageQuery;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,8 @@ import java.util.List;
 @RequestMapping("/course")
 public class CourseController extends BaseController {
 
-    
+    @Autowired
+    private CourseService courseService;
     @Autowired
     CourseTimeService timeService;
 
@@ -30,7 +32,31 @@ public class CourseController extends BaseController {
     public Result getCourseList(@RequestBody PageQuery pageQuery){
         startPage(pageQuery);
         Course course = getParam(pageQuery, Course.class);
-        return success();
+        List<Course> courseList = courseService.getCourseList(course);
+        return getPageInfo(courseList);
+    }
+
+    @GetMapping("/{id}")
+    public Result getCourseInfo(@PathVariable("id") String id){
+        return success(courseService.getCourseById(id));
+    }
+
+    @PostMapping
+    public Result addCourse(@RequestBody Course course){
+        course.setCreateBy(getUserName());
+        return toResult(courseService.addCourse(course));
+    }
+
+    @PutMapping
+    public Result editCourse(@RequestBody Course course){
+        course.setCreateBy(getUserName());
+        return toResult(courseService.updateCourse(course));
+    }
+
+    @DeleteMapping("/{ids}")
+    public Result removeCourse(@PathVariable("ids") String[] ids){
+        // 校验已分配不可删除
+        return toResult(courseService.removeCourseByIds(ids));
     }
 
     /** ############################## 课程 start ################################ */
