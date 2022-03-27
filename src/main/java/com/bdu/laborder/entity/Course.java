@@ -3,7 +3,7 @@ package com.bdu.laborder.entity;
 import com.bdu.laborder.common.core.domain.BaseEntity;
 
 /**
- * @Title
+ * @Title 课程实体表
  * @Author Qi
  * @data 2022/3/24 15:37
  */

@@ -5,7 +5,7 @@ import com.bdu.laborder.common.core.domain.BaseEntity;
 import java.util.List;
 
 /**
- * @Title
+ * @Title 课程时间实体表
  * @Author Qi
  * @data 2022/1/5 16:43
  */
