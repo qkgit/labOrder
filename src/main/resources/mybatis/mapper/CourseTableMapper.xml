@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdu.laborder.mapper.CourseTableMapper">
+    <resultMap id="courseTableResult" type="com.bdu.laborder.entity.CourseTable">
+        <id property="uuid" column="uuid" />
+        <result property="year" column="year" />
+        <result property="semester" column="semester" />
+        <result property="periodStart" column="period_start" />
+        <result property="periodEnd" column="period_end" />
+        <result property="week" column="week" />
+        <result property="limitWeek" column="limit_week" />
+        <result property="node" column="node" />
+        <result property="classRoomId" column="classroom_id" />
+        <result property="courseId" column="course_id" />
+        <result property="deptId" column="dept_id" />
+        <association property="classroom" javaType="com.bdu.laborder.entity.Classroom" resultMap="classroomResult" />
+        <association property="course" javaType="com.bdu.laborder.entity.Course" resultMap="courseResult" />
+        <association property="dept" javaType="com.bdu.laborder.common.core.domain.entity.SysDept" resultMap="deptResult" />
+    </resultMap>
+
+    <resultMap id="classroomResult" type="com.bdu.laborder.entity.Classroom">
+        <id property="uuid" column="uuid"                        />
+        <result property="name" column="name"                    />
+        <result property="address" column="address"              />
+        <result property="level" column="level"                  />
+        <result property="cap" column="cap"                      />
+        <result property="status" column="status"                />
+        <result property="leader" column="leader"                />
+        <result property="leaderId" column="leader_id"           />
+        <result property="delFlag" column="del_flag"             />
+        <result property="remark" column="remark"                />
+        <result property="createBy" column="create_by"           />
+        <result property="createTime" column="create_time"       />
+        <result property="updateBy" column="update_by"           />
+        <result property="updateTime" column="update_time"       />
+    </resultMap>
+
+    <resultMap id="courseResult" type="com.bdu.laborder.entity.Course">
+        <id     property="uuid"       column="uuid"        />
+        <result property="name"       column="name"        />
+        <result property="leader"     column="leader"      />
+        <result property="leaderId"   column="leader_id"   />
+        <result property="type"       column="type"        />
+        <result property="credit"     column="credit"      />
+        <result property="remark"     column="remark"      />
+        <result property="createBy"   column="create_by"   />
+        <result property="createTime" column="create_time" />
+        <result property="updateBy"   column="update_by"   />
+        <result property="updateTime" column="update_time" />
+    </resultMap>
+
+    <resultMap id="deptResult" type="com.bdu.laborder.common.core.domain.entity.SysDept">
+        <id     property="deptId"   column="dept_id"     />
+        <result property="parentId" column="parent_id"   />
+        <result property="ancestors" column="ancestors"  />
+        <result property="deptName" column="dept_name"   />
+        <result property="orderNum" column="order_num"   />
+        <result property="leader"   column="leader"      />
+        <result property="status"   column="dept_status" />
+    </resultMap>
+
+    <sql id="selectCourseTableOneVo">
+        select t.uuid,t.year,t.semester,t.period_start,t.period_end,t.week,t.limit_week,t.node,t.classroom_id,t.course_id,t.dept_id
+        from s_course_table t
+    </sql>
+
+    <sql id="selectCourseTableMoreVo">
+        select
+               t.uuid,t.year,t.semester,t.period_start,t.period_end,t.week,t.limit_week,t.node,t.classroom_id,t.course_id,t.dept_id,
+               r.name,r.address,c.name,c.leader,c.leader_id,c.type,c.credit,d.dept_name
+        from s_course_table t
+        left join s_classroom r on t.classroom_id = r.uuid and r.del_flag != 1
+        left join s_course c on t.course_id = c.uuid
+        left join s_dept d on t.dept_id = d.dept_id
+    </sql>
+
+
+
+
+    <select id="getCourseTableList" resultType="com.bdu.laborder.entity.CourseTable">
+        <include refid="selectCourseTableMoreVo" />
+        <where>
+            <if test="year != null and year !=''">AND t.year = #{year} </if>
+            <if test="semester != null and semester !=''">AND t.semester = #{semester} </if>
+            <if test="deptId != null and deptId !=''">AND t.dept_id = #{deptId}</if>
+        </where>
+        order by t.week,t.node
+    </select>
+</mapper>
