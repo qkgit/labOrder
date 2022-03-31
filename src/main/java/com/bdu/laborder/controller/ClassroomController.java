@@ -63,4 +63,9 @@ public class ClassroomController extends BaseController {
     public Result deleteClassroom(@PathVariable String[] ids){
         return toResult(classroomService.deleteClassroomByIds(ids));
     }
+
+    @GetMapping("/getByName/{name}")
+    public Result getRoomByName(@PathVariable String name) {
+        return success(classroomService.getRoomByNameOrAdd(name));
+    }
 }

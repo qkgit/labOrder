@@ -93,4 +93,15 @@ public class ClassroomServiceImpl implements ClassroomService {
             return UserConstants.UNIQUE;
         }
     }
+
+    /**
+     * 根据教室名称或地址查询教室
+     *
+     * @param param 教室名称或地址
+     * @return
+     */
+    @Override
+    public List<Classroom> getRoomByNameOrAdd(String param) {
+        return classroomMapper.selectRoomByNameOrAdd(param);
+    }
 }

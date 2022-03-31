@@ -26,4 +26,6 @@ public interface ClassroomMapper {
     int deleteClassroomByIds(String[] ids);
 
     Classroom checkAddressUnique(Classroom classroom);
+
+    List<Classroom> selectRoomByNameOrAdd(String param);
 }

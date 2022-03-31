@@ -96,4 +96,8 @@
         </foreach>
     </delete>
 
+    <select id="selectRoomByNameOrAdd" resultMap="ClassroomResult">
+        <include refid="selectClassroomVO" />
+        where (name like concat('%',#{param},'%') or address like concat('%',#{param},'%')) and del_flag = '0'
+    </select>
 </mapper>

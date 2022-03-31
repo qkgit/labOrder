@@ -53,4 +53,11 @@ public interface ClassroomService {
      * @return
      */
     String checkAddressUnique(Classroom classroom);
+
+    /**
+     *  根据教室名称或地址查询教室
+     * @param param 教室名称或地址
+     * @return
+     */
+    List<Classroom> getRoomByNameOrAdd(String param);
 }
