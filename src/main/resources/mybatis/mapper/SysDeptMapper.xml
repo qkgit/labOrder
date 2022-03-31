@@ -132,4 +132,9 @@
     <update id="openDeptStatus">
         update s_dept set status = '0' ,update_by = #{updateBy} where status = '1' and dept_id = #{deptId}
     </update>
+
+    <select id="selectDeptByName" resultMap="SysDeptResult">
+        <include refid="selectDeptVo"/>
+        where dept_name like concat('%', #{deptName}, '%')
+    </select>
 </mapper>

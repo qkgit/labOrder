@@ -32,6 +32,13 @@ public interface SysDeptMapper {
     public SysDept selectDeptById(String deptId);
 
     /**
+     *  根据名称查询部门
+     * @param deptName
+     * @return
+     */
+    public List<SysDept> selectDeptByName(String deptName);
+
+    /**
      * 根据ID查询所有子部门
      *
      * @param deptId 部门ID

@@ -96,6 +96,10 @@ public class SysDeptController extends BaseController {
             return error("部门存在用户,不允许删除");
         }
         return toResult(deptService.deleteDeptById(deptId));
+    }
 
+    @GetMapping("/getByName/{name}")
+    public Result getDeptByName(@PathVariable String name) {
+        return success(deptService.getByName(name));
     }
 }

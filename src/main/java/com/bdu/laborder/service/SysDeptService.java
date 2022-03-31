@@ -119,4 +119,11 @@ public interface SysDeptService {
      */
     public int deleteDeptById(String deptId);
 
+    /**
+     *  根据名称查询部门
+     * @param name 部门名称
+     * @return 结果
+     */
+    public List<SysDept> getByName(String name);
+
 }

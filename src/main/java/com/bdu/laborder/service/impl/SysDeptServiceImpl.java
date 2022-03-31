@@ -311,4 +311,15 @@ public class SysDeptServiceImpl implements SysDeptService {
     public int deleteDeptById(String deptId) {
         return deptMapper.deleteDeptById(deptId);
     }
+
+    /**
+     * 根据名称查询部门
+     *
+     * @param name 部门名称
+     * @return 结果
+     */
+    @Override
+    public List<SysDept> getByName(String name) {
+        return deptMapper.selectDeptByName(name);
+    }
 }
