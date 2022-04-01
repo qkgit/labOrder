@@ -26,6 +26,12 @@ public interface CourseTimeService {
     public CourseTime getTime(String id);
 
     /**
+     *  查询默认时间配置
+     * @return
+     */
+    public CourseTime getDefaultTime();
+
+    /**
      *  添加课程时间
      * @param courseTime
      * @return

@@ -59,7 +59,7 @@ public class CourseController extends BaseController {
         return toResult(courseService.removeCourseByIds(ids));
     }
 
-    /** ############################## 课程 start ################################ */
+    /** ############################## 课程 end ################################ */
 
 
     /** ############################## 课程时间 start ################################ */
@@ -93,6 +93,11 @@ public class CourseController extends BaseController {
         }
         courseTime.setUpdateBy(getUserName());
         return toResult(timeService.updateTime(courseTime));
+    }
+
+    @GetMapping("/defaultTime")
+    public Result getDefaultTime(){
+        return success(timeService.getDefaultTime());
     }
 
     @PutMapping("/time/{id}")

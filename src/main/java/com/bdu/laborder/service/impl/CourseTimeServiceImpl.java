@@ -53,6 +53,17 @@ public class CourseTimeServiceImpl implements CourseTimeService {
         }
     }
 
+    /**
+     * 查询默认时间配置
+     *
+     * @return
+     */
+    @Override
+    public CourseTime getDefaultTime() {
+        CourseTime defaultTime = courseTimeMapper.getDefaultTime();
+        return getTime(defaultTime.getUuid());
+    }
+
     @Override
     public int insertTime(CourseTime courseTime) {
         // 设置uuid
