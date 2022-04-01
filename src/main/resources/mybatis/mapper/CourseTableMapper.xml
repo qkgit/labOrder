@@ -15,18 +15,19 @@
         <result property="deptId" column="dept_id" />
         <association property="classroom" javaType="com.bdu.laborder.entity.Classroom" resultMap="classroomResult" />
         <association property="course" javaType="com.bdu.laborder.entity.Course" resultMap="courseResult" />
-        <association property="dept" javaType="com.bdu.laborder.common.core.domain.entity.SysDept" resultMap="deptResult" />
+        <association property="dept" javaType="com.bdu.laborder.common.core.domain.entity.SysDept" resultMap="deptResult"/>
+
     </resultMap>
 
     <resultMap id="classroomResult" type="com.bdu.laborder.entity.Classroom">
         <id property="uuid" column="uuid"                        />
-        <result property="name" column="name"                    />
+        <result property="name" column="classroom_name"                    />
         <result property="address" column="address"              />
         <result property="level" column="level"                  />
         <result property="cap" column="cap"                      />
         <result property="status" column="status"                />
-        <result property="leader" column="leader"                />
-        <result property="leaderId" column="leader_id"           />
+        <result property="leader" column="classroom_leader"                />
+        <result property="leaderId" column="classroom_leader_id"           />
         <result property="delFlag" column="del_flag"             />
         <result property="remark" column="remark"                />
         <result property="createBy" column="create_by"           />
@@ -37,7 +38,7 @@
 
     <resultMap id="courseResult" type="com.bdu.laborder.entity.Course">
         <id     property="uuid"       column="uuid"        />
-        <result property="name"       column="name"        />
+        <result property="name"       column="course_name"        />
         <result property="leader"     column="leader"      />
         <result property="leaderId"   column="leader_id"   />
         <result property="type"       column="type"        />
@@ -67,7 +68,9 @@
     <sql id="selectCourseTableMoreVo">
         select
                t.uuid,t.year,t.semester,t.period_start,t.period_end,t.week,t.limit_week,t.node,t.classroom_id,t.course_id,t.dept_id,
-               r.name,r.address,c.name,c.leader,c.leader_id,c.type,c.credit,d.dept_name
+               c.name as course_name,c.leader as classroom_leader,c.leader_id as classroom_leader_id,c.type,c.credit,
+               r.name as classroom_name,r.address,
+               d.dept_name
         from s_course_table t
         left join s_classroom r on t.classroom_id = r.uuid and r.del_flag != 1
         left join s_course c on t.course_id = c.uuid
@@ -77,7 +80,7 @@
 
 
 
-    <select id="getCourseTableList" resultType="com.bdu.laborder.entity.CourseTable">
+    <select id="getCourseTableList" resultMap="courseTableResult">
         <include refid="selectCourseTableMoreVo" />
         <where>
             <if test="year != null and year !=''">AND t.year = #{year} </if>
