@@ -12,7 +12,6 @@ import com.bdu.laborder.utils.PageQuery;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.gson.Gson;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +33,7 @@ public class LabExpServiceImpl implements LabExpService {
     public PageInfo<Experiment> queryLabExpList(PageQuery pageQuery) {
         PageInfo page = pageQuery.getPage();
         Gson gson = CreateGson.createGson();
-        ExpRequest item = gson.fromJson(JSONObject.fromObject(pageQuery.getItem()).toString(), ExpRequest.class);
+        ExpRequest item = gson.fromJson(gson.toJson(pageQuery.getItem()), ExpRequest.class);
         PageHelper.startPage(page.getPageNum(),page.getPageSize());
         List<Experiment> labExpList = labExpMapper.getExps(item);
         PageInfo<Experiment> pageInfo = new PageInfo<>(labExpList);

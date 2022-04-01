@@ -1,5 +1,6 @@
 package com.bdu.laborder.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bdu.laborder.common.constant.BussinessCode;
 import com.bdu.laborder.common.constant.Constant;
 import com.bdu.laborder.entity.LabOrder;
@@ -15,7 +16,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.gson.Gson;
 import io.jsonwebtoken.Claims;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +43,7 @@ public class OrderLabServiceImpl implements OrderLabService {
     public int orderLab(HttpServletRequest request) {
         String id = getUserId(request);
         // 获取实验室预约id
-        com.alibaba.fastjson.JSONObject jsonParam = this.getJSONParam(request);
+        JSONObject jsonParam = this.getJSONParam(request);
         String labOrderId = jsonParam.get("loId").toString();
         int loId = Integer.parseInt(labOrderId);
         LabOrder labOrder = labOrderMapper.getLabOrderById(loId);
@@ -105,9 +105,9 @@ public class OrderLabServiceImpl implements OrderLabService {
     public PageInfo<LabOrder> getOrderListByUser(HttpServletRequest request) {
         String id = getUserId(request);
         // 获取pageQuery
-        com.alibaba.fastjson.JSONObject jsonParam = this.getJSONParam(request);
+        JSONObject jsonParam = this.getJSONParam(request);
         Gson gson = CreateGson.createGson();
-        PageQuery pageQuery = gson.fromJson(JSONObject.fromObject(jsonParam).toString(), PageQuery.class);
+        PageQuery pageQuery = gson.fromJson(gson.toJson(jsonParam), PageQuery.class);
         PageInfo page = pageQuery.getPage();
         try {
             // 根据用户id 查询用户预约了哪些实验室
@@ -129,7 +129,7 @@ public class OrderLabServiceImpl implements OrderLabService {
     @Override
     public int CancelOrder(HttpServletRequest request) {
         String id = getUserId(request);
-        com.alibaba.fastjson.JSONObject jsonParam = this.getJSONParam(request);
+        JSONObject jsonParam = this.getJSONParam(request);
         String labOrderId = jsonParam.get("loId").toString();
         int loId = Integer.parseInt(labOrderId);
         int i = orderLabMapper.deleteOrderByUser(loId);
@@ -203,7 +203,7 @@ public class OrderLabServiceImpl implements OrderLabService {
             while ((line = streamReader.readLine()) != null) {
                 sb.append(line);
             }
-            jsonParam = com.alibaba.fastjson.JSONObject.parseObject(sb.toString());
+            jsonParam = JSONObject.parseObject(sb.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }

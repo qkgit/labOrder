@@ -13,7 +13,6 @@ import com.bdu.laborder.utils.RedisUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.gson.Gson;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -38,7 +37,7 @@ public class LabsServiceImpl implements LabsService {
         PageInfo page = pageQuery.getPage();
 //        String pageSize = (String) ((LinkedHashMap) page.get(0)).get("pageSize");
         Gson gson = CreateGson.createGson();
-        LabRequest item = gson.fromJson(JSONObject.fromObject(pageQuery.getItem()).toString(), LabRequest.class);
+        LabRequest item = gson.fromJson(gson.toJson(pageQuery.getItem()), LabRequest.class);
         PageHelper.startPage(page.getPageNum(), page.getPageSize());
         List<Labs> Labs = labsMapper.getLabs(item);
 //        redisUtil.set("lab",Labs);

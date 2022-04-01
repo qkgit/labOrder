@@ -9,7 +9,6 @@ import com.bdu.laborder.utils.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.gson.Gson;
-import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,8 +83,7 @@ public class BaseController {
     */
    protected <T> T getParam(PageQuery pageQuery,Class<T> classOfT) {
       Gson gson = CreateGson.createGson();
-      gson.fromJson(JSONObject.fromObject(pageQuery.getItem()).toString(), classOfT);
-      return gson.fromJson(JSONObject.fromObject(pageQuery.getItem()).toString(), classOfT);
+      return gson.fromJson(gson.toJson(pageQuery.getItem()), classOfT);
    }
 
 

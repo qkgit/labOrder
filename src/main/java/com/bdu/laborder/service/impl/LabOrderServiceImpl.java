@@ -15,7 +15,6 @@ import com.bdu.laborder.utils.PageQuery;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.gson.Gson;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +43,7 @@ public class LabOrderServiceImpl implements LabOrderService {
     public PageInfo<LabOrder> queryAllLabList(PageQuery pageQuery) {
         PageInfo page = pageQuery.getPage();
         Gson gson = CreateGson.createGson();
-        LabOrderRequest item = gson.fromJson(JSONObject.fromObject(pageQuery.getItem()).toString(), LabOrderRequest.class);
+        LabOrderRequest item = gson.fromJson(gson.toJson(pageQuery.getItem()), LabOrderRequest.class);
         PageHelper.startPage(page.getPageNum(),page.getPageSize());
         List<LabOrder> allLabOrderList = labOrderMapper.getAllLabOrderList(item);
         PageInfo<LabOrder> pageInfo = new PageInfo<>(allLabOrderList);
@@ -56,7 +55,7 @@ public class LabOrderServiceImpl implements LabOrderService {
     public PageInfo<LabOrder> querySLabOrderList(PageQuery pageQuery) {
         PageInfo page = pageQuery.getPage();
         Gson gson = CreateGson.createGson();
-        LabOrderRequest item = gson.fromJson(JSONObject.fromObject(pageQuery.getItem()).toString(), LabOrderRequest.class);
+        LabOrderRequest item = gson.fromJson(gson.toJson(pageQuery.getItem()), LabOrderRequest.class);
         PageHelper.startPage(page.getPageNum(),page.getPageSize());
         // 查询符合条件的实验室
         List<LabOrder> sLabOrderList = labOrderMapper.getSLabOrderList(item);
@@ -69,7 +68,7 @@ public class LabOrderServiceImpl implements LabOrderService {
     public PageInfo<LabOrder> queryTLabOrderList(PageQuery pageQuery) {
         PageInfo page = pageQuery.getPage();
         Gson gson = CreateGson.createGson();
-        LabOrderRequest item = gson.fromJson(JSONObject.fromObject(pageQuery.getItem()).toString(), LabOrderRequest.class);
+        LabOrderRequest item = gson.fromJson(gson.toJson(pageQuery.getItem()), LabOrderRequest.class);
         PageHelper.startPage(page.getPageNum(),page.getPageSize());
         List<LabOrder> tLabOrderList = labOrderMapper.getTLabOrderList(item);
         PageInfo<LabOrder> pageInfo = new PageInfo<>(tLabOrderList);

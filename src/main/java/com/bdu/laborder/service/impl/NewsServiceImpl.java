@@ -10,7 +10,6 @@ import com.bdu.laborder.utils.PageQuery;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.gson.Gson;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +28,7 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public PageInfo<News> getNews(PageQuery pageQuery) {
         Gson gson = CreateGson.createGson();
-        NewsRequest item = gson.fromJson(JSONObject.fromObject(pageQuery.getItem()).toString(), NewsRequest.class);
+        NewsRequest item = gson.fromJson(gson.toJson(pageQuery.getItem()), NewsRequest.class);
         PageInfo page = pageQuery.getPage();
         PageHelper.startPage(page.getPageNum(),page.getPageSize());
         List<News> allNews = newsMapper.getAllNews(item);
