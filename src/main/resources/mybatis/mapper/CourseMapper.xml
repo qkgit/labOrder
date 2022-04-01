@@ -77,4 +77,9 @@
             #{ids}
         </foreach>
     </delete>
+
+    <select id="getCourseListByNameOrLeader" resultMap="CourseResult">
+        <include refid="selectCourseVo" />
+        where  name like concat('%',#{param},'%') or leader like concat('%',#{param},'%')
+    </select>
 </mapper>

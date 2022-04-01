@@ -17,6 +17,8 @@ public interface CourseMapper {
 
     List<Course> selectCourseList(Course course);
 
+    List<Course> getCourseListByNameOrLeader(String param);
+
     Course selectCourseById(String id);
 
     int insertCourse(Course course);

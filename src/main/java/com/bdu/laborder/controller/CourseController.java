@@ -3,10 +3,13 @@ package com.bdu.laborder.controller;
 import com.bdu.laborder.common.core.domain.controller.BaseController;
 import com.bdu.laborder.common.core.result.Result;
 import com.bdu.laborder.entity.Course;
+import com.bdu.laborder.entity.CourseTable;
 import com.bdu.laborder.entity.CourseTime;
 import com.bdu.laborder.service.CourseService;
+import com.bdu.laborder.service.CourseTableService;
 import com.bdu.laborder.service.CourseTimeService;
 import com.bdu.laborder.utils.PageQuery;
+import com.bdu.laborder.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +28,8 @@ public class CourseController extends BaseController {
     private CourseService courseService;
     @Autowired
     CourseTimeService timeService;
+    @Autowired
+    private CourseTableService tableService;
 
     /** ############################## 课程 start ################################ */
 
@@ -34,6 +39,11 @@ public class CourseController extends BaseController {
         Course course = getParam(pageQuery, Course.class);
         List<Course> courseList = courseService.getCourseList(course);
         return getPageInfo(courseList);
+    }
+
+    @GetMapping("/getByName/{param}")
+    public Result getCourseSelect(@PathVariable("param") String param){
+        return success(courseService.getCourseListByNameOrLeader(param));
     }
 
     @GetMapping("/{id}")
@@ -125,4 +135,40 @@ public class CourseController extends BaseController {
     }
 
     /** ############################## 课程时间 end ################################ */
+
+    /** ############################## 课程表 start ################################ */
+
+    @PostMapping("/table/list")
+    public Result getTable(@RequestBody CourseTable table){
+        // 必填项未填返回空数据
+        if (StringUtils.isEmpty(table.getYear())
+                ||StringUtils.isEmpty(table.getSemester())
+                ||StringUtils.isEmpty(table.getDeptId())){
+            return success();
+        }
+        return success(tableService.getCourseTableList(table));
+    }
+
+    @PostMapping("/table")
+    public Result addTableInfo(@RequestBody CourseTable table){
+        // 重复校验
+        return toResult(1);
+    }
+
+    @GetMapping("/table/{id}")
+    public Result getTableInfoById(@PathVariable String id){
+        return success();
+    }
+
+    @PutMapping("/table")
+    public Result editTableInfo(@RequestBody CourseTable table){
+        return toResult(1);
+    }
+
+    @DeleteMapping("/table/{ids}")
+    public Result removeTableInfoByIds(@PathVariable String[] ids){
+        return toResult(1);
+    }
+
+    /** ############################## 课程表 end ################################ */
 }

@@ -30,6 +30,11 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public List<Course> getCourseListByNameOrLeader(String param) {
+        return courseMapper.getCourseListByNameOrLeader(param);
+    }
+
+    @Override
     public Course getCourseById(String id) {
         return courseMapper.selectCourseById(id);
     }
