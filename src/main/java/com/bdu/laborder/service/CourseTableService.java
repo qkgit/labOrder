@@ -33,4 +33,11 @@ public interface CourseTableService {
      */
     public int addCourseTable(CourseTable table);
 
+    /**
+     * 校验 该班级 同年同学期同周同节 是否已经存在配置课程
+     * @param table
+     * @return
+     */
+    public String checkCourseTableUnique(CourseTable table);
+
 }

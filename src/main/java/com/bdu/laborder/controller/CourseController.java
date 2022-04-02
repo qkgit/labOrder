@@ -1,5 +1,6 @@
 package com.bdu.laborder.controller;
 
+import com.bdu.laborder.common.constant.UserConstants;
 import com.bdu.laborder.common.core.domain.controller.BaseController;
 import com.bdu.laborder.common.core.result.Result;
 import com.bdu.laborder.entity.Course;
@@ -10,6 +11,7 @@ import com.bdu.laborder.service.CourseTableService;
 import com.bdu.laborder.service.CourseTimeService;
 import com.bdu.laborder.utils.PageQuery;
 import com.bdu.laborder.utils.StringUtils;
+import com.bdu.laborder.utils.UuidUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -151,13 +153,20 @@ public class CourseController extends BaseController {
 
     @PostMapping("/table")
     public Result addTableInfo(@RequestBody CourseTable table){
+        // 非空校验
+
         // 重复校验
-        return toResult(1);
+        if (UserConstants.NOT_UNIQUE.equals(tableService.checkCourseTableUnique(table))){
+            return error("添加失败！该班级课程表在该时间已存在课程！");
+        }
+        table.setUuid(UuidUtil.getUuid());
+        table.setCreateBy(getUserName());
+        return toResult(tableService.addCourseTable(table));
     }
 
     @GetMapping("/table/{id}")
     public Result getTableInfoById(@PathVariable String id){
-        return success();
+        return success(tableService.getCourseTableById(id));
     }
 
     @PutMapping("/table")

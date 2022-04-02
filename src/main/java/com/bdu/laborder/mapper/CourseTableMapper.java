@@ -15,4 +15,19 @@ import java.util.List;
 public interface CourseTableMapper {
 
     List<CourseTable> getCourseTableList(CourseTable courseTable);
+
+    /**
+     * 校验 该班级 同年同学期同周同节 是否已经存在配置课程
+     * @param table
+     * @return
+     */
+    CourseTable checkCourseTableUnique(CourseTable table);
+
+    CourseTable selectCourseTableById(String id);
+
+    int insertCourseTable(CourseTable table);
+
+    int updateCourseTable(CourseTable table);
+
+
 }

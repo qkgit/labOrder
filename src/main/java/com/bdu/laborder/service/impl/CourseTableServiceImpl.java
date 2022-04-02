@@ -1,8 +1,10 @@
 package com.bdu.laborder.service.impl;
 
+import com.bdu.laborder.common.constant.UserConstants;
 import com.bdu.laborder.entity.CourseTable;
 import com.bdu.laborder.mapper.CourseTableMapper;
 import com.bdu.laborder.service.CourseTableService;
+import com.bdu.laborder.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +40,7 @@ public class CourseTableServiceImpl implements CourseTableService {
      */
     @Override
     public CourseTable getCourseTableById(String id) {
-        return null;
+        return tableMapper.selectCourseTableById(id);
     }
 
     /**
@@ -49,6 +51,22 @@ public class CourseTableServiceImpl implements CourseTableService {
      */
     @Override
     public int addCourseTable(CourseTable table) {
-        return 0;
+        return tableMapper.insertCourseTable(table);
+    }
+
+    /**
+     * 校验 该班级 同年同学期同周同节 是否已经存在配置课程
+     *
+     * @param table
+     * @return
+     */
+    @Override
+    public String checkCourseTableUnique(CourseTable table) {
+        CourseTable info = tableMapper.checkCourseTableUnique(table);
+        if (StringUtils.isNotNull(info) && !info.getUuid().equals(table.getUuid())){
+            return UserConstants.NOT_UNIQUE;
+        }else {
+            return UserConstants.UNIQUE;
+        }
     }
 }

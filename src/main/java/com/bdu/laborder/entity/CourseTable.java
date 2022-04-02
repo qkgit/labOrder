@@ -1,5 +1,6 @@
 package com.bdu.laborder.entity;
 
+import com.bdu.laborder.common.core.domain.BaseEntity;
 import com.bdu.laborder.common.core.domain.entity.SysDept;
 
 import java.io.Serializable;
@@ -9,7 +10,7 @@ import java.io.Serializable;
  * @Author Qi
  * @data 2022/3/26 10:27
  */
-public class CourseTable implements Serializable {
+public class CourseTable extends BaseEntity implements Serializable {
     /** ID */
     private String uuid;
     // 时间
