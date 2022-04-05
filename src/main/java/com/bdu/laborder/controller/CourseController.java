@@ -171,13 +171,30 @@ public class CourseController extends BaseController {
 
     @PutMapping("/table")
     public Result editTableInfo(@RequestBody CourseTable table){
-        return toResult(1);
+        // 重复校验
+        if (UserConstants.NOT_UNIQUE.equals(tableService.checkCourseTableUnique(table))){
+            return error("添加失败！该班级课程表在该时间已存在课程！");
+        }
+        table.setUpdateBy(getUserName());
+        return toResult(tableService.updateCourseTable(table));
     }
 
     @DeleteMapping("/table/{ids}")
     public Result removeTableInfoByIds(@PathVariable String[] ids){
-        return toResult(1);
+        return toResult(tableService.deleteCourseTableByIds(ids));
     }
+
+
+    /**
+     * 查询各楼层教室课表（预约使用）
+     */
+
+    /**
+     * 查询用户课表
+     *   1.老师  =>  所教课程的课表
+     *   2.学生  =>  所在班级的课表
+     */
+
 
     /** ############################## 课程表 end ################################ */
 }

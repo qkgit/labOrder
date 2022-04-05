@@ -55,6 +55,28 @@ public class CourseTableServiceImpl implements CourseTableService {
     }
 
     /**
+     * 修改课程表
+     *
+     * @param table
+     * @return
+     */
+    @Override
+    public int updateCourseTable(CourseTable table) {
+        return tableMapper.updateCourseTable(table);
+    }
+
+    /**
+     * 删除课程表
+     *
+     * @param ids
+     * @return
+     */
+    @Override
+    public int deleteCourseTableByIds(String[] ids) {
+        return tableMapper.deleteCourseTableByIds(ids);
+    }
+
+    /**
      * 校验 该班级 同年同学期同周同节 是否已经存在配置课程
      *
      * @param table

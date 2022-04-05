@@ -29,5 +29,7 @@ public interface CourseTableMapper {
 
     int updateCourseTable(CourseTable table);
 
+    int deleteCourseTableByIds(String[] ids);
+
 
 }

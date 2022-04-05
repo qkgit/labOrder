@@ -10,6 +10,7 @@
         <result property="week" column="week" />
         <result property="limitWeek" column="limit_week" />
         <result property="node" column="node" />
+        <result property="remark" column="remark"                />
         <result property="classRoomId" column="classroom_id" />
         <result property="courseId" column="course_id" />
         <result property="deptId" column="dept_id" />
@@ -20,8 +21,8 @@
     </resultMap>
 
     <resultMap id="classroomResult" type="com.bdu.laborder.entity.Classroom">
-        <id property="uuid" column="uuid"                        />
-        <result property="name" column="name"                    />
+        <id property="uuid" column="r_id"                        />
+        <result property="name" column="r_name"                  />
         <result property="address" column="address"              />
         <result property="level" column="level"                  />
         <result property="cap" column="cap"                      />
@@ -37,13 +38,13 @@
     </resultMap>
 
     <resultMap id="courseResult" type="com.bdu.laborder.entity.Course">
-        <id     property="uuid"       column="uuid"        />
-        <result property="name"       column="name"        />
+        <id     property="uuid"       column="c_id"        />
+        <result property="name"       column="c_name"        />
         <result property="leader"     column="leader"      />
         <result property="leaderId"   column="leader_id"   />
         <result property="type"       column="type"        />
         <result property="credit"     column="credit"      />
-        <result property="remark"     column="remark"      />
+        <result property="remark"     column="c_remark"      />
         <result property="createBy"   column="create_by"   />
         <result property="createTime" column="create_time" />
         <result property="updateBy"   column="update_by"   />
@@ -51,7 +52,7 @@
     </resultMap>
 
     <resultMap id="deptResult" type="com.bdu.laborder.common.core.domain.entity.SysDept">
-        <id     property="deptId"   column="dept_id"     />
+        <id     property="deptId"   column="d_id"     />
         <result property="parentId" column="parent_id"   />
         <result property="ancestors" column="ancestors"  />
         <result property="deptName" column="dept_name"   />
@@ -61,22 +62,21 @@
     </resultMap>
 
     <sql id="selectCourseTableOneVo">
-        select t.uuid,t.year,t.semester,t.period_start,t.period_end,t.week,t.limit_week,t.node,t.classroom_id,t.course_id,t.dept_id
+        select t.uuid,t.year,t.semester,t.period_start,t.period_end,t.week,t.limit_week,t.node,t.classroom_id,t.course_id,t.dept_id,t.remark
         from s_course_table t
     </sql>
 
     <sql id="selectCourseTableMoreVo">
         select
-               t.uuid,t.year,t.semester,t.period_start,t.period_end,t.week,t.limit_week,t.node,t.classroom_id,t.course_id,t.dept_id,
-               c.name,c.leader,c.leader_id,c.type,c.credit,
-               r.name,r.address,
-               d.dept_name
+               t.uuid,t.year,t.semester,t.period_start,t.period_end,t.week,t.limit_week,t.node,t.classroom_id,t.course_id,t.dept_id,t.remark,
+               c.uuid as c_id,c.name as c_name,c.leader,c.leader_id,c.type,c.credit,
+               r.uuid as r_id,r.name as r_name,r.address,
+               d.dept_id as d_id,d.dept_name
         from s_course_table t
         left join s_classroom r on t.classroom_id = r.uuid and r.del_flag != 1
         left join s_course c on t.course_id = c.uuid
         left join s_dept d on t.dept_id = d.dept_id
     </sql>
-
 
 
 
@@ -138,5 +138,29 @@
     </insert>
 
     <update id="updateCourseTable">
+        update s_course_table
+        <set>
+            <if test="year != null and year != ''">year = #{year},</if>
+            <if test="semester != null and semester != ''">semester = #{semester},</if>
+            <if test="periodStart != null and periodStart != ''">period_start = #{periodStart},</if>
+            <if test="periodEnd != null and periodEnd != ''">period_end = #{periodEnd},</if>
+            <if test="week != null and week != ''">week = #{week},</if>
+            <if test="limitWeek != null and limitWeek != ''">limit_week = #{limitWeek},</if>
+            <if test="node != null and node != 0">node = #{node},</if>
+            <if test="deptId != null and deptId != ''">dept_id = #{deptId},</if>
+            <if test="classRoomId != null and classRoomId != ''">classroom_id = #{classRoomId},</if>
+            <if test="courseId != null and courseId != ''">course_id = #{courseId},</if>
+            <if test="remark != null and remark != ''">remark = #{remark},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            update_time = sysdate()
+        </set>
+        where uuid = #{uuid}
     </update>
+
+    <delete id="deleteCourseTableByIds">
+        delete from s_course_table where uuid in
+        <foreach collection="array" item="ids" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </delete>
 </mapper>
