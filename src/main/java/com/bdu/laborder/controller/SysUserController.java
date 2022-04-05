@@ -12,6 +12,7 @@ import com.bdu.laborder.service.SysDeptService;
 import com.bdu.laborder.service.SysUserService;
 import com.bdu.laborder.utils.PageQuery;
 import com.bdu.laborder.utils.StringUtils;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -39,10 +40,16 @@ public class SysUserController extends BaseController {
 
     @PostMapping("/users")
     public Result getUserList(@RequestBody PageQuery pageQuery) {
-        startPage(pageQuery);
+        PageInfo page = pageQuery.getPage();
         SysUser user = getParam(pageQuery, SysUser.class);
         List<SysUser> userList = userService.getUserList(user);
-        return getPageInfo(userList);
+        List<SysUser> resultList = userList.stream()
+                .skip((page.getPageNum()-1) * page.getPageSize())
+                .limit(page.getPageSize())
+                .collect(Collectors.toList());
+        page.setList(resultList);
+        page.setTotal(userList.size());
+        return success(page);
     }
 
     @GetMapping("/user/{id}")
