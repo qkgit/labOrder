@@ -26,10 +26,10 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public SysUser login(String loginName, String password) {
         SysUser user = loginMapper.getUserByUserName(loginName);
-        if (user != null){
+        if (user != null) {
             String userPassword = user.getPassword();
-            password = MD5Util.MD5Encode(password,"UTF-8");
-            if (password.equals(userPassword)){
+            password = MD5Util.MD5Encode(password, "UTF-8");
+            if (password.equals(userPassword)) {
                 return user;
             }
         }
@@ -37,27 +37,13 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public SysUser selectUserByToken(String token) {
-        //根据token获取用户数据
-        Claims claims = null;
-        try {
-            //解析token
-            claims = jwtUtils.parseJwt(token);
-            //获取clamis
-            String userId = claims.getId();
-            //根据id查询用户信息
-            SysUser user = loginMapper.getUserById(userId);
-            if (user !=null){
-                user.setPassword(null);
-                return user;
-            }
-            return  null;
-        }catch (Exception e){
-            //如果token过期或失败 返回错误并重新登录
-            e.printStackTrace();
-            // token解析失败或token过期  返回异常让用户重新登录
-            throw new LabOrderException(BussinessCode.RESULT_TOKEN_OVER);
+    public SysUser getLoginUserById(String id) {
+        SysUser user = loginMapper.getUserById(id);
+        if (user != null) {
+            user.setPassword(null);
+            return user;
         }
+        return null;
     }
 
 

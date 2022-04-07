@@ -84,13 +84,13 @@ public class LoginController extends BaseController {
        return ResultGenerator.error(BussinessCode.RESULT_LOGIN_FAIL);
     }
 
-    @PostMapping("/user/info")
-    public Result getUserInfo(String token) {
-        SysUser user = loginService.selectUserByToken(token);
+    @GetMapping("/user/info")
+    public Result getUserInfo() {
+        SysUser user = loginService.getLoginUserById(getUserId());
         if (user == null) {
-            return ResultGenerator.error(BussinessCode.RESULT_INFO_FAIL);
+            return error("获取用户信息失败！");
         }
-        return ResultGenerator.returnCodeMessage(BussinessCode.RESULT_GLOBAL_SUCCESS, user);
+        return success(user);
     }
 
     @PostMapping("/logout")

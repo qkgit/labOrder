@@ -43,6 +43,7 @@
 		<result property="status"       column="role_status"    />
 	</resultMap>
 
+
     <select id="getUserByUserName"  resultMap="SysUserResult">
 		select user_id,login_name,password,is_firstlogin,status
 		from s_user
@@ -56,14 +57,16 @@
 	</select>
 
 	<select id="getUserById" parameterType="String" resultMap="SysUserResult">
-		select *
+		select u.user_id,u.dept_id,u.login_name,u.real_name,u.sex,u.mobile,u.email,u.avatar,u.status,u.is_firstlogin, u.create_time,
+		d.dept_name,
+		r.role_name,r.role_sort
 		from s_user u
+		left join s_dept d on u.dept_id = d.dept_id
 		left join s_user_role ur on u.user_id = ur.user_id
 		left join s_role r on r.role_id = ur.role_id
-		where u.del_flag = "0"
-		<if test="userId != null" >
-			and  u.user_id=#{userId}
-		</if>
+		where
+		u.del_flag = "0" and  u.user_id=#{userId}
+
 	</select>
 
 

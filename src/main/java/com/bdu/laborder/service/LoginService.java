@@ -15,10 +15,9 @@ public interface LoginService {
     SysUser login(String loginName, String password);
 
     /**
-     * 根据id查询用户
-     * @param token
+     * 获取登录用户信息
      * @return
      */
-    SysUser selectUserByToken(String token);
+    SysUser getLoginUserById(String id);
 
 }

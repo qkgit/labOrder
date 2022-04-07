@@ -124,16 +124,22 @@ public class SysUserController extends BaseController {
         return toResult(userService.restPwd(ids));
     }
 
-    @PutMapping("/user/updatePwd")
-    public Result updataPwd(HttpServletRequest request) {
-        Result result = ResultGenerator.returnCodeMessage(BussinessCode.RESULT_GLOBAL_FAIL);
-        int i = userService.updatePwd(request);
-        if (i != 0) {
-            result = ResultGenerator.returnCodeMessage(BussinessCode.RESULT_GLOBAL_SUCCESS);
-        }
-        return result;
+/**============================= 个人信息 ==========================================*/
+    @PutMapping("/user/profile/updatePwd")
+    public Result updatePwd(HttpServletRequest request) {
+        return toResult(userService.updatePwd(request));
     }
 
+    @PutMapping("/user/profile")
+    public Result updateProfile (@RequestBody SysUser user){
+        System.out.println(user);
+        return toResult(1);
+    }
+
+
+
+
+/******************************** 用户树 ***************************************************/
     @GetMapping("/userTreeSelect/{roleId}")
     public Result getDeptUserTreeSelectByRoleId(@PathVariable String roleId) {
         SysUser sysUser = new SysUser();

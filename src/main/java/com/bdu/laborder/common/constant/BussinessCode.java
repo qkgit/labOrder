@@ -34,7 +34,7 @@ public enum BussinessCode implements BaseErrorInfoInterface {
     // 用户名已存在
     USER_NAME_REREAT("2501","用户名已存在！"),
     // 修改密码
-    OLD_PWD_FAIL("2502","原密码不正确！"),
+    OLD_PWD_FAIL("2502",""),
 
     // 实验室管理模块
     LAB_ADD_EXIST("3501","实验室地址已存在！"),
