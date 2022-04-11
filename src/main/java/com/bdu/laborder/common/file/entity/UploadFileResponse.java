@@ -1,4 +1,4 @@
-package com.bdu.laborder.entity;
+package com.bdu.laborder.common.file.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

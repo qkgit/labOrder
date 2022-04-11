@@ -1,4 +1,4 @@
-package com.bdu.laborder.service;
+package com.bdu.laborder.common.file.service;
 
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface FileService {
 
-    String storeFile(MultipartFile file,String id);
+    String storeFile(MultipartFile file);
 
     Resource loadFileAsResource(String fileName);
 }

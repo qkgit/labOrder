@@ -1,7 +1,9 @@
-package com.bdu.laborder.controller;
+package com.bdu.laborder.common.file.utils;
 
-import com.bdu.laborder.entity.UploadFileResponse;
-import com.bdu.laborder.service.FileService;
+import com.bdu.laborder.common.file.entity.UploadFileResponse;
+import com.bdu.laborder.common.file.service.FileService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -12,9 +14,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+
 
 /**
  * @Author Qi
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @CrossOrigin
 @RestController
 public class FileController {
-//    private static final Logger logger = LoggerFactory.getLogger(FileController.class);
+    private static final Logger logger = LoggerFactory.getLogger(FileController.class);
 
     private final FileService fileService;
 
@@ -34,7 +34,7 @@ public class FileController {
 
     @PostMapping("/uploadFile")
     public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file,@RequestParam("userId") String userId){
-        String fileName = fileService.storeFile(file,userId);
+        String fileName = fileService.storeFile(file);
 
         String fileDownloadUri = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
