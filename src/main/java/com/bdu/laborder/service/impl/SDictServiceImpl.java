@@ -2,7 +2,7 @@ package com.bdu.laborder.service.impl;
 
 import com.bdu.laborder.common.constant.Constant;
 import com.bdu.laborder.common.core.domain.entity.SysDict;
-import com.bdu.laborder.exception.LabOrderException;
+import com.bdu.laborder.exception.BaseException;
 import com.bdu.laborder.mapper.SDictMapper;
 import com.bdu.laborder.service.SDictService;
 import com.bdu.laborder.utils.StringUtils;
@@ -79,13 +79,13 @@ public class SDictServiceImpl implements SDictService {
         for (String id : ids) {
             SysDict sDict = sDictMapper.selectSDictTypeById(id);
             if (sDictMapper.countSDictByType(sDict.getCode())>0) {
-                throw new LabOrderException(String.format("%1$s已分配字典项,不能删除",sDict.getName()));
+                throw new BaseException(String.format("%1$s已分配字典项,不能删除",sDict.getName()));
             }
             try {
                 i += sDictMapper.deleteSDictTypeById(id);
             }catch (Exception e){
                 i =0;
-                throw new LabOrderException();
+                throw new BaseException();
             }
 
         }
@@ -144,7 +144,7 @@ public class SDictServiceImpl implements SDictService {
                 i += sDictMapper.deleteSDictById(id);
             }catch (Exception e){
                 i =0;
-                throw new LabOrderException();
+                throw new BaseException();
             }
 
         }

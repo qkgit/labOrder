@@ -8,7 +8,6 @@ import com.bdu.laborder.common.core.domain.entity.SysMenu;
 import com.bdu.laborder.common.core.result.Result;
 import com.bdu.laborder.common.core.result.ResultGenerator;
 import com.bdu.laborder.common.core.domain.entity.SysUser;
-import com.bdu.laborder.exception.LabOrderException;
 import com.bdu.laborder.service.LoginService;
 import com.bdu.laborder.service.SysMenuService;
 import com.bdu.laborder.utils.JwtUtils;

@@ -4,7 +4,7 @@ import com.bdu.laborder.common.constant.BussinessCode;
 import com.bdu.laborder.common.constant.Constant;
 import com.bdu.laborder.common.core.domain.entity.SysUser;
 import com.bdu.laborder.entity.*;
-import com.bdu.laborder.exception.LabOrderException;
+import com.bdu.laborder.exception.BaseException;
 import com.bdu.laborder.mapper.LabExpMapper;
 import com.bdu.laborder.mapper.LabOrderMapper;
 import com.bdu.laborder.mapper.LabsMapper;
@@ -88,7 +88,7 @@ public class LabOrderServiceImpl implements LabOrderService {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         boolean canOrder = isCanOrder(labOrder);
         if (!canOrder){
-            throw new LabOrderException(BussinessCode.ADD_ORDER_FAIL);
+            throw new BaseException(BussinessCode.ADD_ORDER_FAIL);
         }
         // 查看top表最新时间是否为今天
         LabsTop labTop = labsMapper.getLabTopById(lId);
@@ -101,7 +101,7 @@ public class LabOrderServiceImpl implements LabOrderService {
             labsTop.setAllTime(1);
             int i = labsMapper.addLabTop(labsTop);
             if (i == 0){
-                throw new LabOrderException(BussinessCode.ADD_LABTOP_FAIL);
+                throw new BaseException(BussinessCode.ADD_LABTOP_FAIL);
             }
         }else{
             // 存在
@@ -113,7 +113,7 @@ public class LabOrderServiceImpl implements LabOrderService {
                 labTop.setAllTime(labTop.getAllTime()+1);
                 int i = labsMapper.updateLabTop(labTop);
                 if (i == 0){
-                    throw new LabOrderException(BussinessCode.ADD_LABTOP_FAIL);
+                    throw new BaseException(BussinessCode.ADD_LABTOP_FAIL);
                 }
             }
         }

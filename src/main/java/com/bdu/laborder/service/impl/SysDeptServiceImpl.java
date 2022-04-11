@@ -5,7 +5,7 @@ import com.bdu.laborder.common.constant.UserConstants;
 import com.bdu.laborder.common.core.domain.TreeSelect;
 import com.bdu.laborder.common.core.domain.entity.SysDept;
 import com.bdu.laborder.common.core.domain.entity.SysUser;
-import com.bdu.laborder.exception.LabOrderException;
+import com.bdu.laborder.exception.BaseException;
 import com.bdu.laborder.mapper.SysDeptMapper;
 import com.bdu.laborder.service.SysDeptService;
 import com.bdu.laborder.utils.StringUtils;
@@ -219,7 +219,7 @@ public class SysDeptServiceImpl implements SysDeptService {
         SysDept info = deptMapper.selectDeptById(dept.getParentId());
         // 如果父节点不为正常状态,则不允许新增子节点
         if (!UserConstants.DEPT_NORMAL.equals(info.getStatus())) {
-            throw new LabOrderException("部门停用，不允许新增");
+            throw new BaseException("部门停用，不允许新增");
         }
         dept.setDeptId(UuidUtil.getUuid());
         dept.setAncestors(info.getAncestors() + "," + dept.getParentId());

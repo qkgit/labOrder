@@ -3,7 +3,7 @@ package com.bdu.laborder.service.impl;
 import com.bdu.laborder.common.constant.Constant;
 import com.bdu.laborder.entity.ClassTime;
 import com.bdu.laborder.entity.CourseTime;
-import com.bdu.laborder.exception.LabOrderException;
+import com.bdu.laborder.exception.BaseException;
 import com.bdu.laborder.mapper.CourseTimeMapper;
 import com.bdu.laborder.service.CourseTimeService;
 import com.bdu.laborder.utils.CreateGson;
@@ -49,7 +49,7 @@ public class CourseTimeServiceImpl implements CourseTimeService {
             return courseTime;
         } catch (JsonSyntaxException e) {
             e.printStackTrace();
-            throw new LabOrderException("解析时间出错");
+            throw new BaseException("解析时间出错");
         }
     }
 
@@ -120,7 +120,7 @@ public class CourseTimeServiceImpl implements CourseTimeService {
         for (String id : ids) {
             CourseTime timeById = courseTimeMapper.getTimeById(id);
             if (Constant.DEFAULT_TRUE.equals(timeById.getIsDefault())){
-                throw new LabOrderException("删除失败！ 默认配置不可删除！");
+                throw new BaseException("删除失败！ 默认配置不可删除！");
             }
         }
         return courseTimeMapper.deletCourseTimeByIds(ids);

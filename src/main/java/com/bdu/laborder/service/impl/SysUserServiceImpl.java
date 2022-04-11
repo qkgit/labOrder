@@ -5,7 +5,7 @@ import com.bdu.laborder.common.constant.UserConstants;
 import com.bdu.laborder.common.core.domain.entity.SysDict;
 import com.bdu.laborder.common.core.domain.entity.SysUser;
 import com.bdu.laborder.common.core.domain.entity.SysUserRole;
-import com.bdu.laborder.exception.LabOrderException;
+import com.bdu.laborder.exception.BaseException;
 import com.bdu.laborder.mapper.SDictMapper;
 import com.bdu.laborder.mapper.SysUserMapper;
 import com.bdu.laborder.mapper.SysUserRoleMapper;
@@ -155,13 +155,13 @@ public class SysUserServiceImpl implements SysUserService {
         String oldPassWord = MD5Util.MD5Encode(oldPwd, "UTF-8");
         // 判断老密码是否一致
         if(password.equals(oldPassWord) == false) {
-            throw new LabOrderException(BussinessCode.OLD_PWD_FAIL);
+            throw new BaseException(BussinessCode.OLD_PWD_FAIL);
         }
         // 获取新密码  --- 去除空格
         String pwd = jsonParam.get("pwd").toString().replace(" ", "");
         // 判断长度大于6
         if (pwd.length() < 6) {
-            throw new LabOrderException(BussinessCode.UPDATE_PWD_NULL);
+            throw new BaseException(BussinessCode.UPDATE_PWD_NULL);
         }
         // 对密码进行加密
         pwd = MD5Util.MD5Encode(pwd, "UTF-8");
@@ -243,7 +243,7 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public void checkUserAllowed(SysUser user) {
         if (StringUtils.isNotNull(user.getUserId()) && user.isAdmin()) {
-            throw new LabOrderException("不允许操作超级管理员用户");
+            throw new BaseException("不允许操作超级管理员用户");
         }
     }
 

@@ -3,7 +3,7 @@ package com.bdu.laborder.service.impl;
 import com.bdu.laborder.common.constant.BussinessCode;
 import com.bdu.laborder.entity.ExpRequest;
 import com.bdu.laborder.entity.Experiment;
-import com.bdu.laborder.exception.LabOrderException;
+import com.bdu.laborder.exception.BaseException;
 import com.bdu.laborder.mapper.LabExpMapper;
 import com.bdu.laborder.mapper.LabsMapper;
 import com.bdu.laborder.service.LabExpService;
@@ -51,7 +51,7 @@ public class LabExpServiceImpl implements LabExpService {
         String expName = experiment.getExpName();
         String expId = labExpMapper.getExpByName(expName);
         if (expId != null){
-            throw new LabOrderException(BussinessCode.EXP_NAME_EXIST);
+            throw new BaseException(BussinessCode.EXP_NAME_EXIST);
         }
         int i = labExpMapper.addLabExp(experiment);
         return i;

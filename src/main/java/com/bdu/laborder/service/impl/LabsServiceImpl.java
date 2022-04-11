@@ -4,7 +4,7 @@ import com.bdu.laborder.common.constant.BussinessCode;
 import com.bdu.laborder.entity.LabRequest;
 import com.bdu.laborder.entity.Labs;
 import com.bdu.laborder.entity.LabsTop;
-import com.bdu.laborder.exception.LabOrderException;
+import com.bdu.laborder.exception.BaseException;
 import com.bdu.laborder.mapper.LabsMapper;
 import com.bdu.laborder.service.LabsService;
 import com.bdu.laborder.utils.CreateGson;
@@ -51,7 +51,7 @@ public class LabsServiceImpl implements LabsService {
         Labs lab = labsMapper.getLabByAddress(address);
         if (lab != null){
             // 如果存在有该地址的实验室 返回异常
-            throw new LabOrderException(BussinessCode.LAB_ADD_EXIST);
+            throw new BaseException(BussinessCode.LAB_ADD_EXIST);
         }
         int i = labsMapper.addLab(labs);
         if(i == 0){

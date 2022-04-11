@@ -1,7 +1,7 @@
 package com.bdu.laborder.config;
 
 import com.bdu.laborder.common.constant.BussinessCode;
-import com.bdu.laborder.exception.LabOrderException;
+import com.bdu.laborder.exception.BaseException;
 import com.bdu.laborder.utils.JwtUtils;
 import com.bdu.laborder.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,11 +37,11 @@ public class MyInterceptor implements HandlerInterceptor {
             String o = (String)redisUtil.get("token :"+userId);
             if (!token.equals(o)){
                 //  Redis内token过期 返回异常让用户重新登录
-                throw new LabOrderException(BussinessCode.RESULT_TOKEN_OVER);
+                throw new BaseException(BussinessCode.RESULT_TOKEN_OVER);
             }
         }catch (Exception e){
             // token解析失败或token过期  返回异常让用户重新登录
-            throw new LabOrderException(BussinessCode.RESULT_TOKEN_OVER);
+            throw new BaseException(BussinessCode.RESULT_TOKEN_OVER);
         }
         return true;
     }

@@ -5,7 +5,7 @@ import com.bdu.laborder.common.core.domain.entity.SysRole;
 import com.bdu.laborder.common.core.domain.entity.SysRoleMenu;
 import com.bdu.laborder.common.core.domain.entity.SysUser;
 import com.bdu.laborder.common.core.domain.entity.SysUserRole;
-import com.bdu.laborder.exception.LabOrderException;
+import com.bdu.laborder.exception.BaseException;
 import com.bdu.laborder.mapper.SysRoleMapper;
 import com.bdu.laborder.mapper.SysRoleMenuMapper;
 import com.bdu.laborder.mapper.SysUserRoleMapper;
@@ -127,7 +127,7 @@ public class SysRoleServiceImpl implements SysRoleService {
             checkRoleAllowed(new SysRole(roleId));
             SysRole role = selectRoleById(roleId);
             if (countUserRoleByRoleId(roleId) > 0) {
-                throw new LabOrderException(String.format("%1$s已分配,不能删除", role.getRoleName()));
+                throw new BaseException(String.format("%1$s已分配,不能删除", role.getRoleName()));
             }
         }
         // 删除角色与菜单关联
@@ -186,7 +186,7 @@ public class SysRoleServiceImpl implements SysRoleService {
     @Override
     public void checkRoleAllowed(SysRole role) {
         if (StringUtils.isNotNull(role.getRoleId()) && role.isAdmin()) {
-            throw new LabOrderException("不允许操作超级管理员用户");
+            throw new BaseException("不允许操作超级管理员用户");
         }
     }
 

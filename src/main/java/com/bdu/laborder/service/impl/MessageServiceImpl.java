@@ -3,7 +3,7 @@ package com.bdu.laborder.service.impl;
 import com.bdu.laborder.common.constant.BussinessCode;
 import com.bdu.laborder.entity.Message;
 import com.bdu.laborder.common.core.domain.entity.SysUser;
-import com.bdu.laborder.exception.LabOrderException;
+import com.bdu.laborder.exception.BaseException;
 import com.bdu.laborder.mapper.MessageMapper;
 import com.bdu.laborder.service.MessageService;
 import com.bdu.laborder.service.SysUserService;
@@ -82,7 +82,7 @@ public class MessageServiceImpl implements MessageService {
             userId = claims.getId();
         }catch (Exception e){
             // token解析失败 返回异常让用户重新登录
-            throw new LabOrderException(BussinessCode.RESULT_INFO_FAIL);
+            throw new BaseException(BussinessCode.RESULT_INFO_FAIL);
         }
         return userId;
     }

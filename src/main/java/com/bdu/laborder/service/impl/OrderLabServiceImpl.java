@@ -5,7 +5,7 @@ import com.bdu.laborder.common.constant.BussinessCode;
 import com.bdu.laborder.common.constant.Constant;
 import com.bdu.laborder.entity.LabOrder;
 import com.bdu.laborder.entity.LabOrderDetil;
-import com.bdu.laborder.exception.LabOrderException;
+import com.bdu.laborder.exception.BaseException;
 import com.bdu.laborder.mapper.LabOrderMapper;
 import com.bdu.laborder.mapper.OrderLabMapper;
 import com.bdu.laborder.service.OrderLabService;
@@ -57,17 +57,17 @@ public class OrderLabServiceImpl implements OrderLabService {
             LabOrder awaitLabOrder = labOrderMapper.getLabOrderById(awaitLoId);
             if (awaitLabOrder.getStartTime().getTime() <= startTime.getTime()){
                 if (awaitLabOrder.getEndTime().getTime() >= startTime.getTime()){
-                    throw new LabOrderException(BussinessCode.ORDER_TIME_CLASH);
+                    throw new BaseException(BussinessCode.ORDER_TIME_CLASH);
                 }
             }
             if (awaitLabOrder.getStartTime().getTime() <= endTime.getTime()){
                 if (awaitLabOrder.getEndTime().getTime() >= endTime.getTime()){
-                    throw new LabOrderException(BussinessCode.ORDER_TIME_CLASH);
+                    throw new BaseException(BussinessCode.ORDER_TIME_CLASH);
                 }
             }
             if (awaitLabOrder.getStartTime().getTime() >= startTime.getTime()){
                 if (awaitLabOrder.getEndTime().getTime() <= endTime.getTime()){
-                    throw new LabOrderException(BussinessCode.ORDER_TIME_CLASH);
+                    throw new BaseException(BussinessCode.ORDER_TIME_CLASH);
                 }
             }
         }
@@ -75,7 +75,7 @@ public class OrderLabServiceImpl implements OrderLabService {
         // 人数已满禁止预约
         if (labOrder.getLoOdd() == 0){
             // 余量为0 预约人数已满
-            throw new LabOrderException(BussinessCode.LAB_NOT_ODD);
+            throw new BaseException(BussinessCode.LAB_NOT_ODD);
         }
         Integer newLoOdd = null;
         // 查询loType
@@ -226,7 +226,7 @@ public class OrderLabServiceImpl implements OrderLabService {
             userId = claims.getId();
         }catch (Exception e){
             // token解析失败 返回异常让用户重新登录
-            throw new LabOrderException(BussinessCode.RESULT_INFO_FAIL);
+            throw new BaseException(BussinessCode.RESULT_INFO_FAIL);
         }
         return userId;
     }

@@ -4,7 +4,7 @@ package com.bdu.laborder.exception;
  * @Author Qi
  * @data 2021/2/5 10:14
  */
-public class LabOrderException extends RuntimeException{
+public class BaseException extends RuntimeException{
 
     private static final long serialVersionUID = 1L;
 
@@ -17,35 +17,35 @@ public class LabOrderException extends RuntimeException{
      */
     protected String errorMsg;
 
-    public LabOrderException() {
+    public BaseException() {
         super();
         this.errorMsg = "操作异常！请联系管理员";
     }
 
-    public LabOrderException(BaseErrorInfoInterface errorInfoInterface) {
+    public BaseException(BaseErrorInfoInterface errorInfoInterface) {
         super(errorInfoInterface.getCode());
         this.errorCode = errorInfoInterface.getCode();
         this.errorMsg = errorInfoInterface.getMsg();
     }
 
-    public LabOrderException(BaseErrorInfoInterface errorInfoInterface, Throwable cause) {
+    public BaseException(BaseErrorInfoInterface errorInfoInterface, Throwable cause) {
         super(errorInfoInterface.getCode(), cause);
         this.errorCode = errorInfoInterface.getCode();
         this.errorMsg = errorInfoInterface.getMsg();
     }
 
-    public LabOrderException(String errorMsg) {
+    public BaseException(String errorMsg) {
         super(errorMsg);
         this.errorMsg = errorMsg;
     }
 
-    public LabOrderException(String errorCode, String errorMsg) {
+    public BaseException(String errorCode, String errorMsg) {
         super(errorCode);
         this.errorCode = errorCode;
         this.errorMsg = errorMsg;
     }
 
-    public LabOrderException(String errorCode, String errorMsg, Throwable cause) {
+    public BaseException(String errorCode, String errorMsg, Throwable cause) {
         super(errorCode, cause);
         this.errorCode = errorCode;
         this.errorMsg = errorMsg;

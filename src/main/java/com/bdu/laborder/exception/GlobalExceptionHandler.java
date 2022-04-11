@@ -17,8 +17,8 @@ import javax.servlet.http.HttpServletRequest;
  *
 * @Title: GlobalExceptionHandler
 * @Description: 全局异常处理
-如果使用@RestControllerAdvice 注解
-则会将返回的数据类型转换成JSON格式
+* 如果使用@RestControllerAdvice 注解
+* 则会将返回的数据类型转换成JSON格式
 * @Version:1.0.0
 * @author pancm
 * @date 2018年10月24日
@@ -33,9 +33,9 @@ public class GlobalExceptionHandler {
 	 * @param e
 	 * @return
 	 */
-    @ExceptionHandler(value = LabOrderException.class)
+    @ExceptionHandler(value = BaseException.class)
     @ResponseBody
-	public Result bizExceptionHandler(HttpServletRequest req, LabOrderException e){
+	public Result bizExceptionHandler(HttpServletRequest req, BaseException e){
     	logger.error("发生业务异常！原因是：{}",e.getErrorMsg());
     	return ResultGenerator.error(e.getErrorCode(),e.getErrorMsg());
     }
@@ -55,7 +55,7 @@ public class GlobalExceptionHandler {
 
 
     /**
-        * 处理其他异常
+	 * 处理其他异常
      * @param req
      * @param e
      * @return
