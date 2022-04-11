@@ -16,9 +16,11 @@ import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.swing.tree.TreePath;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -125,6 +127,7 @@ public class SysUserController extends BaseController {
     }
 
 /**============================= 个人信息 ==========================================*/
+
     @PutMapping("/user/profile/updatePwd")
     public Result updatePwd(HttpServletRequest request) {
         return toResult(userService.updatePwd(request));
@@ -134,6 +137,12 @@ public class SysUserController extends BaseController {
     public Result updateProfile (@RequestBody SysUser user){
         System.out.println(user);
         return toResult(1);
+    }
+
+    @PostMapping("/user/profile/avatar")
+    public Result uploadAvatar(@RequestParam("/avatarfile")MultipartFile file) throws IOException {
+        return error("上传图片异常，请联系管理员");
+//        return success();
     }
 
 
