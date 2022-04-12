@@ -1,5 +1,6 @@
 package com.bdu.laborder.common.file.utils;
 
+import com.bdu.laborder.common.constant.Constant;
 import com.bdu.laborder.config.FileStorageProperties;
 import com.bdu.laborder.exception.BaseException;
 import com.bdu.laborder.exception.file.InvalidExtensionException;
@@ -98,7 +99,21 @@ public class FileUploadUtils {
         File desc = getAbsoluteFile(baseDir, filePathName);
         file.transferTo(desc);
         // 获取上传后文件名
-        return filePathName;
+        return getPathFileName(baseDir,filePathName);
+    }
+
+    /**
+     * 获取文件路径
+     * @param uploadDir
+     * @param fileName
+     * @return
+     * @throws IOException
+     */
+    public static final String getPathFileName(String uploadDir, String fileName) throws IOException {
+        int dirLastIndex = FileStorageProperties.getUploadDir().length() + 1;
+        String currentDir = StringUtils.substring(uploadDir, dirLastIndex);
+        String pathFileName = Constant.RESOURCE_PREFIX + "/" + currentDir + "/" + fileName;
+        return pathFileName;
     }
 
     /**

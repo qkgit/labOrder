@@ -50,4 +50,9 @@ public class Constant {
      * https请求
      */
     public static final String HTTPS = "https://";
+
+    /**
+     * 资源映射路径 前缀
+     */
+    public static final String RESOURCE_PREFIX = "/user/profile";
 }
