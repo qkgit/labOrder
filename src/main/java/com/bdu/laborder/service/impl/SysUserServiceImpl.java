@@ -140,6 +140,11 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
+    public int updateUserProFile(SysUser user) {
+        return userMapper.updateUser(user);
+    }
+
+    @Override
     public int updatePwd(HttpServletRequest request) {
         // 获取token
         String token = request.getHeader("X-Token");
@@ -193,6 +198,11 @@ public class SysUserServiceImpl implements SysUserService {
         SysUser user = getUserById(userId);
         user.setStatus(status);
         return userMapper.updateUserStatus(user);
+    }
+
+    @Override
+    public boolean updateUserAvatar(String userId, String avatarUrl) {
+        return userMapper.updateUserAvatar(userId,avatarUrl)>0;
     }
 
     /**

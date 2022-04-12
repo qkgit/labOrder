@@ -42,9 +42,12 @@ public interface SysUserService {
     int updateUser(SysUser user);
 
     int deleteUser(String[] ids);
-    int updatePwd(HttpServletRequest request );
+
+    int updateUserProFile(SysUser user);
+    int updatePwd(HttpServletRequest request);
     int restPwd(String[] ids);
     int updateUserStatus(String userId,String status);
+    boolean updateUserAvatar(String userId,String avatarUrl);
 
     /**
      * 校验登录名是否唯一
