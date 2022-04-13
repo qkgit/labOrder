@@ -97,8 +97,14 @@ public class BaseController {
       if (token == null){
          token = request.getHeader("Token");
       }
-      // 解析token 获取id
-      String userId = jwtUtils.parseJwt(token).getId();
+      String userId = "";
+      try {
+         // 解析token 获取id
+         userId = jwtUtils.parseJwt(token).getId();
+      } catch (Exception e) {
+         // token解析失败 返回空
+         return null;
+      }
       if (StringUtils.isNotEmpty(userId)){
          SysUser loginUser = userService.getUserById(userId);
          return loginUser;

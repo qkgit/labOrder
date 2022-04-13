@@ -4,12 +4,11 @@ import com.bdu.laborder.common.constant.BussinessCode;
 import com.bdu.laborder.common.constant.UserConstants;
 import com.bdu.laborder.common.core.domain.TreeSelect;
 import com.bdu.laborder.common.core.domain.controller.BaseController;
-import com.bdu.laborder.common.core.domain.entity.SysDept;
 import com.bdu.laborder.common.core.result.Result;
 import com.bdu.laborder.common.core.result.ResultGenerator;
 import com.bdu.laborder.common.core.domain.entity.SysUser;
 import com.bdu.laborder.common.file.utils.FileUploadUtils;
-import com.bdu.laborder.config.FileStorageProperties;
+import com.bdu.laborder.config.FileStorageConfig;
 import com.bdu.laborder.service.SysDeptService;
 import com.bdu.laborder.service.SysUserService;
 import com.bdu.laborder.utils.PageQuery;
@@ -21,12 +20,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.swing.tree.TreePath;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * 用户管理控制层
@@ -155,7 +151,7 @@ public class SysUserController extends BaseController {
     @PostMapping("/user/profile/avatar")
     public Result uploadAvatar(@RequestParam("avatarfile") MultipartFile file) throws IOException {
         if(!file.isEmpty()){
-            String avatar = FileUploadUtils.upload(FileStorageProperties.getAvatarPath(), file);
+            String avatar = FileUploadUtils.upload(FileStorageConfig.getAvatarPath(), file);
             if(userService.updateUserAvatar(getUserId(),avatar)){
                 return success(avatar);
             }
