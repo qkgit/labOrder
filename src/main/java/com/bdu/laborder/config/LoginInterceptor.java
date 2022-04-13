@@ -5,6 +5,7 @@ import com.bdu.laborder.exception.BaseException;
 import com.bdu.laborder.utils.JwtUtils;
 import com.bdu.laborder.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -15,16 +16,20 @@ import javax.servlet.http.HttpServletResponse;
  * @Author Qi
  * @data 2021/4/20 14:35
  */
-public class MyInterceptor implements HandlerInterceptor {
+@Component
+public class LoginInterceptor implements HandlerInterceptor {
 
     @Autowired
     JwtUtils jwtUtils;
     @Autowired
     RedisUtil redisUtil;
 
+    /**
+     * 前置处理：
+     * 在业务处理器处理请求之前被调用
+     */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        //  在请求处理之前进行调用（ Controller方法调用之前 ）
         try {
             // 获取token
             String token = request.getHeader("X-Token");
@@ -46,11 +51,21 @@ public class MyInterceptor implements HandlerInterceptor {
         return true;
     }
 
+    /**
+     * 中置处理：
+     * 在业务处理器处理请求执行完成后，生成视图之前执行。
+     * 后处理（调用了Service并返回ModelAndView，但未进行页面渲染），
+     * 有机会修改ModelAndView ，现在这个很少使用了
+     */
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
 
     }
-
+    /**
+     * 后置处理：
+     * 在DispatcherServlet完全处理完请求后被调用，
+     * 可用于清理资源等
+     */
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
 
