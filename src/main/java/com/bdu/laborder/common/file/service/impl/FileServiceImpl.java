@@ -1,6 +1,6 @@
 package com.bdu.laborder.common.file.service.impl;
 
-import com.bdu.laborder.config.FileStorageProperties;
+import com.bdu.laborder.config.FileStorageConfig;
 import com.bdu.laborder.exception.BaseException;
 import com.bdu.laborder.common.file.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +29,8 @@ public class FileServiceImpl implements FileService {
     private final Path fileStorageLocation;
 
     @Autowired
-    public FileServiceImpl(FileStorageProperties fileStorageProperties) {
-        this.fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir()).toAbsolutePath().normalize();
+    public FileServiceImpl(FileStorageConfig fileStorageConfig) {
+        this.fileStorageLocation = Paths.get(fileStorageConfig.getUploadDir()).toAbsolutePath().normalize();
         try {
             Files.createDirectories(this.fileStorageLocation);
         } catch (Exception ex) {
