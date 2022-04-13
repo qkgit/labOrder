@@ -1,7 +1,7 @@
 package com.bdu.laborder.common.file.utils;
 
 import com.bdu.laborder.common.constant.Constant;
-import com.bdu.laborder.config.FileStorageProperties;
+import com.bdu.laborder.config.FileStorageConfig;
 import com.bdu.laborder.exception.BaseException;
 import com.bdu.laborder.exception.file.InvalidExtensionException;
 import com.bdu.laborder.utils.DateUtils;
@@ -39,7 +39,7 @@ public class FileUploadUtils {
     /**
      * 默认上传的地址
      */
-    private static String defaultBaseDir = FileStorageProperties.getUploadDir();
+    private static String defaultBaseDir = FileStorageConfig.getUploadDir();
 
 
     public static void setDefaultBaseDir(String defaultBaseDir) {
@@ -110,7 +110,7 @@ public class FileUploadUtils {
      * @throws IOException
      */
     public static final String getPathFileName(String uploadDir, String fileName) throws IOException {
-        int dirLastIndex = FileStorageProperties.getUploadDir().length() + 1;
+        int dirLastIndex = FileStorageConfig.getUploadDir().length() + 1;
         String currentDir = StringUtils.substring(uploadDir, dirLastIndex);
         String pathFileName = Constant.RESOURCE_PREFIX + "/" + currentDir + "/" + fileName;
         return pathFileName;
