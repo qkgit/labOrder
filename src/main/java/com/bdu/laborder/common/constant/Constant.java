@@ -24,7 +24,6 @@ public class Constant {
     public static final String IN_HAND = "2";
     /**预约状态 已结束*/
     public static final String IS_OVER = "3";
-
     /** 开放预约类型*/
     public static final String OPEN_ORDER = "1";
     /** 教学预约类型*/
@@ -38,6 +37,11 @@ public class Constant {
     /** 查询字典详情标识*/
     public static final String DICT_TYPE = "type";
     public static final String DICT_DATA = "data";
+
+    /** 课程管理-第一学期 */
+    public static final String FIRST_SEMESTER = "1";
+    /** 课程管理-第二学期 */
+    public static final String SECOND_SEMESTER = "2";
 
 
 

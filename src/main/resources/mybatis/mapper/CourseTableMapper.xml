@@ -10,6 +10,7 @@
         <result property="week" column="week" />
         <result property="limitWeek" column="limit_week" />
         <result property="node" column="node" />
+        <result property="courseTimeId" column="course_time_id" />
         <result property="remark" column="remark"                />
         <result property="classRoomId" column="classroom_id" />
         <result property="courseId" column="course_id" />
@@ -62,13 +63,13 @@
     </resultMap>
 
     <sql id="selectCourseTableOneVo">
-        select t.uuid,t.year,t.semester,t.period_start,t.period_end,t.week,t.limit_week,t.node,t.classroom_id,t.course_id,t.dept_id,t.remark
+        select t.uuid,t.year,t.semester,t.period_start,t.period_end,t.week,t.limit_week,t.node,t.course_time_id,t.classroom_id,t.course_id,t.dept_id,t.remark
         from s_course_table t
     </sql>
 
     <sql id="selectCourseTableMoreVo">
         select
-               t.uuid,t.year,t.semester,t.period_start,t.period_end,t.week,t.limit_week,t.node,t.classroom_id,t.course_id,t.dept_id,t.remark,
+               t.uuid,t.year,t.semester,t.period_start,t.period_end,t.week,t.limit_week,t.node,t.course_time_id,t.classroom_id,t.course_id,t.dept_id,t.remark,
                c.uuid as c_id,c.name as c_name,c.leader,c.leader_id,c.type,c.credit,
                r.uuid as r_id,r.name as r_name,r.address,
                d.dept_id as d_id,d.dept_name
@@ -113,6 +114,7 @@
             <if test="week != null and week != ''">week,</if>
             <if test="limitWeek != null and limitWeek != ''">limit_week,</if>
             <if test="node != null and node != 0">node,</if>
+            <if test="courseTimeId != null and courseTimeId != ''">course_time_id,</if>
             <if test="deptId != null and deptId != ''">dept_id,</if>
             <if test="classRoomId != null and classRoomId != ''">classroom_id,</if>
             <if test="courseId != null and courseId != ''">course_id,</if>
@@ -128,6 +130,7 @@
             <if test="week != null and week != ''">#{week},</if>
             <if test="limitWeek != null and limitWeek != ''">#{limitWeek},</if>
             <if test="node != null and node != 0">#{node},</if>
+            <if test="courseTimeId != null and courseTimeId != ''">#{courseTimeId},</if>
             <if test="deptId != null and deptId != ''">#{deptId},</if>
             <if test="classRoomId != null and classRoomId != ''">#{classRoomId},</if>
             <if test="courseId != null and courseId != ''">#{courseId},</if>
@@ -163,4 +166,12 @@
             #{ids}
         </foreach>
     </delete>
+
+    <select id="getCourseTableListByDept" resultMap="courseTableResult">
+        <include refid="selectCourseTableMoreVo" />
+        where
+    </select>
+
+    <select id="getCourseTableListByTeacher" resultMap="courseTableResult">
+    </select>
 </mapper>

@@ -28,6 +28,8 @@ public class CourseTable extends BaseEntity implements Serializable {
     private String limitWeek;
     /** 节数 */
     private Integer node;
+    /** 课程时间id */
+    private String courseTimeId;
     // 地点
     /** 教室 */
     private String classRoomId;
@@ -95,6 +97,14 @@ public class CourseTable extends BaseEntity implements Serializable {
 
     public void setNode(Integer node) {
         this.node = node;
+    }
+
+    public String getCourseTimeId() {
+        return courseTimeId;
+    }
+
+    public void setCourseTimeId(String courseTimeId) {
+        this.courseTimeId = courseTimeId;
     }
 
     public String getClassRoomId() {

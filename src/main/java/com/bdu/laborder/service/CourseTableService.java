@@ -19,6 +19,8 @@ public interface CourseTableService {
      */
     public List<CourseTable> getCourseTableList(CourseTable table);
 
+
+
     /**
      * 根据id查询课程表信息
      * @param id

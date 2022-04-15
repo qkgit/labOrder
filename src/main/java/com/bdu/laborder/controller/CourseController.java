@@ -1,7 +1,9 @@
 package com.bdu.laborder.controller;
 
+import com.bdu.laborder.common.constant.Constant;
 import com.bdu.laborder.common.constant.UserConstants;
 import com.bdu.laborder.common.core.domain.controller.BaseController;
+import com.bdu.laborder.common.core.domain.entity.SysUser;
 import com.bdu.laborder.common.core.result.Result;
 import com.bdu.laborder.entity.Course;
 import com.bdu.laborder.entity.CourseTable;
@@ -12,10 +14,16 @@ import com.bdu.laborder.service.CourseTimeService;
 import com.bdu.laborder.utils.PageQuery;
 import com.bdu.laborder.utils.StringUtils;
 import com.bdu.laborder.utils.UuidUtil;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @Title   课程管理
@@ -194,7 +202,60 @@ public class CourseController extends BaseController {
      *   1.老师  =>  所教课程的课表
      *   2.学生  =>  所在班级的课表
      */
+    @GetMapping("/table")
+    public Result getTableByUser(){
+        SysUser loginUser = getLoginUser();
+        String[] roleIds = loginUser.getRoleIds();
+        CourseTable table = new CourseTable();
+        LocalDateTime now = LocalDateTime.now();
+        String nowYear = String.valueOf(now.getYear());
+        int nowMonth = now.getMonthValue();
+        Map<String,Object> tablesResponse = new HashMap<>();
+
+        // 教师
+        if(ArrayUtils.contains(roleIds, UserConstants.TEACHER_ROLE_ID)) {
+            System.out.println("教师");
+
+        }
+        // 学生
+        if(ArrayUtils.contains(roleIds, UserConstants.STUDENT_ROLE_ID)) {
+            // 设置默认查询属性
+            table.setDeptId(loginUser.getDeptId());
+            table.setYear(nowYear);
+            table.setSemester(nowMonth > 6 ? Constant.SECOND_SEMESTER : Constant.FIRST_SEMESTER);
+            // 查询课程表数据
+            List<CourseTable> courseTableList = tableService.getCourseTableList(table);
+            // 设置返回数据
+            if (!courseTableList.isEmpty()){
+                CourseTime courseTime = timeService.getTime(courseTableList.get(0).getCourseTimeId());
+                // 格式化时间
+                List<String> timeList = courseTime.getTimes().stream()
+                        .map(c -> c.getStartTime().toString() + "-" + c.getEndTime().toString())
+                        .collect(Collectors.toList());
+                tablesResponse.put("courseTime",timeList);
+                // 格式化课程
+                int num = courseTime.getNum();
+
+                List<CourseTable[]> courseList = new ArrayList<>();
+                for (int i = 0; i < num; i++) {
+                    courseList.set(i,new CourseTable[6]);
+                }
+                courseTableList.forEach(c->{
+                    CourseTable[] courseTables = courseList.get(Integer.valueOf(c.getWeek()) - 1);
+                });
+
+                
+            }
+//            courseTableList.stream().map(i->"1".equals(i.getWeek())).
+
+        }
+        return success(tablesResponse);
+
+    }
 
 
     /** ############################## 课程表 end ################################ */
+
+
+
 }

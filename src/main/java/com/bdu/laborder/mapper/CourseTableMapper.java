@@ -16,6 +16,14 @@ public interface CourseTableMapper {
 
     List<CourseTable> getCourseTableList(CourseTable courseTable);
 
+
+    /**
+     * 查询教师课表
+     * @param teacherId 教师id
+     * @return
+     */
+    List<CourseTable> getCourseTableListByTeacher(String teacherId);
+
     /**
      * 校验 该班级 同年同学期同周同节 是否已经存在配置课程
      * @param table
