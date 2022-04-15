@@ -1,5 +1,6 @@
 server:
   port: 5555
+
 spring:
   # 数据源基本配置
   datasource:
@@ -39,28 +40,18 @@ spring:
     #连接超时时间（毫秒）
     timeout: 30000
     database: 6
-  # 前端传来的日期为string类型，下面的设置可以自动将其转换为date类型，不需要手动转换
-#  mvc:
-#    format:
-#      date: yyyy-mm-dd hh:mm:ss
   #springboot启动加载图形
   banner:
     location: config/banner.txt
-
   #控制台色彩打印
   output:
     ansi:
       enabled: always
 
-
-
-
-
 ## File Storage Properties
 file:
   # 上传的所有文件都将存储在此目录中
-  upload-dir: 'e:/labOrderFile/0'
-
+  upload-dir: 'e://usr/lab_order/Upload/'
 
 #MyBatis相关配置
 mybatis:
@@ -69,20 +60,24 @@ mybatis:
   #映射配置文件路径
   mapper-locations: classpath:mybatis/mapper/*.xml
 
+# PageHelper分页插件
 pagehelper:
   helperDialect: mysql
   reasonable: true
   supportMethodsArguments: true
   params: count=countSql
 
+# token配置
 jwt:
   config:
     key: userlogin
-    # failureTime 单位毫秒 10小时
+    # failureTime 单位毫秒 10小时 36000000
     failureTime: 36000000
 
-
+# 日志配置
 logging:
   level:
-    # 打印 SQL 语句
     com.bdu.laborder.mapper: debug
+  file:
+    path: e://usr/lab_order/logs
+
