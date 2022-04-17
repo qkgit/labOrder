@@ -19,10 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -197,6 +194,7 @@ public class CourseController extends BaseController {
      * 查询各楼层教室课表（预约使用）
      */
 
+
     /**
      * 查询用户课表
      *   1.老师  =>  所教课程的课表
@@ -232,25 +230,53 @@ public class CourseController extends BaseController {
                 List<String> timeList = courseTime.getTimes().stream()
                         .map(c -> c.getStartTime().toString() + "-" + c.getEndTime().toString())
                         .collect(Collectors.toList());
+                // 添加到返回值中
                 tablesResponse.put("courseTime",timeList);
+
                 // 格式化课程
-                int num = courseTime.getNum();
-
-                List<CourseTable[]> courseList = new ArrayList<>();
-                for (int i = 0; i < num; i++) {
-                    courseList.set(i,new CourseTable[6]);
-                }
-                courseTableList.forEach(c->{
-                    CourseTable[] courseTables = courseList.get(Integer.valueOf(c.getWeek()) - 1);
-                });
-
-                
+                List<CourseTable[]> courseTables = buildCourseList(courseTableList, courseTime.getNum());
+                // 添加到返回值中
+                tablesResponse.put("courses",courseTables);
             }
-//            courseTableList.stream().map(i->"1".equals(i.getWeek())).
 
         }
         return success(tablesResponse);
 
+    }
+
+    /**
+     * 构建前端课程表数据
+     * @param courseTableList  课程数据
+     * @param num  课程节数
+     * @return  前端课程表数据
+     *  格式： （num =4）
+     *         1   2   3   4
+     *  周一： [xx,xxx,xxx,xxx]，
+     *  周二： [xx,xxx,xxx,xxx]，
+     *  周三： [xx,xxx,xxx,xxx]，
+     *  周四： [xx,xxx,xxx,xxx]，
+     *  周五： [xx,xxx,xxx,xxx]，
+     *  周六： [xx,xxx,xxx,xxx]，
+     *  周日： [xx,xxx,xxx,xxx]
+     */
+    private List<CourseTable[]> buildCourseList(List<CourseTable> courseTableList,int num){
+        // 创建一个空的容器
+        List<CourseTable[]> courseList = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
+            courseList.add(i,new CourseTable[num]);
+        }
+        // 进行添加数据
+        System.out.println("添加开始。。。");
+        long startTime = new Date().getTime();
+        courseTableList.forEach(c->{
+            int weekIndex = Integer.valueOf(c.getWeek()) - 1;
+            int nodeIndex = Integer.valueOf(c.getNode()) -1;
+            CourseTable[] courseTables = courseList.get(weekIndex);
+            courseTables[nodeIndex] = c;
+        });
+        long endTime = new Date().getTime();
+        System.out.println("添加完成 耗时"+ (endTime - startTime));
+        return courseList;
     }
 
 
