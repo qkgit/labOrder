@@ -87,6 +87,11 @@
             <if test="year != null and year !=''">AND t.year = #{year} </if>
             <if test="semester != null and semester !=''">AND t.semester = #{semester} </if>
             <if test="deptId != null and deptId !=''">AND t.dept_id = #{deptId}</if>
+            <if test="course != null">
+                <if test="course.leaderId != null and course.leaderId != ''">
+                    AND c.leader_id = #{course.leaderId}
+                </if>
+            </if>
         </where>
         order by t.week,t.node
     </select>

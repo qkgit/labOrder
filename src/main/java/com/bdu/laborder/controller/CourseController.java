@@ -202,43 +202,53 @@ public class CourseController extends BaseController {
      */
     @GetMapping("/table")
     public Result getTableByUser(){
+        // 获取用户数据
         SysUser loginUser = getLoginUser();
         String[] roleIds = loginUser.getRoleIds();
-        CourseTable table = new CourseTable();
+        // 获取当前时间
         LocalDateTime now = LocalDateTime.now();
         String nowYear = String.valueOf(now.getYear());
         int nowMonth = now.getMonthValue();
         Map<String,Object> tablesResponse = new HashMap<>();
+        // 查询课表结果集
+        List<CourseTable> courseTableList = new ArrayList<>();
 
-        // 教师
+        // 如果当前用户是：教师
         if(ArrayUtils.contains(roleIds, UserConstants.TEACHER_ROLE_ID)) {
-            System.out.println("教师");
+            // 设置默认查询属性
+            CourseTable table = new CourseTable();
+            Course course = new Course();
+            course.setLeaderId(loginUser.getUserId());
+            table.setCourse(course);
+            table.setYear(nowYear);
+            table.setSemester(nowMonth > 6 ? Constant.SECOND_SEMESTER : Constant.FIRST_SEMESTER);
+            // 查询课程表数据
+            courseTableList = tableService.getCourseTableList(table);
 
         }
-        // 学生
+        // 如果当前用户是：学生
         if(ArrayUtils.contains(roleIds, UserConstants.STUDENT_ROLE_ID)) {
             // 设置默认查询属性
+            CourseTable table = new CourseTable();
             table.setDeptId(loginUser.getDeptId());
             table.setYear(nowYear);
             table.setSemester(nowMonth > 6 ? Constant.SECOND_SEMESTER : Constant.FIRST_SEMESTER);
             // 查询课程表数据
-            List<CourseTable> courseTableList = tableService.getCourseTableList(table);
-            // 设置返回数据
-            if (!courseTableList.isEmpty()){
-                CourseTime courseTime = timeService.getTime(courseTableList.get(0).getCourseTimeId());
-                // 格式化时间
-                List<String> timeList = courseTime.getTimes().stream()
-                        .map(c -> c.getStartTime().toString() + "-" + c.getEndTime().toString())
-                        .collect(Collectors.toList());
-                // 添加到返回值中
-                tablesResponse.put("courseTime",timeList);
-
-                // 格式化课程
-                List<CourseTable[]> courseTables = buildCourseList(courseTableList, courseTime.getNum());
-                // 添加到返回值中
-                tablesResponse.put("courses",courseTables);
-            }
-
+            courseTableList = tableService.getCourseTableList(table);
+        }
+        // 设置返回数据
+        if (!courseTableList.isEmpty()){
+            CourseTime courseTime = timeService.getTime(courseTableList.get(0).getCourseTimeId());
+            // 格式化时间
+            List<String> timeList = courseTime.getTimes().stream()
+                    .map(c -> c.getStartTime().toString() + "-" + c.getEndTime().toString())
+                    .collect(Collectors.toList());
+            // 添加到返回值中
+            tablesResponse.put("courseTime",timeList);
+            // 格式化课程
+            List<CourseTable[]> courseTables = buildCourseList(courseTableList, courseTime.getNum());
+            // 添加到返回值中
+            tablesResponse.put("courses",courseTables);
         }
         return success(tablesResponse);
 
