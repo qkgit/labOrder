@@ -189,12 +189,6 @@ public class CourseController extends BaseController {
         return toResult(tableService.deleteCourseTableByIds(ids));
     }
 
-
-    /**
-     * 查询各楼层教室课表（预约使用）
-     */
-
-
     /**
      * 查询用户课表
      *   1.老师  =>  所教课程的课表
