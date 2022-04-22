@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdu.laborder.mapper.ClassroomOrderMapper">
+    <resultMap id="classroomOrderResult" type="com.bdu.laborder.entity.ClassroomOrder">
+        <id property="uuid" column="uuid"/>
+        <result property="roomId" column="room_id"/>
+        <result property="roomAddress" column="room_address" />
+        <result property="tableId" column="table_id"/>
+        <result property="orderDate" column="order_date"/>
+        <result property="orderNum" column="order_num"/>
+        <result property="orderNode" column="order_node" />
+        <result property="roomCap" column="room_cap"/>
+        <result property="orderStatus" column="order_status" />
+    </resultMap>
+
+
+
+    <select id="getClassroomCourse" resultMap="classroomOrderResult">
+        SELECT
+        r.uuid as room_id,r.cap as room_cap,r.address as room_address,r.status as order_status,
+        t.uuid as table_id,o.uuid as uuid,o.order_num as order_num
+        FROM
+        ( SELECT * FROM s_classroom WHERE level = #{level} ) r
+        LEFT JOIN
+        ( SELECT * FROM s_course_table WHERE week = #{orderWeek} AND node = #{orderNode} ) t ON r.uuid = t.classroom_id
+        LEFT JOIN
+        s_order o ON r.uuid = o.room_id and o.order_date = #{orderDate} AND o.order_node = #{orderNode}
+
+    </select>
+
+    <select id="getOrderDetailByUserOnRequest" resultType="com.bdu.laborder.entity.ClassroomOrderDetail">
+    </select>
+</mapper>
