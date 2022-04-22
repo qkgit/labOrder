@@ -7,24 +7,59 @@ package com.bdu.laborder.entity;
  */
 public class ClassroomOrder {
 
-    /** 主键 */
-    private String uuid;
-    /** 课程表id */
-    private String tableId;
-    /** 课程表内课程实例 */
-    private CourseTable table;
-    /** 预约时间 */
-    private String orderDate;
-    /** 预约人数 */
-    private String orderNum;
-    /** 教室容量 */
-    private String roomCap;
-    /** 教室状态
-     *  0：教室已关闭（不可预约）
-     *  1：教室有课
-     *  2：教室无课
+    /**
+     * 主键
      */
-    private String roomStatus;
+    private String uuid;
+    /**
+     * 教室id
+     */
+    private String roomId;
+    /**
+     * 教室位置
+     */
+    private String roomAddress;
+    /**
+     * 预约时间
+     */
+    private String orderDate;
+    /**
+     * 预约节数
+     */
+    private String orderNode;
+    /**
+     * 预约人数
+     */
+    private String orderNum;
+    /**
+     * 课程表id(如果查询时间条件下已有课程)
+     */
+    private String tableId;
+    /**
+     * 课程表内课程实例
+     */
+    private CourseTable table;
+    /**
+     * 教室容量
+     */
+    private String roomCap;
+    /**
+     * 教室状态
+     * 0: 教室开启
+     *   2：教室有课 (1:不可预约)
+     *   3：教室无课
+     *      4: 成功
+     *      5: 失败
+     *      6: 审核中。
+     *          7：一审
+     *          8：二审
+     * 1：教室已关闭 (不可预约)
+     */
+    private String orderStatus;
+
+    public ClassroomOrder() {
+    }
+
 
     public String getUuid() {
         return uuid;
@@ -32,6 +67,22 @@ public class ClassroomOrder {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    public String getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(String roomId) {
+        this.roomId = roomId;
+    }
+
+    public String getRoomAddress() {
+        return roomAddress;
+    }
+
+    public void setRoomAddress(String roomAddress) {
+        this.roomAddress = roomAddress;
     }
 
     public String getTableId() {
@@ -58,6 +109,14 @@ public class ClassroomOrder {
         this.orderDate = orderDate;
     }
 
+    public String getOrderNode() {
+        return orderNode;
+    }
+
+    public void setOrderNode(String orderNode) {
+        this.orderNode = orderNode;
+    }
+
     public String getOrderNum() {
         return orderNum;
     }
@@ -75,10 +134,10 @@ public class ClassroomOrder {
     }
 
     public String getRoomStatus() {
-        return roomStatus;
+        return orderStatus;
     }
 
     public void setRoomStatus(String roomStatus) {
-        this.roomStatus = roomStatus;
+        this.orderStatus = roomStatus;
     }
 }
