@@ -1,5 +1,7 @@
 package com.bdu.laborder.entity;
 
+import java.util.Date;
+
 /**
  * @Title
  * @Author Qi
@@ -22,7 +24,7 @@ public class ClassroomOrder {
     /**
      * 预约时间
      */
-    private String orderDate;
+    private Date orderDate;
     /**
      * 预约节数
      */
@@ -30,7 +32,7 @@ public class ClassroomOrder {
     /**
      * 预约人数
      */
-    private String orderNum;
+    private Integer orderNum;
     /**
      * 课程表id(如果查询时间条件下已有课程)
      */
@@ -101,11 +103,11 @@ public class ClassroomOrder {
         this.table = table;
     }
 
-    public String getOrderDate() {
+    public Date getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(String orderDate) {
+    public void setOrderDate(Date orderDate) {
         this.orderDate = orderDate;
     }
 
@@ -117,11 +119,11 @@ public class ClassroomOrder {
         this.orderNode = orderNode;
     }
 
-    public String getOrderNum() {
+    public Integer getOrderNum() {
         return orderNum;
     }
 
-    public void setOrderNum(String orderNum) {
+    public void setOrderNum(Integer orderNum) {
         this.orderNum = orderNum;
     }
 

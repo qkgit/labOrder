@@ -7,6 +7,7 @@ import com.bdu.laborder.mapper.ClassroomOrderMapper;
 import com.bdu.laborder.mapper.CourseTableMapper;
 import com.bdu.laborder.service.ClassroomOrderService;
 import com.bdu.laborder.utils.StringUtils;
+import com.bdu.laborder.utils.UuidUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +35,16 @@ public class ClassroomOrderServiceImpl implements ClassroomOrderService {
                 if(StringUtils.isEmpty(cc.getTableId())){
                     // 没有课程
                     // 查询该教室有无预约记录及当前用户预约状态
+                    if (StringUtils.isNotEmpty(cc.getUuid())){
+                        // 存在预约记录
 
+                    }else {
+                        // 不存在预约记录 初始化记录表
+                        cc.setUuid(UuidUtil.getUuid());
+                        cc.setOrderDate(request.getOrderDate());
+                        cc.setOrderNode(request.getOrderNode());
+                        cc.setOrderNum(0);
+                    }
                     // 查询
                     ClassroomOrderDetail orderInfo = orderMapper.getOrderDetailByUserOnRequest(request, userId);
                     if (orderInfo!=null){
