@@ -4,6 +4,7 @@
     <resultMap id="classroomOrderResult" type="com.bdu.laborder.entity.ClassroomOrder">
         <id property="uuid" column="uuid"/>
         <result property="roomId" column="room_id"/>
+        <result property="roomName" column="room_name" />
         <result property="roomAddress" column="room_address" />
         <result property="tableId" column="table_id"/>
         <result property="orderDate" column="order_date"/>
@@ -13,12 +14,24 @@
         <result property="orderStatus" column="order_status" />
     </resultMap>
 
+    <resultMap id="classroomOrderDetailResult" type="com.bdu.laborder.entity.ClassroomOrderDetail">
+        <id property="uuid" column="uuid" />
+        <result property="orderUser" column="order_user" />
+        <result property="orderId" column="order_id" />
+        <result property="classroomId" column="classroom_id" />
+        <result property="orderDate" column="order_date" />
+        <result property="orderNode" column="order_node" />
+        <result property="orderStatus" column="order_status" />
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
 
 
     <select id="getClassroomCourse" resultMap="classroomOrderResult">
         SELECT
-        r.uuid as room_id,r.cap as room_cap,r.address as room_address,r.status as order_status,
-        t.uuid as table_id,o.uuid as uuid,o.order_num as order_num
+        o.uuid as uuid,
+        r.uuid as room_id,r.name as room_name,r.address as room_address,r.cap as room_cap,r.status as order_status,
+        t.uuid as table_id,o.order_num as order_num
         FROM
         ( SELECT * FROM s_classroom WHERE level = #{level} ) r
         LEFT JOIN
@@ -28,6 +41,7 @@
 
     </select>
 
-    <select id="getOrderDetailByUserOnRequest" resultType="com.bdu.laborder.entity.ClassroomOrderDetail">
+    <select id="getOrderDetailByUserOnRequest" resultMap="classroomOrderDetailResult">
+        select * from s_order_detail where order_user = #{userId} and  order_id = #{orderId}
     </select>
 </mapper>

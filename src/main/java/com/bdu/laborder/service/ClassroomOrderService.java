@@ -1,6 +1,8 @@
 package com.bdu.laborder.service;
 
+import com.bdu.laborder.common.core.domain.entity.SysUser;
 import com.bdu.laborder.entity.ClassroomOrder;
+import com.bdu.laborder.entity.ClassroomOrderDetail;
 import com.bdu.laborder.entity.ClassroomOrderRequest;
 
 import java.util.List;
@@ -12,4 +14,6 @@ import java.util.List;
  */
 public interface ClassroomOrderService {
     public List<ClassroomOrder> getClassroomCourse(ClassroomOrderRequest request,String userId);
+
+    public int addOrder(ClassroomOrderDetail orderDetail, SysUser user);
 }

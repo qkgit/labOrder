@@ -18,6 +18,10 @@ public class ClassroomOrder {
      */
     private String roomId;
     /**
+     *  教室名称
+     */
+    private String roomName;
+    /**
      * 教室位置
      */
     private String roomAddress;
@@ -47,14 +51,15 @@ public class ClassroomOrder {
     private String roomCap;
     /**
      * 教室状态
-     * 0: 教室开启
+     * 0: 教室开启（可以预约）
      *   2：教室有课 (1:不可预约)
      *   3：教室无课
-     *      4: 成功
-     *      5: 失败
-     *      6: 审核中。
-     *          7：一审
-     *          8：二审
+     *      4：未预约（0：可以预约）
+     *      5: 审核中。
+     *          6：一审
+     *          7：二审
+     *      8: 成功
+     *      9: 失败
      * 1：教室已关闭 (不可预约)
      */
     private String orderStatus;
@@ -77,6 +82,22 @@ public class ClassroomOrder {
 
     public void setRoomId(String roomId) {
         this.roomId = roomId;
+    }
+
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
+    }
+
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     public String getRoomAddress() {
@@ -135,11 +156,20 @@ public class ClassroomOrder {
         this.roomCap = roomCap;
     }
 
-    public String getRoomStatus() {
-        return orderStatus;
-    }
 
-    public void setRoomStatus(String roomStatus) {
-        this.orderStatus = roomStatus;
+    @Override
+    public String toString() {
+        return "ClassroomOrder{" +
+                "uuid='" + uuid + '\'' +
+                ", roomId='" + roomId + '\'' +
+                ", roomAddress='" + roomAddress + '\'' +
+                ", orderDate=" + orderDate +
+                ", orderNode='" + orderNode + '\'' +
+                ", orderNum=" + orderNum +
+                ", tableId='" + tableId + '\'' +
+                ", table=" + table +
+                ", roomCap='" + roomCap + '\'' +
+                ", orderStatus='" + orderStatus + '\'' +
+                '}';
     }
 }

@@ -20,5 +20,5 @@ public interface ClassroomOrderMapper {
 
    public List<ClassroomOrder> getClassroomCourse(ClassroomOrderRequest request);
 
-   public ClassroomOrderDetail getOrderDetailByUserOnRequest(@Param("request") ClassroomOrderRequest request,@Param("userId") String userId);
+   public ClassroomOrderDetail getOrderDetailByUserOnRequest(@Param("orderId") String orderId,@Param("userId") String userId);
 }
