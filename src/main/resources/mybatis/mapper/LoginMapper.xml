@@ -13,8 +13,6 @@
 		<result property="mobile"       column="mobile"       />
 		<result property="sex"          column="sex"          />
 		<result property="avatar"       column="avatar"       />
-		<result property="institute"    column="institute"    />
-		<result property="major"        column="major"        />
 		<result property="status"       column="status"       />
 		<result property="isFirstLogin" column="is_firstlogin"/>
 		<result property="delFlag"      column="del_flag"     />
@@ -59,7 +57,7 @@
 	<select id="getUserById" parameterType="String" resultMap="SysUserResult">
 		select u.user_id,u.dept_id,u.login_name,u.real_name,u.sex,u.mobile,u.email,u.avatar,u.status,u.is_firstlogin, u.create_time,
 		d.dept_name,
-		r.role_name,r.role_sort
+		r.role_id,r.role_name,r.role_sort
 		from s_user u
 		left join s_dept d on u.dept_id = d.dept_id
 		left join s_user_role ur on u.user_id = ur.user_id
