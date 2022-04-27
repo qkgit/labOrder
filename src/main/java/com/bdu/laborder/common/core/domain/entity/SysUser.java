@@ -1,12 +1,10 @@
 package com.bdu.laborder.common.core.domain.entity;
 
-import com.bdu.laborder.common.constant.UserConstants;
 import com.bdu.laborder.common.core.domain.BaseEntity;
 import lombok.Data;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @Author Qi
@@ -62,16 +60,6 @@ public class SysUser extends BaseEntity {
     private String avatar;
 
     /**
-     * 所属院系 (升级为组织)
-     */
-    private String institute;
-
-    /**
-     * 专业 （升级为部门）
-     */
-    private String major;
-
-    /**
      * 帐号状态（0正常 1停用）
      */
     private String status;
@@ -122,19 +110,6 @@ public class SysUser extends BaseEntity {
         this.userId = userId;
     }
 
-    public boolean isAdmin() {
-        return isAdmin(this.roles);
-    }
-
-    public static boolean isAdmin(List<SysRole> roles) {
-        if (roles != null){
-            return roles.stream()
-                    .map(r -> r.getRoleId())
-                    .collect(Collectors.toList())
-                    .contains(UserConstants.ADMIN_ROLE_ID);
-        }
-       return false;
-    }
 
     @Override
     public String toString() {
@@ -148,8 +123,6 @@ public class SysUser extends BaseEntity {
                 ", mobile='" + mobile + '\'' +
                 ", sex='" + sex + '\'' +
                 ", avatar='" + avatar + '\'' +
-                ", institute='" + institute + '\'' +
-                ", major='" + major + '\'' +
                 ", status='" + status + '\'' +
                 ", isFirstLogin='" + isFirstLogin + '\'' +
                 ", delFlag='" + delFlag + '\'' +

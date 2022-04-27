@@ -113,7 +113,7 @@ public class LoginController extends BaseController {
 
     @GetMapping("/getRouters")
     public Result getRouters(){
-        List<SysMenu> menus = menuService.selectMenuTreeByUserId(getUserId());
+        List<SysMenu> menus = menuService.selectMenuTreeByUserId(getLoginUser());
         return success(menuService.buildMenus(menus));
     }
 

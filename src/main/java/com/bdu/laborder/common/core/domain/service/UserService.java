@@ -2,7 +2,10 @@ package com.bdu.laborder.common.core.domain.service;
 
 import com.bdu.laborder.common.constant.UserConstants;
 import com.bdu.laborder.common.core.domain.entity.SysRole;
+import com.bdu.laborder.common.core.domain.entity.SysUser;
+import com.bdu.laborder.utils.StringUtils;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,12 +16,10 @@ import java.util.stream.Collectors;
  */
 public class UserService {
 
-    public static boolean isAdmin(List<SysRole> roles) {
-        if (roles != null){
-            return roles.stream()
-                    .map(r -> r.getRoleId())
-                    .collect(Collectors.toList())
-                    .contains(UserConstants.ADMIN_ROLE_ID);
+    public static boolean isAdmin(SysUser user) {
+        String[] roleIds = user.getRoleIds();
+        if (StringUtils.isNotEmpty(roleIds)){
+            return Arrays.asList(roleIds).contains(UserConstants.ADMIN_ROLE_ID);
         }
         return false;
     }

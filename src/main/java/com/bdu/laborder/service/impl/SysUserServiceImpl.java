@@ -5,6 +5,7 @@ import com.bdu.laborder.common.constant.UserConstants;
 import com.bdu.laborder.common.core.domain.entity.SysDict;
 import com.bdu.laborder.common.core.domain.entity.SysUser;
 import com.bdu.laborder.common.core.domain.entity.SysUserRole;
+import com.bdu.laborder.common.core.domain.service.UserService;
 import com.bdu.laborder.exception.BaseException;
 import com.bdu.laborder.mapper.SDictMapper;
 import com.bdu.laborder.mapper.SysUserMapper;
@@ -252,7 +253,7 @@ public class SysUserServiceImpl implements SysUserService {
      */
     @Override
     public void checkUserAllowed(SysUser user) {
-        if (StringUtils.isNotNull(user.getUserId()) && user.isAdmin()) {
+        if (StringUtils.isNotNull(user.getUserId()) && UserService.isAdmin(user)) {
             throw new BaseException("不允许操作超级管理员用户");
         }
     }

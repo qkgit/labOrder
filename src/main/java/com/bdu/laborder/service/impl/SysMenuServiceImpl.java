@@ -5,6 +5,7 @@ import com.bdu.laborder.common.constant.UserConstants;
 import com.bdu.laborder.common.core.domain.TreeSelect;
 import com.bdu.laborder.common.core.domain.entity.SysMenu;
 import com.bdu.laborder.common.core.domain.entity.SysRole;
+import com.bdu.laborder.common.core.domain.entity.SysUser;
 import com.bdu.laborder.common.core.domain.service.UserService;
 import com.bdu.laborder.common.core.domain.vo.MetaVo;
 import com.bdu.laborder.common.core.domain.vo.RouterVo;
@@ -42,29 +43,29 @@ public class SysMenuServiceImpl implements SysMenuService {
     /**
      * 根据用户查询系统菜单列表
      *
-     * @param userId 用户ID
+     * @param user 用户
      * @return 菜单列表
      */
     @Override
-    public List<SysMenu> selectMenuList(String userId) {
-        return selectMenuList(new SysMenu(), userId);
+    public List<SysMenu> selectMenuList(SysUser user) {
+        return selectMenuList(new SysMenu(), user);
     }
 
     /**
      * 根据用户查询系统菜单列表
      *
      * @param menu   菜单信息查询条件
-     * @param userId 用户ID
+     * @param user 用户
      * @return 菜单列表
      */
     @Override
-    public List<SysMenu> selectMenuList(SysMenu menu, String userId) {
+    public List<SysMenu> selectMenuList(SysMenu menu, SysUser user) {
         List<SysMenu> menuList = null;
         // 管理员显示所有菜单信息
-        if (UserService.isAdmin(roleMapper.getUserRolesById(userId))) {
+        if (UserService.isAdmin(user)) {
             menuList = menuMapper.selectMenuList(menu);
         } else {
-            menu.getParams().put("userId", userId);
+            menu.getParams().put("userId", user.getUserId());
             menuList = menuMapper.selectMenuListByUserId(menu);
         }
         return menuList;
@@ -85,17 +86,17 @@ public class SysMenuServiceImpl implements SysMenuService {
     /**
      * 根据用户ID查询菜单树信息
      *
-     * @param userId 用户ID
+     * @param user 用户
      * @return 菜单列表
      */
     @Override
-    public List<SysMenu> selectMenuTreeByUserId(String userId) {
+    public List<SysMenu> selectMenuTreeByUserId(SysUser user) {
         List<SysMenu> menus = null;
         // 管理员显示所有菜单信息
-        if (UserService.isAdmin(roleMapper.getUserRolesById(userId))) {
+        if (UserService.isAdmin(user)) {
             menus = menuMapper.selectMenuTreeAll();
         } else {
-            menus = menuMapper.selectMenuTreeByUserId(userId);
+            menus = menuMapper.selectMenuTreeByUserId(user.getUserId());
         }
         return getChildPerms(menus, UserConstants.ROOT_MENU_ID);
     }

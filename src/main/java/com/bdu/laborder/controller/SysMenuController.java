@@ -29,7 +29,7 @@ public class SysMenuController extends BaseController {
 
     @GetMapping("/list")
     public Result list(SysMenu menu){
-        List<SysMenu> menuList = menuService.selectMenuList(menu, getUserId());
+        List<SysMenu> menuList = menuService.selectMenuList(menu, getLoginUser());
         return success(menuList);
     }
 
@@ -79,7 +79,7 @@ public class SysMenuController extends BaseController {
      */
     @GetMapping("/treeselect")
     public Result treeSelect(SysMenu menu){
-        List<SysMenu> menuList = menuService.selectMenuList(menu, getUserId());
+        List<SysMenu> menuList = menuService.selectMenuList(menu, getLoginUser());
         return success(menuService.buildMenuTreeSelect(menuList));
     }
 
@@ -88,7 +88,7 @@ public class SysMenuController extends BaseController {
      */
     @GetMapping(value = "/roleMenuTreeselect/{roleId}")
     public Result roleMenuTreeSelect(@PathVariable("roleId") String roleId){
-        List<SysMenu> menus = menuService.selectMenuList(getUserId());
+        List<SysMenu> menus = menuService.selectMenuList(getLoginUser());
         HashMap<String, List> resultMap = new HashMap<>();
         resultMap.put("menus",menuService.buildMenuTreeSelect(menus));
         resultMap.put("checkedKeys",menuService.selectMenuListByRoleId(roleId));

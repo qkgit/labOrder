@@ -2,6 +2,7 @@ package com.bdu.laborder.service;
 
 import com.bdu.laborder.common.core.domain.TreeSelect;
 import com.bdu.laborder.common.core.domain.entity.SysMenu;
+import com.bdu.laborder.common.core.domain.entity.SysUser;
 import com.bdu.laborder.common.core.domain.vo.RouterVo;
 
 import java.util.List;
@@ -15,19 +16,19 @@ public interface SysMenuService {
     /**
      * 根据用户查询系统菜单列表
      *
-     * @param userId 用户ID
+     * @param user 用户ID
      * @return 菜单列表
      */
-    public List<SysMenu> selectMenuList(String userId);
+    public List<SysMenu> selectMenuList(SysUser user);
 
     /**
      * 根据用户查询系统菜单列表
      *
      * @param menu   菜单信息
-     * @param userId 用户ID
+     * @param user 用户
      * @return 菜单列表
      */
-    public List<SysMenu> selectMenuList(SysMenu menu, String userId);
+    public List<SysMenu> selectMenuList(SysMenu menu, SysUser user);
 
     /**
      * 根据角色ID查询菜单树信息
@@ -40,10 +41,10 @@ public interface SysMenuService {
     /**
      * 根据用户ID查询菜单树信息
      *
-     * @param userId 用户ID
+     * @param user 用户
      * @return 菜单列表
      */
-    public List<SysMenu> selectMenuTreeByUserId(String userId);
+    public List<SysMenu> selectMenuTreeByUserId(SysUser user);
 
     /**
      * 根据菜单ID查询信息

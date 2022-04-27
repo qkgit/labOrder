@@ -168,8 +168,8 @@ public class LabOrderServiceImpl implements LabOrderService {
             SysUser userById = userMapper.getUserById(userId);
             user.setLoginName(userById.getLoginName());
             user.setRealName(userById.getRealName());
-            user.setInstitute(userById.getInstitute());
-            user.setMajor(userById.getMajor());
+//            user.setInstitute(userById.getInstitute());
+//            user.setMajor(userById.getMajor());
 //            user.setRoles(userById.getRoles());
         }
         pageInfo.setList(userPageList);
