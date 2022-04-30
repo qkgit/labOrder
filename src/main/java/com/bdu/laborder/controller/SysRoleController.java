@@ -2,6 +2,7 @@ package com.bdu.laborder.controller;
 
 import com.bdu.laborder.common.constant.UserConstants;
 import com.bdu.laborder.common.core.domain.controller.BaseController;
+import com.bdu.laborder.common.core.domain.entity.SysDict;
 import com.bdu.laborder.common.core.domain.entity.SysRole;
 import com.bdu.laborder.common.core.domain.entity.SysUser;
 import com.bdu.laborder.common.core.result.Result;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,6 +33,20 @@ public class SysRoleController extends BaseController {
         SysRole role = getParam(pageQuery, SysRole.class);
         List<SysRole> sysRoles = roleService.selectRoleList(role);
         return getPageInfo(sysRoles);
+    }
+
+    @GetMapping("/list/all")
+    public Result allList(){
+        SysRole sysRole = new SysRole();
+        List<SysRole> roleList = roleService.selectRoleList(sysRole);
+        List<SysDict> roleDictList = new ArrayList<>();
+        roleList.forEach(r->{
+            SysDict dict = new SysDict();
+            dict.setCode(r.getRoleId());
+            dict.setName(r.getRoleName());
+            roleDictList.add(dict);
+        });
+        return success(roleDictList);
     }
 
     @GetMapping("/{roleId}")
