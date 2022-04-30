@@ -1,5 +1,9 @@
 package com.bdu.laborder.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -12,10 +16,13 @@ public class ClassroomOrderDetail {
     private String orderUser;
     private String orderId;
     private String classroomId;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     private Date orderDate;
     private String orderNode;
     private String orderStatus;
     private Date createTime;
+    private String remark;
 
 
     public String getUuid() {
@@ -80,5 +87,13 @@ public class ClassroomOrderDetail {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }
