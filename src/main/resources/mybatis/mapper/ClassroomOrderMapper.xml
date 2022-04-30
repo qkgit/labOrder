@@ -23,6 +23,7 @@
         <result property="orderNode" column="order_node" />
         <result property="orderStatus" column="order_status" />
         <result property="createTime" column="create_time"/>
+        <result property="remark" column="remark" />
     </resultMap>
 
 
@@ -41,7 +42,72 @@
 
     </select>
 
-    <select id="getOrderDetailByUserOnRequest" resultMap="classroomOrderDetailResult">
-        select * from s_order_detail where order_user = #{userId} and  order_id = #{orderId}
+    <select id="getOrderDetailByUserAndOrderId" resultMap="classroomOrderDetailResult">
+        select uuid,order_user,order_id,classroom_id,
+        order_date,order_node,order_status,create_time,remark
+        from s_order_detail
+        where order_user = #{userId} and  order_id = #{orderId}
+    </select>
+
+    <select id="selectClassroomOrderById" resultMap="classroomOrderResult">
+        select uuid,room_id,order_date,order_node,order_num
+        from s_order
+        where uuid = #{id}
+    </select>
+
+    <insert id="insertOrderDetail">
+        insert into s_order_detail (
+        <if test="uuid != null and uuid != ''">uuid,</if>
+        <if test="orderUser != null and orderUser != ''">order_user,</if>
+        <if test="orderId != null and orderId != ''">order_id,</if>
+        <if test="classroomId != null and classroomId != ''">classroom_id,</if>
+        <if test="orderDate != null">order_date,</if>
+        <if test="orderNode != null and orderNode != ''">order_node,</if>
+        <if test="orderStatus != null and orderStatus != ''">order_status,</if>
+        <if test="remark != null and remark != ''">remark,</if>
+        create_time
+        )values(
+        <if test="uuid != null and uuid != ''">#{uuid},</if>
+        <if test="orderUser != null and orderUser != ''">#{orderUser},</if>
+        <if test="orderId != null and orderId != ''">#{orderId},</if>
+        <if test="classroomId != null and classroomId != ''">#{classroomId},</if>
+        <if test="orderDate != null">#{orderDate},</if>
+        <if test="orderNode != null and orderNode != ''">#{orderNode},</if>
+        <if test="orderStatus != null and orderStatus != ''">#{orderStatus},</if>
+        <if test="remark != null and remark != ''">#{remark},</if>
+        sysdate()
+        )
+    </insert>
+
+    <insert id="insertOrder">
+        insert into s_order (
+        <if test="uuid != null and uuid != ''">uuid,</if>
+        <if test="roomId != null and roomId != ''">room_id,</if>
+        <if test="orderDate != null">order_date,</if>
+        <if test="orderNode != null and orderNode != ''">order_node,</if>
+        <if test="orderNum != null">order_num</if>
+        )values (
+        <if test="uuid != null and uuid != ''">#{uuid},</if>
+        <if test="roomId != null and roomId != ''">#{roomId},</if>
+        <if test="orderDate != null">#{orderDate},</if>
+        <if test="orderNode != null and orderNode != ''">#{orderNode},</if>
+        <if test="orderNum != null">#{orderNum}</if>
+        )
+    </insert>
+
+    <update id="updateOrder">
+        update s_order
+        <set>
+            <if test="roomId != null and roomId != ''">room_id = #{roomId},</if>
+            <if test="orderDate != null">order_date = #{orderDate},</if>
+            <if test="orderNode != null and orderNode != ''">order_node = #{orderNode},</if>
+            <if test="orderNum != null">order_num = #{orderNum}</if>
+        </set>
+        where uuid = #{uuid}
+    </update>
+
+    <select id="checkOrderTime" resultMap="classroomOrderDetailResult">
+        select classroom_id from s_order_detail
+        where order_user = #{orderUser} and order_date = #{orderDate} and order_node = #{orderNode} limit 1
     </select>
 </mapper>

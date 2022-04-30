@@ -1,17 +1,15 @@
 package com.bdu.laborder.controller;
 
+import com.bdu.laborder.common.constant.UserConstants;
 import com.bdu.laborder.common.core.domain.controller.BaseController;
 import com.bdu.laborder.common.core.domain.entity.SysUser;
 import com.bdu.laborder.common.core.result.Result;
-import com.bdu.laborder.entity.Classroom;
 import com.bdu.laborder.entity.ClassroomOrder;
 import com.bdu.laborder.entity.ClassroomOrderDetail;
 import com.bdu.laborder.entity.ClassroomOrderRequest;
+import com.bdu.laborder.exception.BaseException;
 import com.bdu.laborder.service.ClassroomOrderService;
-import com.bdu.laborder.service.ClassroomService;
-import com.bdu.laborder.service.CourseTableService;
 import com.bdu.laborder.utils.StringUtils;
-import com.bdu.laborder.utils.UuidUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,29 +42,36 @@ public class OrderController extends BaseController {
 
     /**
      *  用户预约操作
-     * @return
      */
     @PostMapping
     public Result orderClassroom(@RequestBody ClassroomOrderDetail orderDetail){
         SysUser loginUser = getLoginUser();
-
-        // 是否教室首次预约
-        if (StringUtils.isEmpty(orderDetail.getOrderId())){
-            // 添加预约记录表
-            ClassroomOrder classroomOrder = new ClassroomOrder();
-            classroomOrder.setUuid(UuidUtil.getUuid());
-            classroomOrder.setRoomId(orderDetail.getClassroomId());
-            classroomOrder.setOrderDate(orderDetail.getOrderDate());
-            classroomOrder.setOrderNode(orderDetail.getOrderNode());
-        }
         // 校验用户存在同时间预约冲突
+        checkOrderDetail(orderDetail);
+        if (UserConstants.NOT_UNIQUE.equals(orderService.checkOrderTime(orderDetail,loginUser))){
+            return error("/(ㄒoㄒ)/~~ 预约失败！已存在相同时间预约！");
+        }
+        int i = orderService.addOrder(orderDetail, loginUser);
+        if (i>0){
+            return success();
+        }
+        return error("\"/(ㄒoㄒ)/~~ 预约失败！请重新进行预约!");
+    }
 
-        // 判断预约人数是否已满
-
-        // 添加预约人数
-
+    /**
+     *  用户查询预约记录
+     */
+    @PostMapping("/record/classroom")
+    public Result getOrderRecordByUser(@RequestBody ClassroomOrderDetail orderDetail){
+        SysUser loginUser = getLoginUser();
         return success();
     }
 
-
+    private void checkOrderDetail(ClassroomOrderDetail orderDetail){
+        if (orderDetail.getOrderDate() == null
+                || StringUtils.isEmpty(orderDetail.getOrderNode())
+                || StringUtils.isEmpty(orderDetail.getClassroomId())){
+            throw new BaseException("预约数据不能为空！");
+        }
+    }
 }

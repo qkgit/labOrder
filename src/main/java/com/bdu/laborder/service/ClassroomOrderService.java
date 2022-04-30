@@ -15,5 +15,9 @@ import java.util.List;
 public interface ClassroomOrderService {
     public List<ClassroomOrder> getClassroomCourse(ClassroomOrderRequest request,String userId);
 
+    public ClassroomOrder getClassroomOrderById(String id);
+
     public int addOrder(ClassroomOrderDetail orderDetail, SysUser user);
+
+    public String checkOrderTime(ClassroomOrderDetail orderDetail, SysUser user);
 }
