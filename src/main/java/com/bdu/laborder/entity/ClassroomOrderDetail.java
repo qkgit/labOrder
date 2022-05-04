@@ -1,10 +1,11 @@
 package com.bdu.laborder.entity;
 
+import com.bdu.laborder.common.constant.Constant;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Title
@@ -16,6 +17,7 @@ public class ClassroomOrderDetail {
     private String orderUser;
     private String orderId;
     private String classroomId;
+    private String classroomName;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     private Date orderDate;
@@ -23,6 +25,8 @@ public class ClassroomOrderDetail {
     private String orderStatus;
     private Date createTime;
     private String remark;
+    private List<OrderAudit> orderAudit;
+    private String deleteFlag;
 
 
     public String getUuid() {
@@ -55,6 +59,14 @@ public class ClassroomOrderDetail {
 
     public void setClassroomId(String classroomId) {
         this.classroomId = classroomId;
+    }
+
+    public String getClassroomName() {
+        return classroomName;
+    }
+
+    public void setClassroomName(String classroomName) {
+        this.classroomName = classroomName;
     }
 
     public Date getOrderDate() {
@@ -96,4 +108,43 @@ public class ClassroomOrderDetail {
     public void setRemark(String remark) {
         this.remark = remark;
     }
+
+    public List<OrderAudit> getOrderAudit() {
+        return orderAudit;
+    }
+
+    public void setOrderAudit(List<OrderAudit> orderAudit) {
+        this.orderAudit = orderAudit;
+    }
+
+    public String getDeleteFlag() {
+        return deleteFlag;
+    }
+
+    public void setDeleteFlag(String deleteFlag) {
+        this.deleteFlag = deleteFlag;
+    }
+
+    public void toLeaderCheck(){
+        this.setOrderStatus(Constant.ORDER_STATUS_LEADER_CHECK);
+    }
+
+    public void toSecCheck() {
+        this.setOrderStatus(Constant.ORDER_STATUS_SEC_CHECK);
+    }
+
+    public void toComplete() {
+        this.setOrderStatus(Constant.ORDER_STATUS_COMPLETE);
+    }
+
+    public void toNotPass() {
+        this.setOrderStatus(Constant.ORDER_STATUS_NOT_PASS);
+    }
+
+    public void setTimeOut() {
+        this.setOrderStatus(Constant.ORDER_STATUS_TIME_OUT);
+    }
+
+
+
 }

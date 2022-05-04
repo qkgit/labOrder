@@ -21,6 +21,10 @@ public class ClassroomOrderRequest {
     private String orderNode;
     /** 教室楼层 */
     private String level;
+    /** 教室名称 */
+    private String classroomName;
+    /** 审核状态 */
+    private String state;
 
     public Date getOrderDate() {
         return orderDate;
@@ -52,5 +56,21 @@ public class ClassroomOrderRequest {
 
     public void setLevel(String level) {
         this.level = level;
+    }
+
+    public String getClassroomName() {
+        return classroomName;
+    }
+
+    public void setClassroomName(String classroomName) {
+        this.classroomName = classroomName;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }
