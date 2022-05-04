@@ -39,4 +39,20 @@ public class UserService {
         }
         return false;
     }
+
+    public static boolean isClassroomLeader(SysUser user) {
+        String[] roleIds = user.getRoleIds();
+        if (StringUtils.isNotEmpty(roleIds)){
+            return Arrays.asList(roleIds).contains(UserConstants.CLASSROOM_LEADER_ROLE_ID);
+        }
+        return false;
+    }
+
+    public static boolean isSecretary(SysUser user) {
+        String[] roleIds = user.getRoleIds();
+        if (StringUtils.isNotEmpty(roleIds)){
+            return Arrays.asList(roleIds).contains(UserConstants.SECRETARY_ROLE_ID);
+        }
+        return false;
+    }
 }
