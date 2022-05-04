@@ -64,7 +64,7 @@
     </insert>
 
     <select id="checkAddressUnique" resultMap="ClassroomResult">
-        select uuid,address from s_classroom where address=#{address} and  del_flag = '0'
+        select uuid,address from s_classroom where address=#{address}  and  level = #{level} and  del_flag = '0'
     </select>
 
     <select id="getClassroom" resultMap="ClassroomResult">
