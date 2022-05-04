@@ -9,13 +9,13 @@ import com.bdu.laborder.entity.ClassroomOrderDetail;
 import com.bdu.laborder.entity.ClassroomOrderRequest;
 import com.bdu.laborder.exception.BaseException;
 import com.bdu.laborder.service.ClassroomOrderService;
+import com.bdu.laborder.utils.PageQuery;
 import com.bdu.laborder.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 /**
@@ -49,7 +49,7 @@ public class OrderController extends BaseController {
         // 校验用户存在同时间预约冲突
         checkOrderDetail(orderDetail);
         if (UserConstants.NOT_UNIQUE.equals(orderService.checkOrderTime(orderDetail,loginUser))){
-            return error("/(ㄒoㄒ)/~~ 预约失败！已存在相同时间预约！");
+            return error("/(ㄒoㄒ)/~~ 预约失败！已存在相同时间预约，请选择教室！");
         }
         int i = orderService.addOrder(orderDetail, loginUser);
         if (i>0){
@@ -62,10 +62,47 @@ public class OrderController extends BaseController {
      *  用户查询预约记录
      */
     @PostMapping("/record/classroom")
-    public Result getOrderRecordByUser(@RequestBody ClassroomOrderDetail orderDetail){
-        SysUser loginUser = getLoginUser();
-        return success();
+    public Result getOrderRecordByUser(@RequestBody PageQuery pageQuery){
+        startPage(pageQuery);
+        ClassroomOrderRequest orderRequest = getParam(pageQuery, ClassroomOrderRequest.class);
+        List<ClassroomOrderDetail> orderRecords = orderService.getOrderRecordByUser(orderRequest,getUserId());
+        // 设置过期
+        orderRecords.forEach(o->{
+            LocalDate orderDate = o.getOrderDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            if (LocalDate.now().isAfter(orderDate)){
+                o.setTimeOut();
+            }
+        });
+        return getPageInfo(orderRecords);
     }
+
+    /**
+     *  用户取消预约
+     * @param orderDetailId
+     * @return
+     */
+    @PutMapping("/cencel/{orderDetailId}")
+    public Result cencelOrder(@PathVariable("orderDetailId") String orderDetailId){
+        return toResult(orderService.cencelOrderById(orderDetailId));
+    }
+
+    /**
+     *  查询审核页面
+     * @param pageQuery
+     * @return
+     */
+    @PostMapping("/audit/classroom")
+    public Result getOrderRecordRole(@RequestBody PageQuery pageQuery) {
+        startPage(pageQuery);
+        ClassroomOrderRequest orderRequest = getParam(pageQuery, ClassroomOrderRequest.class);
+
+        List<ClassroomOrderDetail> orderRecords = orderService.getOrderRecordByRoles(orderRequest,getLoginUser());
+        return getPageInfo(orderRecords);
+    }
+
+    // (批量) 审核通过
+
+    // (批量) 审核不通过
 
     private void checkOrderDetail(ClassroomOrderDetail orderDetail){
         if (orderDetail.getOrderDate() == null

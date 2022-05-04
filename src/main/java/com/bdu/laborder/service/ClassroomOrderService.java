@@ -19,5 +19,11 @@ public interface ClassroomOrderService {
 
     public int addOrder(ClassroomOrderDetail orderDetail, SysUser user);
 
+    public List<ClassroomOrderDetail> getOrderRecordByUser(ClassroomOrderRequest orderRequest,String userId);
+
+    public int cencelOrderById(String id);
+
     public String checkOrderTime(ClassroomOrderDetail orderDetail, SysUser user);
+
+    public List<ClassroomOrderDetail> getOrderRecordByRoles(ClassroomOrderRequest orderRequest, SysUser user);
 }

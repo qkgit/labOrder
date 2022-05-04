@@ -19,13 +19,28 @@
         <result property="orderUser" column="order_user" />
         <result property="orderId" column="order_id" />
         <result property="classroomId" column="classroom_id" />
+        <result property="classroomName" column="classroom_name" />
         <result property="orderDate" column="order_date" />
         <result property="orderNode" column="order_node" />
         <result property="orderStatus" column="order_status" />
         <result property="createTime" column="create_time"/>
         <result property="remark" column="remark" />
+        <result property="deleteFlag" column="delete_flag"/>
+        <collection  property="orderAudit"  javaType="java.util.List" resultMap="auditResult" />
     </resultMap>
 
+    <resultMap id="auditResult" type="com.bdu.laborder.entity.OrderAudit">
+        <id property="uuid" column="review_id" />
+        <result property="orderRecordId" column="order_record_id" />
+        <result property="type" column="type" />
+        <result property="reviewUserId" column="review_user_id" />
+        <result property="reviewUser" column="review_user" />
+        <result property="reviewRemark" column="review_remark" />
+        <result property="reviewTime" column="review_create_time" />
+        <result property="state" column="state" />
+        <result property="createTime" column="audit_create_time" />
+
+    </resultMap>
 
 
     <select id="getClassroomCourse" resultMap="classroomOrderResult">
@@ -46,7 +61,7 @@
         select uuid,order_user,order_id,classroom_id,
         order_date,order_node,order_status,create_time,remark
         from s_order_detail
-        where order_user = #{userId} and  order_id = #{orderId}
+        where order_user = #{userId} and  order_id = #{orderId} and delete_flag = '0'
     </select>
 
     <select id="selectClassroomOrderById" resultMap="classroomOrderResult">
@@ -110,4 +125,51 @@
         select classroom_id from s_order_detail
         where order_user = #{orderUser} and order_date = #{orderDate} and order_node = #{orderNode} limit 1
     </select>
+
+    <select id="getOrderDetailByUser" resultMap="classroomOrderDetailResult">
+        select od.uuid,od.order_user,od.order_id,od.classroom_id,c.name as classroom_name,
+        od.order_date,od.order_node,od.order_status,od.create_time,od.remark,
+        oa.uuid as review_id,oa.review_user,oa.type,oa.review_remark,oa.review_time as review_create_time
+        from s_order_detail od
+        left join s_classroom c on od.classroom_id = c.uuid
+        left join s_order_audit oa on od.uuid = oa.order_record_id
+        where order_user = #{userId} and od.delete_flag = '0'and oa.state = '1'
+        <if test="orderRequest.orderDate != null">
+            AND od.order_date = #{orderRequest.orderDate}
+        </if>
+        <if test="orderRequest.orderNode != null and orderRequest.orderNode != ''">
+            AND od.order_node = #{orderRequest.orderNode}
+        </if>
+        <if test="orderRequest.classroomName != null and orderRequest.classroomName != ''">
+            AND c.name like concat('%',#{orderRequest.classroomName},'%')
+        </if>
+        order by create_time desc,review_create_time
+    </select>
+
+    <delete id="cencelOrderById">
+        update s_order_detail set delete_flag = '1' where
+        uuid = #{id}
+    </delete>
+
+    <insert id="insertOrderAudit">
+        insert into s_order_audit (
+            <if test="uuid != null and uuid != ''">uuid,</if>
+            <if test="orderRecordId != null and orderRecordId != ''">order_record_id,</if>
+            <if test="type != null and type != ''">review_type,</if>
+            <if test="reviewRemark != null and reviewRemark != ''">review_remark,</if>
+            <if test="reviewUser != null and reviewUser != ''">review_user,</if>
+            <if test="reviewUserId != null and reviewUserId != ''">review_user_id,</if>
+            <if test="state != null and state != ''">state,</if>
+            create_time
+        )values (
+            <if test="uuid != null and uuid != ''">#{uuid},</if>
+            <if test="orderRecordId != null and orderRecordId != ''">#{orderRecordId},</if>
+            <if test="type != null and type != ''">#{type},</if>
+            <if test="reviewRemark != null and reviewRemark != ''">#{reviewRemark},</if>
+            <if test="reviewUser != null and reviewUser != ''">#{reviewUser},</if>
+            <if test="reviewUserId != null and reviewUserId != ''">#{reviewUserId},</if>
+            <if test="state != null and state != ''">#{state},</if>
+            sysdate()
+        )
+    </insert>
 </mapper>

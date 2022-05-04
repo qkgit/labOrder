@@ -1,11 +1,14 @@
 package com.bdu.laborder.service.impl;
 
+import com.bdu.laborder.common.constant.Constant;
 import com.bdu.laborder.common.constant.UserConstants;
 import com.bdu.laborder.common.core.domain.entity.SysUser;
 import com.bdu.laborder.common.core.domain.service.UserService;
 import com.bdu.laborder.entity.ClassroomOrder;
 import com.bdu.laborder.entity.ClassroomOrderDetail;
 import com.bdu.laborder.entity.ClassroomOrderRequest;
+import com.bdu.laborder.entity.OrderAudit;
+import com.bdu.laborder.exception.BaseException;
 import com.bdu.laborder.mapper.ClassroomOrderMapper;
 import com.bdu.laborder.mapper.CourseTableMapper;
 import com.bdu.laborder.service.ClassroomOrderService;
@@ -19,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.spi.DateFormatProvider;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -99,22 +103,43 @@ public class ClassroomOrderServiceImpl implements ClassroomOrderService {
         } else {
             orderInfo = getClassroomOrderById(orderDetail.getOrderId());
         }
-        // 根据用户角色添加预约人数
-        //     => 教师  orderInfo不进行操作      orderDetail.orderstatus = '6'
-        //     => 学生  orderInfo.orderNum +1   orderDetail.orderstatus = '8'
+        // 存在预约记录表 进行后续操作
+        // 根据用户角色添加预约人数 预约详情 审核信息
+        //     => 教师
+        //            orderInfo不进行操作  orderDetail.orderstatus = '6'  添加预约审核信息
+        //     => 学生
+        //           orderInfo.orderNum +1   orderDetail.orderstatus = '8'
+
+        // 预置预约审核实体
+        OrderAudit orderAudit = null;
+
         if (UserService.isTeacher(user)) {
-            orderDetail.setOrderStatus("6");
+            orderDetail.toLeaderCheck();
+            // 添加预约审核信息
+            orderAudit = new OrderAudit();
+            orderAudit.setUuid(UuidUtil.getUuid());
+            orderAudit.setOrderRecordId(orderDetail.getUuid());
+            orderAudit.setType(Constant.ORDER_STATUS_LEADER_CHECK);
         }
         if (UserService.isStudent(user)) {
             Integer orderNum = orderInfo.getOrderNum();
+            Integer roomCap = Integer.valueOf(orderInfo.getRoomCap());
+            // 满员验证
+            if (orderNum+1>roomCap){
+                throw new BaseException("该教室已经满员，请重新选择教室预约！");
+            }
             orderInfo.setOrderNum(orderNum + 1);
-            orderDetail.setOrderStatus("1");
+            orderDetail.toComplete();
         }
         orderDetail.setUuid(UuidUtil.getUuid());
         orderDetail.setOrderUser(user.getUserId());
         orderDetail.setOrderId(orderInfo.getUuid());
         // 添加预约详情表
         orderMapper.insertOrderDetail(orderDetail);
+        // 添加预约审核表
+        if (orderAudit !=null){
+            orderMapper.insertOrderAudit(orderAudit);
+        }
         // 添加预约表
         int i = 0;
         if (addOrderFlag) {
@@ -123,6 +148,30 @@ public class ClassroomOrderServiceImpl implements ClassroomOrderService {
             i = orderMapper.updateOrder(orderInfo);
         }
         return i;
+    }
+
+    @Override
+    public List<ClassroomOrderDetail> getOrderRecordByUser(ClassroomOrderRequest orderRequest,String userId) {
+        return orderMapper.getOrderDetailByUser(orderRequest,userId);
+    }
+
+    @Override
+    public List<ClassroomOrderDetail> getOrderRecordByRoles(ClassroomOrderRequest orderRequest, SysUser user) {
+        List<ClassroomOrderDetail> orderRecordList = new ArrayList<>();
+        // 教室负责人
+        if (UserService.isClassroomLeader(user)){
+
+        }
+        // 秘书
+        if (UserService.isSecretary(user)){
+
+        }
+        return orderRecordList;
+    }
+
+    @Override
+    public int cencelOrderById(String id) {
+        return orderMapper.cencelOrderById(id);
     }
 
     @Override
@@ -137,20 +186,24 @@ public class ClassroomOrderServiceImpl implements ClassroomOrderService {
 
     }
 
+
+
     private List<ClassroomOrder> sortClassroomCourse(List<ClassroomOrder> classroomCourse) {
         HashMap<String, Integer> sortMap = new HashMap<>();
         sortMap.put("c6", 1);
         sortMap.put("c4", 2);
-        sortMap.put("c2_2", 3);
-        sortMap.put("c2_1", 4);
-        sortMap.put("c5", 5);
-        sortMap.put("c3", 6);
-        sortMap.put("c1_2", 7);
-        sortMap.put("c1_1", 8);
-        sortMap.put("j6", 9);
-        sortMap.put("j5", 10);
-        sortMap.put("j4", 11);
-        sortMap.put("j0", 12);
+        sortMap.put("c2", 3);
+        sortMap.put("c2_2", 4);
+        sortMap.put("c2_1", 5);
+        sortMap.put("c5", 6);
+        sortMap.put("c3", 7);
+        sortMap.put("c1", 8);
+        sortMap.put("c1_2", 9);
+        sortMap.put("c1_1", 10);
+        sortMap.put("j6", 11);
+        sortMap.put("j5", 12);
+        sortMap.put("j4", 13);
+        sortMap.put("j0", 14);
         classroomCourse.sort(Comparator.comparingInt(n -> sortMap.get(n.getRoomAddress())));
         return classroomCourse;
     }
