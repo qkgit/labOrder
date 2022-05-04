@@ -43,6 +43,15 @@ public class Constant {
     /** 课程管理-第二学期 */
     public static final String SECOND_SEMESTER = "2";
 
+    /** 预约类型 */
+    public static final String ORDER_TYPE_LEADER = "1";
+    public static final String ORDER_TYPE_SEC = "2";
+    /** 预约状态 */
+    public static final String ORDER_STATUS_LEADER_CHECK = "6";
+    public static final String ORDER_STATUS_SEC_CHECK = "7";
+    public static final String ORDER_STATUS_COMPLETE = "8";
+    public static final String ORDER_STATUS_NOT_PASS = "9";
+    public static final String ORDER_STATUS_TIME_OUT = "10";
 
 
     /**
