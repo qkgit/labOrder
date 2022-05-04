@@ -79,6 +79,8 @@ public class UserConstants {
     public static final String ADMIN_ROLE_ID = "0";
     public static final String TEACHER_ROLE_ID = "1";
     public static final String STUDENT_ROLE_ID = "2";
+    public static final String CLASSROOM_LEADER_ROLE_ID = "3";
+    public static final String SECRETARY_ROLE_ID = "4";
 
     public static final String ROOT_MENU_ID = "0";
     public static final String ROOT_DEPT_ID = "0";
