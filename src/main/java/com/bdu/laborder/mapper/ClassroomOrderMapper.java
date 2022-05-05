@@ -25,6 +25,8 @@ public interface ClassroomOrderMapper {
 
    public List<ClassroomOrderDetail> getOrderDetailByUser(@Param("orderRequest") ClassroomOrderRequest orderRequest,@Param("userId")String userId);
 
+   public List<ClassroomOrderDetail> getOrderRecordByType(@Param("orderRequest") ClassroomOrderRequest orderRequest,@Param("type")String type,@Param("userId")String userId);
+
    public ClassroomOrder selectClassroomOrderById(String id);
 
    public int insertOrderDetail(ClassroomOrderDetail orderDetail);

@@ -34,7 +34,7 @@ public class OrderController extends BaseController {
     /**
      * 查询各楼层教室课表（预约使用）
      */
-    @PostMapping("/classroom")
+    @PostMapping("/classroom/list")
     public Result getClassroomCourse(@RequestBody ClassroomOrderRequest request){
         List<ClassroomOrder> classroomCourse = orderService.getClassroomCourse(request,getUserId());
         return success(classroomCourse);
@@ -43,7 +43,7 @@ public class OrderController extends BaseController {
     /**
      *  用户预约操作
      */
-    @PostMapping
+    @PostMapping("/classroom")
     public Result orderClassroom(@RequestBody ClassroomOrderDetail orderDetail){
         SysUser loginUser = getLoginUser();
         // 校验用户存在同时间预约冲突
@@ -61,7 +61,7 @@ public class OrderController extends BaseController {
     /**
      *  用户查询预约记录
      */
-    @PostMapping("/record/classroom")
+    @PostMapping("/classroom/record")
     public Result getOrderRecordByUser(@RequestBody PageQuery pageQuery){
         startPage(pageQuery);
         ClassroomOrderRequest orderRequest = getParam(pageQuery, ClassroomOrderRequest.class);
@@ -81,7 +81,7 @@ public class OrderController extends BaseController {
      * @param orderDetailId
      * @return
      */
-    @PutMapping("/cencel/{orderDetailId}")
+    @PutMapping("/classroom/cencel/{orderDetailId}")
     public Result cencelOrder(@PathVariable("orderDetailId") String orderDetailId){
         return toResult(orderService.cencelOrderById(orderDetailId));
     }
@@ -91,12 +91,12 @@ public class OrderController extends BaseController {
      * @param pageQuery
      * @return
      */
-    @PostMapping("/audit/classroom")
+    @PostMapping("/classroom/audit")
     public Result getOrderRecordRole(@RequestBody PageQuery pageQuery) {
+        SysUser loginUser = getLoginUser();
         startPage(pageQuery);
         ClassroomOrderRequest orderRequest = getParam(pageQuery, ClassroomOrderRequest.class);
-
-        List<ClassroomOrderDetail> orderRecords = orderService.getOrderRecordByRoles(orderRequest,getLoginUser());
+        List<ClassroomOrderDetail> orderRecords = orderService.getOrderRecordByRoles(orderRequest,loginUser);
         return getPageInfo(orderRecords);
     }
 

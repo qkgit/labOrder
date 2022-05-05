@@ -14,18 +14,36 @@ import java.util.List;
  */
 public class ClassroomOrderDetail {
     private String uuid;
-    private String orderUser;
+    /** 预约表id */
     private String orderId;
+    /** 预约人id */
+    private String orderUser;
+    /** 预约人姓名 */
+    private String userName;
+    /** 预约教室id */
     private String classroomId;
+    /** 预约教室 */
     private String classroomName;
+    /** 预约时间 */
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     private Date orderDate;
+    /** 预约节数 */
     private String orderNode;
+    /** 预约状态
+     *    6：一审
+     *    7：二审
+     *    8: 成功
+     *    9: 失败
+     */
     private String orderStatus;
+    /** 创建时间 */
     private Date createTime;
+    /** 预约说明 */
     private String remark;
+    /** 审核情况 */
     private List<OrderAudit> orderAudit;
+    /** 删除标识 */
     private String deleteFlag;
 
 
@@ -43,6 +61,14 @@ public class ClassroomOrderDetail {
 
     public void setOrderUser(String orderUser) {
         this.orderUser = orderUser;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getOrderId() {

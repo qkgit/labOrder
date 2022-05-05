@@ -113,13 +113,16 @@ public class ClassroomOrderServiceImpl implements ClassroomOrderService {
         // 预置预约审核实体
         OrderAudit orderAudit = null;
 
+        orderDetail.setUuid(UuidUtil.getUuid());
+        orderDetail.setOrderUser(user.getUserId());
+        orderDetail.setOrderId(orderInfo.getUuid());
         if (UserService.isTeacher(user)) {
             orderDetail.toLeaderCheck();
             // 添加预约审核信息
             orderAudit = new OrderAudit();
             orderAudit.setUuid(UuidUtil.getUuid());
             orderAudit.setOrderRecordId(orderDetail.getUuid());
-            orderAudit.setType(Constant.ORDER_STATUS_LEADER_CHECK);
+            orderAudit.setType(Constant.ORDER_TYPE_LEADER);
         }
         if (UserService.isStudent(user)) {
             Integer orderNum = orderInfo.getOrderNum();
@@ -131,9 +134,7 @@ public class ClassroomOrderServiceImpl implements ClassroomOrderService {
             orderInfo.setOrderNum(orderNum + 1);
             orderDetail.toComplete();
         }
-        orderDetail.setUuid(UuidUtil.getUuid());
-        orderDetail.setOrderUser(user.getUserId());
-        orderDetail.setOrderId(orderInfo.getUuid());
+
         // 添加预约详情表
         orderMapper.insertOrderDetail(orderDetail);
         // 添加预约审核表
@@ -158,13 +159,15 @@ public class ClassroomOrderServiceImpl implements ClassroomOrderService {
     @Override
     public List<ClassroomOrderDetail> getOrderRecordByRoles(ClassroomOrderRequest orderRequest, SysUser user) {
         List<ClassroomOrderDetail> orderRecordList = new ArrayList<>();
-        // 教室负责人
-        if (UserService.isClassroomLeader(user)){
-
-        }
-        // 秘书
-        if (UserService.isSecretary(user)){
-
+        if (UserService.isClassroomLeader(user) && UserService.isSecretary(user)){
+            // 两者都是
+            orderRecordList = orderMapper.getOrderRecordByType(orderRequest, null, user.getUserId());
+        }else if (UserService.isClassroomLeader(user)){
+            // 教室负责人
+            orderRecordList = orderMapper.getOrderRecordByType(orderRequest, Constant.ORDER_TYPE_LEADER, user.getUserId());
+        }else if (UserService.isSecretary(user)){
+            // 秘书
+            orderRecordList = orderMapper.getOrderRecordByType(orderRequest, Constant.ORDER_TYPE_SEC, user.getUserId());
         }
         return orderRecordList;
     }
