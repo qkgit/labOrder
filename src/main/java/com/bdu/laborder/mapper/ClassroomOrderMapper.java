@@ -21,6 +21,8 @@ public interface ClassroomOrderMapper {
 
    public List<ClassroomOrder> getClassroomCourse(ClassroomOrderRequest request);
 
+   public ClassroomOrderDetail getOrderDetailById(String id);
+
    public ClassroomOrderDetail getOrderDetailByUserAndOrderId(@Param("orderId") String orderId,@Param("userId") String userId);
 
    public List<ClassroomOrderDetail> getOrderDetailByUser(@Param("orderRequest") ClassroomOrderRequest orderRequest,@Param("userId")String userId);
@@ -40,4 +42,10 @@ public interface ClassroomOrderMapper {
    public ClassroomOrderDetail checkOrderTime(ClassroomOrderDetail orderDetail);
 
    public int insertOrderAudit(OrderAudit orderAudit);
+
+   public int updateOrderAudit(OrderAudit orderAudit);
+
+   public int updateOrderDetailStatus(@Param("orderStatus") String orderStatus,@Param("id") String id);
+
+   public int updateOrderNumById(@Param("orderNum") String orderNum,@Param("id") String id);
 }

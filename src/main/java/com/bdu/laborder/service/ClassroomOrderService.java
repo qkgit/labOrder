@@ -4,6 +4,7 @@ import com.bdu.laborder.common.core.domain.entity.SysUser;
 import com.bdu.laborder.entity.ClassroomOrder;
 import com.bdu.laborder.entity.ClassroomOrderDetail;
 import com.bdu.laborder.entity.ClassroomOrderRequest;
+import com.bdu.laborder.entity.OrderAudit;
 
 import java.util.List;
 
@@ -26,4 +27,12 @@ public interface ClassroomOrderService {
     public String checkOrderTime(ClassroomOrderDetail orderDetail, SysUser user);
 
     public List<ClassroomOrderDetail> getOrderRecordByRoles(ClassroomOrderRequest orderRequest, SysUser user);
+
+    /**
+     * 审核预约
+     * @param orderAudit 预约审核信息
+     * @param passFlag  通过状态
+     * @return
+     */
+    public int auditOrder(OrderAudit orderAudit,boolean passFlag);
 }

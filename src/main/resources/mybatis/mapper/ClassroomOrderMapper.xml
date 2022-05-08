@@ -121,6 +121,23 @@
         </set>
         where uuid = #{uuid}
     </update>
+    <update id="updateOrderAudit">
+        update s_order_audit
+        <set>
+            <if test="reviewRemark != null and reviewRemark != ''">review_remark = #{reviewRemark},</if>
+            <if test="reviewUser != null and reviewUser != ''">review_user = #{reviewUser},</if>
+            <if test="reviewUserId != null and reviewUserId != ''">review_user_id = #{reviewUserId},</if>
+            <if test="state != null and state != ''">state = #{state},</if>
+            review_time =  sysdate()
+        </set>
+        where order_record_id = #{orderRecordId} and type = #{type}
+    </update>
+    <update id="updateOrderDetailStatus">
+        update s_order_detail set order_status = #{orderStatus} where uuid = #{id}
+    </update>
+    <update id="updateOrderNumById">
+        update s_order set order_num = #{orderNum} where uuid = #{id}
+    </update>
 
     <select id="checkOrderTime" resultMap="classroomOrderDetailResult">
         select classroom_id from s_order_detail
@@ -179,7 +196,7 @@
         SELECT
             od.uuid,u.real_name as user_name,od.order_id,r.name as classroom_name,
             od.order_date,od.order_node,od.order_status,od.create_time,od.remark,
-            oa.uuid as review_id,oa.review_user,oa.type,oa.review_remark,oa.review_time as review_create_time
+            oa.uuid as review_id,oa.order_record_id,oa.review_user,oa.type,oa.review_remark,oa.review_time as review_create_time
         FROM
             s_order_detail od
             LEFT JOIN s_classroom r on od.classroom_id = r.uuid
@@ -193,5 +210,8 @@
             <if test="orderRequest.orderDate != null">AND od.order_date = #{orderRequest.orderDate}</if>
             <if test="orderRequest.orderNode != null and orderRequest.orderNode != ''">AND od.order_node = #{orderRequest.orderNode}</if>
             <if test="orderRequest.classroomName != null and orderRequest.classroomName != ''">AND r.name like concat('%',#{orderRequest.classroomName},'%')</if>
+    </select>
+    <select id="getOrderDetailById" resultMap="classroomOrderDetailResult">
+        select * from s_order_detail where uuid = #{id}  and delete_flag = '0'
     </select>
 </mapper>

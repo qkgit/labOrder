@@ -7,6 +7,7 @@ import com.bdu.laborder.common.core.result.Result;
 import com.bdu.laborder.entity.ClassroomOrder;
 import com.bdu.laborder.entity.ClassroomOrderDetail;
 import com.bdu.laborder.entity.ClassroomOrderRequest;
+import com.bdu.laborder.entity.OrderAudit;
 import com.bdu.laborder.exception.BaseException;
 import com.bdu.laborder.service.ClassroomOrderService;
 import com.bdu.laborder.utils.PageQuery;
@@ -101,8 +102,24 @@ public class OrderController extends BaseController {
     }
 
     // (批量) 审核通过
+    @PutMapping("/classroom/audit/pass")
+    public Result passOrderAudit(@RequestBody OrderAudit orderAudit){
+        SysUser loginUser = getLoginUser();
+        orderAudit.setReviewUser(loginUser.getRealName());
+        orderAudit.setReviewUserId(loginUser.getUserId());
+        orderAudit.setState("1");
+        return toResult(orderService.auditOrder(orderAudit,true));
+    }
 
     // (批量) 审核不通过
+    @PutMapping("/classroom/audit/nopass")
+    public Result noPassOrderAudit(@RequestBody OrderAudit orderAudit){
+        SysUser loginUser = getLoginUser();
+        orderAudit.setReviewUser(loginUser.getRealName());
+        orderAudit.setReviewUserId(loginUser.getUserId());
+        orderAudit.setState("1");
+        return toResult(orderService.auditOrder(orderAudit,false));
+    }
 
     private void checkOrderDetail(ClassroomOrderDetail orderDetail){
         if (orderDetail.getOrderDate() == null

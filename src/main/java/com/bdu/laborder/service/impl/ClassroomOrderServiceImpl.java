@@ -9,6 +9,7 @@ import com.bdu.laborder.entity.ClassroomOrderDetail;
 import com.bdu.laborder.entity.ClassroomOrderRequest;
 import com.bdu.laborder.entity.OrderAudit;
 import com.bdu.laborder.exception.BaseException;
+import com.bdu.laborder.mapper.ClassroomMapper;
 import com.bdu.laborder.mapper.ClassroomOrderMapper;
 import com.bdu.laborder.mapper.CourseTableMapper;
 import com.bdu.laborder.service.ClassroomOrderService;
@@ -39,6 +40,8 @@ public class ClassroomOrderServiceImpl implements ClassroomOrderService {
     private ClassroomOrderMapper orderMapper;
     @Autowired
     private CourseTableMapper tableMapper;
+    @Autowired
+    private ClassroomMapper classroomMapper;
 
     @Override
     public List<ClassroomOrder> getClassroomCourse(ClassroomOrderRequest request, String userId) {
@@ -171,6 +174,52 @@ public class ClassroomOrderServiceImpl implements ClassroomOrderService {
         }
         return orderRecordList;
     }
+
+    /**
+     * 审核预约
+     *
+     * @param orderAudit 预约审核信息
+     * @param passFlag   通过状态
+     * @return
+     */
+    @Override
+    @Transactional
+    public int auditOrder(OrderAudit orderAudit, boolean passFlag) {
+        // 添加意见
+        orderMapper.updateOrderAudit(orderAudit);
+        // 获取用户预约信息
+        ClassroomOrderDetail orderDetailInfo = orderMapper.getOrderDetailById(orderAudit.getOrderRecordId());
+        // 根据是否通过修改用户预约状态
+        String orderStatus = "";
+        if (passFlag){
+            if (Constant.ORDER_STATUS_LEADER_CHECK.equals(orderDetailInfo.getOrderStatus())){
+                orderStatus = Constant.ORDER_STATUS_SEC_CHECK;
+            }
+            if (Constant.ORDER_STATUS_SEC_CHECK.equals(orderDetailInfo.getOrderStatus())){
+                orderStatus = Constant.ORDER_STATUS_COMPLETE;
+            }
+        }else {
+            orderStatus = Constant.ORDER_STATUS_NOT_PASS;
+        }
+        // 更新用户预约记录状态
+        int updateOrderDetailStatus = orderMapper.updateOrderDetailStatus(orderStatus, orderAudit.getOrderRecordId());
+        // 如果发送给秘书 需要添加预约审核信息
+        if (Constant.ORDER_STATUS_SEC_CHECK.equals(orderStatus)){
+            OrderAudit addOrderAudit = new OrderAudit();
+            addOrderAudit.setUuid(UuidUtil.getUuid());
+            addOrderAudit.setOrderRecordId(orderAudit.getOrderRecordId());
+            addOrderAudit.setType(Constant.ORDER_TYPE_SEC);
+            orderMapper.insertOrderAudit(addOrderAudit);
+        }
+        // 如果审核完成 修改教室预约人数为满员
+        if (Constant.ORDER_STATUS_COMPLETE.equals(orderStatus)){
+            String classroomCap = classroomMapper.getCapByClassroomId(orderDetailInfo.getClassroomId());
+            int updateOrderNumById = orderMapper.updateOrderNumById(classroomCap, orderDetailInfo.getOrderId());
+            return updateOrderNumById;
+        }
+        return updateOrderDetailStatus;
+    }
+
 
     @Override
     public int cencelOrderById(String id) {

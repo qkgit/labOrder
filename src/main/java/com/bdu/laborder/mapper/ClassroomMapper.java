@@ -28,4 +28,6 @@ public interface ClassroomMapper {
     Classroom checkAddressUnique(Classroom classroom);
 
     List<Classroom> selectRoomByNameOrAdd(String param);
+
+    String getCapByClassroomId(String id);
 }

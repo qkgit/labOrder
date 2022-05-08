@@ -100,4 +100,7 @@
         <include refid="selectClassroomVO" />
         where (name like concat('%',#{param},'%') or address like concat('%',#{param},'%')) and del_flag = '0'
     </select>
+    <select id="getCapByClassroomId" resultType="java.lang.String">
+        select cap from s_classroom where uuid = #{id}
+    </select>
 </mapper>
