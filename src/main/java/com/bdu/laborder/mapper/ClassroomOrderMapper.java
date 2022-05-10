@@ -23,6 +23,12 @@ public interface ClassroomOrderMapper {
 
    public ClassroomOrderDetail getOrderDetailById(String id);
 
+   /**
+    *  查询预约单中用户是否已经预约
+    * @param orderId
+    * @param userId
+    * @return
+    */
    public ClassroomOrderDetail getOrderDetailByUserAndOrderId(@Param("orderId") String orderId,@Param("userId") String userId);
 
    public List<ClassroomOrderDetail> getOrderDetailByUser(@Param("orderRequest") ClassroomOrderRequest orderRequest,@Param("userId")String userId);
@@ -48,4 +54,6 @@ public interface ClassroomOrderMapper {
    public int updateOrderDetailStatus(@Param("orderStatus") String orderStatus,@Param("id") String id);
 
    public int updateOrderNumById(@Param("orderNum") String orderNum,@Param("id") String id);
+
+   public int checkDetailComplete(String id);
 }

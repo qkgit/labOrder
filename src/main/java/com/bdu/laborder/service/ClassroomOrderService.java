@@ -22,7 +22,13 @@ public interface ClassroomOrderService {
 
     public List<ClassroomOrderDetail> getOrderRecordByUser(ClassroomOrderRequest orderRequest,String userId);
 
-    public int cencelOrderById(String id);
+    /**
+     *  取消预约
+     * @param id    预约记录id
+     * @param user  预约用户
+     * @return
+     */
+    public int cencelOrderById(String id,SysUser user);
 
     public String checkOrderTime(ClassroomOrderDetail orderDetail, SysUser user);
 

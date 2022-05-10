@@ -13,16 +13,12 @@ import com.bdu.laborder.mapper.ClassroomMapper;
 import com.bdu.laborder.mapper.ClassroomOrderMapper;
 import com.bdu.laborder.mapper.CourseTableMapper;
 import com.bdu.laborder.service.ClassroomOrderService;
-import com.bdu.laborder.utils.DateUtils;
 import com.bdu.laborder.utils.StringUtils;
 import com.bdu.laborder.utils.UuidUtil;
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.spi.DateFormatProvider;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -103,6 +99,7 @@ public class ClassroomOrderServiceImpl implements ClassroomOrderService {
             orderInfo.setOrderDate(orderDetail.getOrderDate());
             orderInfo.setOrderNode(orderDetail.getOrderNode());
             orderInfo.setOrderNum(0);
+            orderInfo.setRoomCap(classroomMapper.getCapByClassroomId(orderDetail.getClassroomId()));
         } else {
             orderInfo = getClassroomOrderById(orderDetail.getOrderId());
         }
@@ -221,8 +218,26 @@ public class ClassroomOrderServiceImpl implements ClassroomOrderService {
     }
 
 
+
+    /**
+     *  取消预约
+     * @param id    预约记录id
+     * @param user  预约用户
+     * @return
+     */
     @Override
-    public int cencelOrderById(String id) {
+    public int cencelOrderById(String id,SysUser user) {
+        // 获取预约记录
+        ClassroomOrderDetail orderDetail = orderMapper.getOrderDetailById(id);
+        // 获取预约单
+
+        // 判断预约状态是否已成功
+        // 如果已经预约成功了 取消就要将预约人数进行相应的减少
+        if (Constant.ORDER_STATUS_COMPLETE.equals(orderDetail.getOrderStatus())){
+            if (UserService.isStudent(user)){
+
+            }
+        }
         return orderMapper.cencelOrderById(id);
     }
 

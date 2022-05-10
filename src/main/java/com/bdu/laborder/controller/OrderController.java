@@ -84,7 +84,8 @@ public class OrderController extends BaseController {
      */
     @PutMapping("/classroom/cencel/{orderDetailId}")
     public Result cencelOrder(@PathVariable("orderDetailId") String orderDetailId){
-        return toResult(orderService.cencelOrderById(orderDetailId));
+        SysUser loginUser = getLoginUser();
+        return toResult(orderService.cencelOrderById(orderDetailId,loginUser));
     }
 
     /**
