@@ -230,13 +230,19 @@ public class ClassroomOrderServiceImpl implements ClassroomOrderService {
         // 获取预约记录
         ClassroomOrderDetail orderDetail = orderMapper.getOrderDetailById(id);
         // 获取预约单
-
+        ClassroomOrder classroomOrder = orderMapper.selectClassroomOrderById(orderDetail.getOrderId());
         // 判断预约状态是否已成功
         // 如果已经预约成功了 取消就要将预约人数进行相应的减少
         if (Constant.ORDER_STATUS_COMPLETE.equals(orderDetail.getOrderStatus())){
-            if (UserService.isStudent(user)){
 
+            if (UserService.isStudent(user)){
+                Integer orderNum = classroomOrder.getOrderNum();
+                classroomOrder.setOrderNum(orderNum-1);
             }
+            if (UserService.isTeacher(user)){
+                classroomOrder.setOrderNum(0);
+            }
+            orderMapper.updateOrder(classroomOrder);
         }
         return orderMapper.cencelOrderById(id);
     }
