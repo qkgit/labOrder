@@ -25,8 +25,8 @@ public class ClassroomOrderDetail {
     /** 预约教室 */
     private String classroomName;
     /** 预约时间 */
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date orderDate;
     /** 预约节数 */
     private String orderNode;

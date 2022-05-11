@@ -90,6 +90,7 @@ public class ClassroomOrderServiceImpl implements ClassroomOrderService {
         // 根据orderId获取预约记录表
         //     => orderId为空    教室首次预约,需要初始化_预约记录表
         //     => orderId不为空  教室已存在预约记录,查询获取
+        String roomCap = classroomMapper.getCapByClassroomId(orderDetail.getClassroomId());
         ClassroomOrder orderInfo = null;
         if (StringUtils.isEmpty(orderDetail.getOrderId())) {
             addOrderFlag = true;
@@ -99,7 +100,7 @@ public class ClassroomOrderServiceImpl implements ClassroomOrderService {
             orderInfo.setOrderDate(orderDetail.getOrderDate());
             orderInfo.setOrderNode(orderDetail.getOrderNode());
             orderInfo.setOrderNum(0);
-            orderInfo.setRoomCap(classroomMapper.getCapByClassroomId(orderDetail.getClassroomId()));
+            orderInfo.setRoomCap(roomCap);
         } else {
             orderInfo = getClassroomOrderById(orderDetail.getOrderId());
         }
@@ -126,9 +127,9 @@ public class ClassroomOrderServiceImpl implements ClassroomOrderService {
         }
         if (UserService.isStudent(user)) {
             Integer orderNum = orderInfo.getOrderNum();
-            Integer roomCap = Integer.valueOf(orderInfo.getRoomCap());
+            Integer cap = Integer.valueOf(roomCap);
             // 满员验证
-            if (orderNum+1>roomCap){
+            if (orderNum+1>cap){
                 throw new BaseException("该教室已经满员，请重新选择教室预约！");
             }
             orderInfo.setOrderNum(orderNum + 1);

@@ -2,6 +2,7 @@ package com.bdu.laborder.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 /**
@@ -12,8 +13,8 @@ import java.util.Date;
 public class ClassroomOrderRequest {
 
     /** 预约时间 */
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date orderDate;
     /** 预约周 */
     private String orderWeek;
